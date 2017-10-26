@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  by: 1
+  user: 1
+
+two:
+  by: 1
+  user: 1
