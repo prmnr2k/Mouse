@@ -182,11 +182,10 @@ class AccountsController < ApplicationController
                 @venue = @account.venue
                 @venue.update(venue_params)
             else
-                dsfdfsdsdssfdsf
                 @venue = Venue.new(venue_params)
-                @venue.save
+                @venue.save!
                 @account.venue_id = @venue.id
-                @account.save
+                @account.save!
             end
         end
         set_venue_dates
