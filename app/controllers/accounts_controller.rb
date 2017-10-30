@@ -9,6 +9,7 @@ class AccountsController < ApplicationController
     def get
         extended = true
         extended = params[:extended] if params[:extended]
+        puts extended
         render json: @to_find, extended: extended
     end
 

@@ -5,7 +5,9 @@ class Artist < ApplicationRecord
 
     def as_json(options={})
         if options[:extended]
-            return super.merge(account.get_attrs)
+            res = super.merge(account.get_attrs)
+            res[:genres] = genres
+            return res
         else
             return account.get_attrs
         end
