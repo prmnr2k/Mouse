@@ -151,7 +151,7 @@ class AccountsController < ApplicationController
     end
 
     def set_fan_params
-        if @account.account_type == 'fan'
+        if @account.account_type.fan?
             if @account.fan 
                 @fan = account.fan
                 @fan.update(fan_params)
@@ -177,7 +177,7 @@ class AccountsController < ApplicationController
     end
 
     def set_venue_params
-        if @account.account_type == 'venue'
+        if @account.account_type.venue?
             if @account.venue 
                 @venue = @account.venue
                 @venue.update(venue_params)
@@ -239,7 +239,7 @@ class AccountsController < ApplicationController
     end
 
     def set_artist_params
-        if @account.account_type == 'artist'
+        if @account.account_type.artist?
             if @account.artist
                 @artist = @account.artist
                 @artist.update(artist_params)
