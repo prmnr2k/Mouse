@@ -157,7 +157,7 @@ class AccountsController < ApplicationController
                 @fan.update(fan_params)
             else
                 @fan = Fan.new(fan_params)
-                @fan.save
+                render @fan.errors and return if not @fan.save
                 @account.fan_id = @fan.id
                 @account.save
             end
@@ -183,7 +183,7 @@ class AccountsController < ApplicationController
                 @venue.update(venue_params)
             else
                 @venue = Venue.new(venue_params)
-                @venue.save!
+                render @venue.errors and return if not @venue.save
                 @account.venue_id = @venue.id
                 @account.save!
             end
@@ -245,7 +245,7 @@ class AccountsController < ApplicationController
                 @artist.update(artist_params)
             else
                 @artist = Artist.new(artist_params)
-                @artist.save
+                render @artist.errors and return if not @artist.save
                 @account.artist_id = @artist.id
                 @account.save
             end

@@ -1,8 +1,8 @@
 class Venue < ApplicationRecord
 
-    validates_inclusion_of :capacity, in: 1..1000000
-    validates_inclusion_of :min_age, in: 0..150
-    validates_inclusion_of :num_of_bathrooms, in: 0..1000000
+    validates_inclusion_of :capacity, in: 1..1000000, allow_nil: true
+    validates_inclusion_of :min_age, in: 0..150, allow_nil: true
+    validates_inclusion_of :num_of_bathrooms, in: 0..1000000, allow_nil: true
 
     enum venue_type: [:night_club, :concert_hall, :event_space, :theatre, :additional_room,
                      :stadium_arena, :outdoor_space, :private_residence, :other]
