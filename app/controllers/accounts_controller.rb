@@ -9,7 +9,7 @@ class AccountsController < ApplicationController
     def get
         extended = true
         extended = params[:extended] if params[:extended]
-        render json: @to_find, extended: extended, status: :ok
+        render(json: @to_find, extended: true, status: :ok)
     end
 
     # GET /accounts/
@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
         @accounts = Account.all
         extended = false
         extended = params[:extended] if params[:extended]
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: true, status: :ok
+        render(json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: true, status: :ok)
     end
 
     # GET /accounts/my
@@ -187,6 +187,10 @@ class AccountsController < ApplicationController
                 @account.venue = @venue
             end
         end
+        set_venue_dates
+        set_venue_emails
+        set_venue_office_hours
+        set_venue_operating_hours
     end
 
     def set_venue_dates
