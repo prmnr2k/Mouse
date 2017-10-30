@@ -9,7 +9,7 @@ class AccountsController < ApplicationController
     def get
         extended = true
         extended = params[:extended] if params[:extended]
-        render json: @to_find, extended: extended
+        render json: @to_find, extended: extended, status: :ok
     end
 
     # GET /accounts/
@@ -17,14 +17,14 @@ class AccountsController < ApplicationController
         @accounts = Account.all
         extended = false
         extended = params[:extended] if params[:extended]
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: extended
+        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: extended, status: :ok
     end
 
     # GET /accounts/my
     def get_my_accounts   
        extended = false
        extended = params[:extended] if params[:extended]
-       render json: @user.accounts, extended: extended
+       render json: @user.accounts, extended: extended, status: :ok
     end
 
     # GET /accounts/images/<id>
