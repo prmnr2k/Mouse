@@ -23,7 +23,7 @@ class Venue < ApplicationRecord
             res[:office_hours] = office_hours
             res[:dates] = dates
             res[:emails] = emails
-            return res
+            return super
         else
             return account.get_attrs
         end
