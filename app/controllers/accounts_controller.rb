@@ -198,7 +198,7 @@ class AccountsController < ApplicationController
         if params[:dates]
             @venue.dates.clear
             params[:dates].each do |date|
-                obj = VenueDate.new(venue_date_params(date))
+                obj = VenueDate.new(venue_dates_params(date))
                 obj.save
                 @venue.dates << obj
             end
