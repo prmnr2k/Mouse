@@ -18,13 +18,19 @@ class Venue < ApplicationRecord
 
     def as_json(options={})
         if options[:extended]
-            res = {}#super.merge(account.get_attrs)
+            res = super.merge(account.get_attrs)
             res[:operating_hours] = operating_hours
             res[:office_hours] = office_hours
             res[:dates] = dates
             res[:emails] = emails
             return res
         else
+             res = super.merge(account.get_attrs)
+            res[:operating_hours] = operating_hours
+            res[:office_hours] = office_hours
+            res[:dates] = dates
+            res[:emails] = emails
+            return res
             return account.get_attrs
         end
     end
