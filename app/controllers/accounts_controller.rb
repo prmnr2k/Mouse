@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
         @accounts = Account.all
         extended = false
         extended = params[:extended] if params[:extended]
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: true, status: :ok
+        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: extended, status: :ok
     end
 
     # GET /accounts/my
