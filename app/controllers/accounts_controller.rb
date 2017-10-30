@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
         extended = true
         extended = params[:extended] if params[:extended]
         puts extended
-        render json(@to_find, extended: extended)
+        render json: @to_find,  extended
     end
 
     # GET /accounts/
