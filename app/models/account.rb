@@ -29,7 +29,6 @@ class Account < ApplicationRecord
         attrs[:updated_at] = updated_at
         attrs[:image_id] = image_id
         attrs[:account_type] = account_type
-		attrs[:venue] = venue.id
 		return attrs
 	end
 

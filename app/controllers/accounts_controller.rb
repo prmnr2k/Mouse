@@ -98,7 +98,6 @@ class AccountsController < ApplicationController
             set_venue_params
             set_artist_params
 
-            @account.save
             #AccessHelper.grant_account_access(@account)
             render json: @account, extended: true, except: :password, status: :created
         else
@@ -159,7 +158,8 @@ class AccountsController < ApplicationController
             else
                 @fan = Fan.new(fan_params)
                 @fan.save
-                @account.fan = @fan
+                @account.fan_id = @fan.id
+                @account.save
             end
             set_fan_genres
         end
@@ -184,7 +184,8 @@ class AccountsController < ApplicationController
             else
                 @venue = Venue.new(venue_params)
                 @venue.save
-                @account.venue = @venue
+                @account.venue_id = @venue.id
+                @account.save
             end
         end
         set_venue_dates
@@ -245,7 +246,8 @@ class AccountsController < ApplicationController
             else
                 @artist = Artist.new(artist_params)
                 @artist.save
-                @account.artist = @artist
+                @account.artist_id = @artist.id
+                @account.save
             end
             set_artist_genres
         end
