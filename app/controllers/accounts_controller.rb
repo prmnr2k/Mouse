@@ -9,7 +9,7 @@ class AccountsController < ApplicationController
     def get
         extended = true
         extended = params[:extended] if params[:extended]
-        render json: @to_find.as_json(extended: extended)
+        render json: @to_find.as_json(extended: true)
     end
 
     # GET /accounts/
@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
         @accounts = Account.all
         extended = false
         extended = params[:extended] if params[:extended]
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]).as_json(extended: extended)
+        render json: @accounts.limit(params[:limit]).offset(params[:offset]).as_json(extended: true)
     end
 
     # GET /accounts/my
