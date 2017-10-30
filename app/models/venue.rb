@@ -17,8 +17,6 @@ class Venue < ApplicationRecord
     has_one :account
 
     def as_json(options={})
-        puts 'AAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-        puts options
         if options[:extended]
             res = super.merge(account.get_attrs)
             res[:operating_hours] = operating_hours
