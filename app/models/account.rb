@@ -10,7 +10,7 @@ class Account < ApplicationRecord
 	has_many :followers, through: :followers_conn, source: 'to_id'
 
 	has_many :followings_conn, foreign_key: 'by_id', class_name: 'Follower'
-	has_many :followings, through: :followings_conn, source: 'by_id'
+	has_many :following, through: :followings_conn, source: 'by_id'
 
     belongs_to :user
     belongs_to :fan, optional: true
@@ -19,38 +19,41 @@ class Account < ApplicationRecord
 
     belongs_to :image, optional: true
     
+	def get_attrs
+		attrs = {}
+		attrs[:id] = id
+        attrs[:user_name] = user_name
+		attrs[:display_name] = display_name
+		attrs[:phone] = phone
+        attrs[:created_at] = created_at
+        attrs[:updated_at] = updated_at
+        attrs[:image_id] = image_id
+        attrs[:account_type] = account_type
+		return attrs
+	end
+
     def as_json(options={})
       attrs = super
       if fan
-          attrs[:bio] = fan.bio
-          attrs[:address] = fan.address
-		  attrs[:lat] = fan.lat
-		  attrs[:lng] = fan.lng
+          return fan.as_json(options)
       end
 
 	  if venue
-          attrs[:about] = venue.about
-          attrs[:contact_info] = venue.contact_info
-          attrs[:address] = venue.address
-		  attrs[:lat] = venue.lat
-		  attrs[:lng] = venue.lng
+		  return venue.as_json(options)
+		#   venue_attrs = venue.as_json
+		#   venue_attrs.each do |att|
+		# 	  attrs[att[0]] = att[1] if not attrs.key?(att[0])
+		#   end
       end
 
 	  if artist
-          attrs[:full_name] = artist.full_name
-          attrs[:about] = artist.about
+          return artist.as_json(options)
       end
 
 	  #attrs[:genres] = user_genres.pluck(:name)
 	  #attrs[:images] = images.pluck(:id)
 	  #attrs[:followed] = followed_conn.pluck(:to_id)
 	  #attrs[:followers] = followers_conn.pluck(:by_id)
-
-	  attrs.delete(:password.to_s)
-	  attrs.delete(:fan_id.to_s)
-	  attrs.delete(:venue_id.to_s)
-	  attrs.delete(:artist_id.to_s)
-      attrs.delete(:user_id.to_s)
-	  return attrs
+	  return get_attrs
 	end
 end

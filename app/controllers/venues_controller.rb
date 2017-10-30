@@ -1,43 +1,31 @@
-class AccountsController < ApplicationController
+class VenuesController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:update, :upload_image, :follow, :unfollow]  
+    before_action :authorize_account, only: [:update_me, :get_me, :upload_image, :delete_image, :follow, :unfollow]  
     before_action :find_account, only: [:get, :follow, :unfollow, :get_images, :get_followers, :get_followed]  
     before_action :find_image, only: [:delete_image]  
 
-
-    # GET /accounts/<id>
+    # GET /venues/get/<id>
     def get
-        extended = true
-        extended = params[:extended] if params[:extended]
-        render json: @to_find, extended: extended
+        render json: @to_find
     end
 
-    # GET /accounts/
+    # GET /venues/get_all
     def get_all
-        @accounts = Account.all
-        extended = false
-        extended = params[:extended] if params[:extended]
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: extended
+        @venues = Venue.all
+        render json: @venues.limit(params[:limit]).offset(params[:offset])
     end
 
-    # GET /accounts/my
-    def get_my_accounts   
-       extended = false
-       extended = params[:extended] if params[:extended]
-       render json: @user.accounts, extended: extended
-    end
-
-    # GET /accounts/images/<id>
+    # GET /venues/get_images/<id>
     def get_images
         render json: {
             total_count: @to_find.images.count,
-            images: @to_find.images.limit(params[:limit]).offset(params[:offset]).pluck(:to_id)
+            followers: @to_find.images.limit(params[:limit]).offset(params[:offset]).pluck(:to_id)
         }
     end
 
-    #POST /accounts/images/<id>
+    #POST /venues/upload_image
     def upload_image
-        image = Image.new(base64: params[:image])
+        image = Image.new(base64: params[:base64])
         image.account = @account
         if image.save
             @account.images << image
@@ -47,8 +35,19 @@ class AccountsController < ApplicationController
         end
     end
 
+    #DELETE /venues/delete_image/<id>
+    def delete_image
+        if @image.account == @account
+            @account.image = nil if @image == @account.image
+            @image.destroy
+            @account.save
+            render json: @account, status: :ok
+        else
+            render status: :forbidden
+        end
+    end
 
-    #POST /accounts/follow/<id>
+    #POST /venues/upload_image/<id>
     def follow
         follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)
         if not follower
@@ -61,23 +60,23 @@ class AccountsController < ApplicationController
         end
     end
 
-    # GET /accounts/followers/<id>
+    # GET /venues/get_followers/<id>
     def get_followers 
         render json: {
-            total_count: @to_find.followers.count,
-            followers: @to_find.followers.limit(params[:limit]).offset(params[:offset])
+            total_count: @to_find.followers_conn.count,
+            followers: @to_find.followers_conn.limit(params[:limit]).offset(params[:offset]).pluck(:by_id)
         }
     end
 
-    # GET /accounts/following/<id>
+    # GET /venues/get_followed/<id>
     def get_followed
         render json: {
-            total_count: @to_find.following.count,
-            following: @to_find.following.limit(params[:limit]).offset(params[:offset])
+            total_count: @to_find.followed_conn.count,
+            followed: @to_find.followed_conn.limit(params[:limit]).offset(params[:offset]).pluck(:to_id)
         }
     end
 
-    #DELETE /accounts/unfollow/<id>
+    #DELETE /venues/unfollow/<id>
     def unfollow
         follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)
         if follower 
@@ -86,17 +85,14 @@ class AccountsController < ApplicationController
         end
     end
 
-    # POST /accounts
+    # POST /venues/create
     def create
         @account = Account.new(account_params)
         @account.user = @user
 
         if @account.save
             set_image
-
-            set_fan_params
             set_venue_params
-            set_artist_params
 
             @account.save
             #AccessHelper.grant_account_access(@account)
@@ -106,13 +102,10 @@ class AccountsController < ApplicationController
         end
     end
 
-    # PUT /accounts/<id>
+    # PUT /venues/update/<id>
     def update
         set_image
-        
-        set_fan_params
         set_venue_params
-        set_artist_params
         if @account.update(account_params)
             render json: @account, except: :password, status: :ok
         else
@@ -127,7 +120,7 @@ class AccountsController < ApplicationController
     end
 
     def find_image
-        @image = Image.find(params[:image_id])
+        @image = Image.find(params[:id])
     end
 
     def authorize_user
@@ -137,42 +130,17 @@ class AccountsController < ApplicationController
 
     def authorize_account
         @user = AuthorizeHelper.authorize(request)
-        @account = Account.find(params[:account_id])
+        @account = Account.find(params[:venue_id])
         render status: :unauthorized if @user == nil or @account.user != @user
     end
 
     def set_image
         if params[:image]
             #@account.image.delete if @account.image != nil
-            image = Image.new(base64: params[:image])
-            #image.save
+            image = Image.new(image: params[:image])
+            image.save
             @account.image = image
             @account.images << image
-        end
-    end
-
-    def set_fan_params
-        if @account.account_type == 'fan'
-            if @account.fan 
-                @fan = account.fan
-                @fan.update(fan_params)
-            else
-                @fan = Fan.new(fan_params)
-                @fan.save
-                @account.fan = @fan
-            end
-            set_fan_genres
-        end
-    end
-
-    def set_fan_genres
-        if params[:genres]
-            @fan.genres.clear
-            params[:genres].each do |genre|
-                obj = FanGenre.new(genre: genre)
-                obj.save
-                @fan.genres << obj
-            end
         end
     end
 
@@ -233,37 +201,8 @@ class AccountsController < ApplicationController
         end
     end
 
-    def set_artist_params
-        if @account.account_type == 'artist'
-            if @account.artist
-                @artist = @account.artist
-                @artist.update(artist_params)
-            else
-                @artist = Artist.new(artist_params)
-                @artist.save
-                @account.artist = @artist
-            end
-            set_artist_genres
-        end
-    end
-
-    def set_artist_genres
-        if params[:genres]
-            @artist.genres.clear
-            params[:genres].each do |genre|
-                obj = ArtistGenre.new(genre: genre)
-                obj.save
-                @artist.genres << obj
-            end
-        end
-    end
-
     def account_params
-        params.permit(:user_name, :display_name, :phone, :account_type)
-    end
-
-    def fan_params
-        params.permit(:bio, :address, :lat, :lng)
+        params.permit(:user_name, :phone, :account_type)
     end
 
     def venue_params
