@@ -100,7 +100,7 @@ class AccountsController < ApplicationController
 
             @account.save
             #AccessHelper.grant_account_access(@account)
-            render json: @account, except: :password, status: :created
+            render json: @account,  extended:true, except: :password, status: :created
         else
             render json: @account.errors, status: :unprocessable_entity
         end
