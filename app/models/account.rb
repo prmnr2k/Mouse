@@ -37,7 +37,7 @@ class Account < ApplicationRecord
       if fan
           return fan.as_json(options)
       end
-
+	  return venue.as_json(options)
 	  if venue
 		  return venue.as_json(options)
 		#   venue_attrs = venue.as_json
