@@ -218,7 +218,7 @@ class AccountsController < ApplicationController
 
     def set_venue_office_hours
         if params[:office_hours]
-            @venue.VenueOfficeHour.clear
+            @venue.office_hours.clear
             params[:office_hours].each do |hour|
                 obj = VenueOfficeHour.new(venue_office_hours_params(hour))
                 obj.save
@@ -229,7 +229,7 @@ class AccountsController < ApplicationController
 
     def set_venue_operating_hours
         if params[:operating_hours]
-            @venue.VenueOperatingHour.clear
+            @venue.operating_hours.clear
             params[:operating_hours].each do |hour|
                 obj = VenueOperatingHour.new(venue_operating_hours_params(hour))
                 obj.save
