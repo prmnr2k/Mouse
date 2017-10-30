@@ -177,12 +177,12 @@ class AccountsController < ApplicationController
     end
 
     def set_venue_params
-        if @account.account_type == 'venue'
-            akasdkashadsj
+        if @account.account_type == 'venue'            
             if @account.venue 
                 @venue = @account.venue
                 @venue.update(venue_params)
             else
+                dsfdfsdsdssfdsf
                 @venue = Venue.new(venue_params)
                 @venue.save
                 @account.venue_id = @venue.id
