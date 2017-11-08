@@ -7,10 +7,10 @@ class Account < ApplicationRecord
 	has_many :images, dependent: :destroy
 
 	has_many :followers_conn, foreign_key: 'to_id', class_name: 'Follower'
-	has_many :followers, through: :followers_conn, source: 'to_id'
+	has_many :followers, through: :followers_conn, source: 'to'
 
 	has_many :followings_conn, foreign_key: 'by_id', class_name: 'Follower'
-	has_many :following, through: :followings_conn, source: 'by_id'
+	has_many :following, through: :followings_conn, source: 'by'
 
     belongs_to :user
     belongs_to :fan, optional: true
@@ -29,6 +29,8 @@ class Account < ApplicationRecord
         attrs[:updated_at] = updated_at
         attrs[:image_id] = image_id
         attrs[:account_type] = account_type
+		attrs[:followers_count] = followers.count
+		attrs[:following_count] = following.count
 		return attrs
 	end
 

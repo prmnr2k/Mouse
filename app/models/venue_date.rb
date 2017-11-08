@@ -1,6 +1,6 @@
 class VenueDate < ApplicationRecord
     belongs_to :venue
-    
+    #TODO: DAY
     enum booking_notice: [:same_day, :one_day, :two_seven_days]
      def as_json(options={})
         res = super
