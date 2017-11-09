@@ -62,7 +62,7 @@ class AuthenticateController < ApplicationController
 		if not @user
 			fan = Fan.new(full_name: data['name'])
 			fan.save
-			@user = User.new(google_id: data['id'], account_type: 'fan', fan: fan)
+			@user = User.new(google_id: data['id'])
 			if not @user.save(validate: false)
 				render status: :unauthorized and return
 			end
@@ -89,7 +89,7 @@ class AuthenticateController < ApplicationController
 		if not @user
 			fan = Fan.new(full_name: client.user.name)
 			fan.save
-			@user = User.new(twitter_id: client.user.id, account_type: 'fan', fan: fan)
+			@user = User.new(twitter_id: client.user.id)
 			if not @user.save(validate: false)
 				render status: :unauthorized and return
 			end
