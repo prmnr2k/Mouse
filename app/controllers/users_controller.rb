@@ -32,7 +32,7 @@ class UsersController < ApplicationController
       if params[:code] == '000000'
           @to_find.is_phone_validated = true
           @to_find.save(validate: false)
-          render json: @to_find, status: :ok
+          render json: @to_find, except: :password, status: :ok
       else
           render json: {code: [:INVALID]}, status: :unprocessable_entity
       end
