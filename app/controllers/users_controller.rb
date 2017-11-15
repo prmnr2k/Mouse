@@ -27,11 +27,9 @@ class UsersController < ApplicationController
       end
   end
 
-  
-
   # POST /users/validated_phone
   def validate_phone
-      if params[:code] == '000000'
+      if params[:code] == '0000'
           @to_find.is_phone_validated = true
           @to_find.save(validate: false)
           render json: @to_find, except: :password, status: :ok
