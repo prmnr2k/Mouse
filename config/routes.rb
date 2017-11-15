@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   #User routes
   post 'users', action: :create, controller: 'users'
+  post 'users/validate_phone', action: :validate_phone, controller: 'users'
   get 'users/me', action: :get_me, controller: 'users'
   put 'users/me', action: :update_me, controller: 'users'
 

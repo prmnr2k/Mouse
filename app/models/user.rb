@@ -1,6 +1,7 @@
 class User < ApplicationRecord
 
     validates :email, presence: true, uniqueness: true
+	validates :register_phone, presence: true, uniqueness: true
 	validates :password, presence: true, length: {:within => 6..100} #, confirmation: true
 
 	before_save :encrypt, if: :password_changed?
