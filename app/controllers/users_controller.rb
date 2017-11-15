@@ -27,6 +27,8 @@ class UsersController < ApplicationController
       end
   end
 
+  
+
   # POST /users/validated_phone
   def validate_phone
       if params[:code] == '000000'
