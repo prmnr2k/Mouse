@@ -24,7 +24,7 @@ class AuthenticateController < ApplicationController
 	def login
 		@password = User.encrypt_password(params[:password])
 		@user = User.find_by email: params[:email], password: @password
-		if @user != nil and @user.is_phone_validated
+		if @user != nil
 			process_token(request, @user)
 			@token = Token.new(user_id: @user.id, info: @info)
 			@token.save

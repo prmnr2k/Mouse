@@ -30,4 +30,8 @@ Rails.application.routes.draw do
   get 'images/:id', action: :show, controller: 'images'
   delete 'images/:id', action: :delete, controller: 'accounts'
 
+
+  # phone validations routes
+  post 'phone_validations', action: :create, controller: 'phone_validations'
+  put 'phone_validations', action: :update, controller: 'phone_validations'
 end

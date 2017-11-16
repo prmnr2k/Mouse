@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-	enum account_type: [:fan, :venue, :artist]
+	 
 	validates :account_type, presence: true
 
 	validates :user_name, presence: true, uniqueness: true, length: {:within => 3..30}

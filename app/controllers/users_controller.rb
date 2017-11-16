@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :authorize_me, only: [:update_me, :get_me]  
-  before_action :find_user, only: [:validate_phone]  
 
   # GET /users/get_me
   def get_me
@@ -9,8 +8,10 @@ class UsersController < ApplicationController
 
   # POST /users/create
   def create
+      @phone_validation = PhoneValidation.find_by(phone: params[:register_phone])
+      render json: {register_phone: [:NOT_VALIDATED]}, status: :unprocessable_entity and return if not @phone_validation or @phone_validation.is_validated == false
+      
       @user = User.new(user_create_params)
-      @user.is_phone_validated = false
       if @user.save
           render json: @user, except: :password, status: :created
       else
@@ -24,17 +25,6 @@ class UsersController < ApplicationController
           render json: @user, except: :password, status: :ok
       else
           render json: @user.errors, status: :unprocessable_entity
-      end
-  end
-
-  # POST /users/validated_phone
-  def validate_phone
-      if params[:code] == '0000'
-          @to_find.is_phone_validated = true
-          @to_find.save(validate: false)
-          render json: @to_find, except: :password, status: :ok
-      else
-          render json: {code: [:INVALID]}, status: :unprocessable_entity
       end
   end
 
