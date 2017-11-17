@@ -49,6 +49,7 @@ class PhoneValidationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_phone_validation
       @phone_validation = PhoneValidation.find_by(phone: params[:phone])
+      render status: :not_found if not @phone_validation
     end
 
     # Only allow a trusted parameter "white list" through.
