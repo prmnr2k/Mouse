@@ -23,15 +23,17 @@ class AuthenticateController < ApplicationController
 	# POST /auth/login
 	def login
 		@password = User.encrypt_password(params[:password])
-		@user = User.find_by email: params[:email], password: @password
-		if @user != nil
-			process_token(request, @user)
-			@token = Token.new(user_id: @user.id, info: @info)
-			@token.save
-			render json: {token: @token.token} , status: :ok
-		else
-			render status: :unauthorized
-		end
+		@account = Account.find_by(user_name: params[:user_name])
+
+		render status: :unauthorized and return if not @account
+		@user = @account.user
+		render status: :unauthorized and return if @user.password != @password
+
+		process_token(request, @user)
+		@token = Token.new(user_id: @user.id, info: @info)
+		@token.save
+		render json: {token: @token.token} , status: :ok
+
 	end
 
 	# POST /auth/login_google
