@@ -8,18 +8,6 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 class AuthenticateController < ApplicationController
 	
-    SALT = 'kek salt'
-
-	def process_token(request, user)
-		if request.ip and request.user_agent
-			@info = Digest::SHA256.hexdigest(request.ip + request.user_agent + SALT) 
-		else
-			@info = SecureRandom.hex
-		end
-		@token = @user.tokens.find{|s| s.info == @info}
-        @token.destroy if @token
-	end
-
 	# POST /auth/login
 	def login
 		@password = User.encrypt_password(params[:password])
@@ -33,10 +21,8 @@ class AuthenticateController < ApplicationController
 		end
 		render status: :unauthorized and return if @user.password != @password
 
-		process_token(request, @user)
-		@token = Token.new(user_id: @user.id, info: @info)
-		@token.save
-		render json: {token: @token.token} , status: :ok
+		token = AuthenticateHelper.process_token(request, @user)
+		render json: {token: @oken.token} , status: :ok
 
 	end
 
@@ -74,11 +60,8 @@ class AuthenticateController < ApplicationController
 			end
 		end
 
-		process_token(request, @user)
-		@token = Token.new(user_id: @user.id, info: @info)
-		@token.save
-
-		render json: {token: @token.token} , status: :ok
+		token = AuthenticateHelper.process_token(request, @user)
+		render json: {token: token.token} , status: :ok
 	end
 
 	# POST /auth/login_twitter
@@ -101,10 +84,8 @@ class AuthenticateController < ApplicationController
 			end
 		end
 
-		process_token(request, @user)
-		@token = Token.new(user_id: @user.id, info: @info)
-		@token.save
-		render json: {token: @token.token} , status: :ok
+		token = AuthenticateHelper.process_token(request, @user)
+		render json: {token: token.token} , status: :ok
 	end
 
 	# POST /auth/login_facebook
