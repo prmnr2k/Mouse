@@ -1,12 +1,25 @@
 class UsersController < ApplicationController
-  before_action :authorize_me, only: [:update_me, :get_me]  
+  before_action :authorize_me, only: [:update_me, :get_me]
+  swagger_controller :user, "Users"
 
   # GET /users/me
+  swagger_api :get_me do
+    summary "Get my account information"
+    response :unauthorized
+  end
   def get_me
       render json: @user, except: :password
   end
 
   # POST /users/create
+  swagger_api :create do
+    summary "Creates user"
+    param :query, :email, :string, :required, "Email"
+    param :query, :password, :string, :required, "Your password"
+    param :query, :password_confirmation, :string, :required, "Confirm your password"
+    param :query, :register_phone, :string, :optional, "Phone number"
+    response :unprocessable_entity
+  end
   def create
       if params[:register_phone]
         @phone_validation = PhoneValidation.find_by(phone: params[:register_phone])
@@ -26,6 +39,15 @@ class UsersController < ApplicationController
   end
 
   # PUT /users/update/<id>
+  swagger_api :update do
+    summary "Update user info"
+    param :query, :id, :integer, :required, "User id"
+    param :query, :email, :string, :required, "Email"
+    param :query, :password, :string, :required, "Your password"
+    param :query, :password_confirmation, :string, :required, "Confirm your password"
+    param :query, :old_password, :string, :required, "Old password"
+    response :unprocessable_entity
+  end
   def update
       if @user.update(user_update_params)
           render json: @user, except: :password, status: :ok
@@ -35,6 +57,14 @@ class UsersController < ApplicationController
   end
 
   # PUT /users/update_me
+  swagger_api :update_me do
+    summary "Update my user info"
+    param :query, :email, :string, :required, "Email"
+    param :query, :password, :string, :required, "Your password"
+    param :query, :password_confirmation, :string, :required, "Confirm your password"
+    param :query, :old_password, :string, :required, "Old password"
+    response :unprocessable_entity
+  end
   def update_me
       if @user.update(user_update_params)
           render json: @user, except: :password, status: :ok
@@ -44,6 +74,11 @@ class UsersController < ApplicationController
   end
 
   # DELETE /users/1
+  swagger_api :destroy do
+    summary "Delete user"
+    param :query, :id, :integer, :required, "User id"
+    response :not_found
+  end
   def destroy
     @user.destroy
   end
