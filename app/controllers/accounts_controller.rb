@@ -2,10 +2,17 @@ class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
     before_action :authorize_account, only: [:update, :upload_image, :follow, :unfollow]  
     before_action :find_account, only: [:get, :follow, :unfollow, :get_images, :get_followers, :get_followed]  
-    before_action :find_image, only: [:delete_image]  
+    before_action :find_image, only: [:delete_image]
+    swagger_controller :accounts, "Accounts"
 
 
     # GET /accounts/<id>
+    swagger_api :get do
+      summary "Retrieve account by id"
+      param :path, :id, :integer, :required, "Account id"
+      param :query, :extended, :boolean, :required, "Need extended info"
+      response :not_found
+    end
     def get
         extended = true
         extended = params[:extended] if params[:extended]
@@ -13,6 +20,13 @@ class AccountsController < ApplicationController
     end
 
     # GET /accounts/
+    swagger_api :get_all do
+      summary "Retrieve list of accounts"
+      param :query, :extended, :boolean, :required, "Need extended info"
+      param :query, :limit, :integer, :required, "Limit"
+      param :query, :offset, :integer, :required, "Offset"
+      response :ok
+    end
     def get_all
         @accounts = Account.all
         extended = false
@@ -21,6 +35,11 @@ class AccountsController < ApplicationController
     end
 
     # GET /accounts/my
+    swagger_api :get_my_accounts do
+      summary "Retrieve list of my accounts"
+      param :query, :extended, :boolean, :required, "Need extended info"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+    end
     def get_my_accounts   
        extended = false
        extended = params[:extended] if params[:extended]
@@ -28,14 +47,30 @@ class AccountsController < ApplicationController
     end
 
     # GET /accounts/images/<id>
+    swagger_api :get_images do
+      summary "Retrieve list of images"
+      param :path, :id, :integer, :required, "Account id"
+      param :query, :limit, :integer, :required, "Limit"
+      param :query, :offset, :integer, :required, "Offset"
+      response :not_found
+    end
     def get_images
         render json: {
             total_count: @to_find.images.count,
-            images: @to_find.images.limit(params[:limit]).offset(params[:offset]).pluck(:to_id)
+            images: @to_find.images.limit(params[:limit]).offset(params[:offset]).pluck(:id)
         }
     end
 
-    #POST /accounts/images/<id>
+    #POST /accounts/images/<account_id>
+    swagger_api :upload_image do
+      summary "Upload image to Account"
+      param :path, :account_id, :integer, :required, "Account id"
+      param :form, :image, :file, :required, "Image to upload"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :unauthorized
+      response :not_found
+    end
     def upload_image
         image = Image.new(base64: params[:image])
         image.account = @account
@@ -48,7 +83,17 @@ class AccountsController < ApplicationController
     end
 
 
-    #POST /accounts/follow/<id>
+    #POST /accounts/follow/<account_id>
+    # TODO
+    swagger_api :follow do
+      summary "Subscribe for account"
+      param :path, :account_id, :integer, :required, "My account id"
+      param :query, :id, :integer, :required, "Following account id"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :not_found
+      response :unauthorized
+    end
     def follow
         follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)
         if not follower
@@ -62,6 +107,13 @@ class AccountsController < ApplicationController
     end
 
     # GET /accounts/followers/<id>
+    swagger_api :get_followers do
+      summary "Retrieve list of followers"
+      param :path, :id, :integer, :required, "Account id"
+      param :query, :offset, :integer, :required, "Offset"
+      param :query, :limit, :integer, :required, "Limit"
+      response :not_found
+    end
     def get_followers 
         render json: {
             total_count: @to_find.followers.count,
@@ -70,6 +122,13 @@ class AccountsController < ApplicationController
     end
 
     # GET /accounts/following/<id>
+    swagger_api :get_followed do
+      summary "Retrieve list of followers"
+      param :path, :id, :integer, :required, "Account id"
+      param :query, :offset, :integer, :required, "Offset"
+      param :query, :limit, :integer, :required, "Limit"
+      response :not_found
+    end
     def get_followed
         render json: {
             total_count: @to_find.following.count,
@@ -77,7 +136,16 @@ class AccountsController < ApplicationController
         }
     end
 
-    #DELETE /accounts/unfollow/<id>
+    #DELETE /accounts/unfollow/<account_id>
+    # TODO
+    swagger_api :unfollow do
+      summary "Unubscribe from account"
+      param :path, :account_id, :integer, :required, "My account id"
+      param :query, :id, :integer, :required, "Following account id"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :not_found
+      response :unauthorized
+    end
     def unfollow
         follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)
         if follower 
@@ -87,6 +155,16 @@ class AccountsController < ApplicationController
     end
 
     # POST /accounts
+    swagger_api :create do
+      summary "Creates new account"
+      param :form, :user_name, :string, :required, "Account's name"
+      param :form, :display_name, :string, :required, "Account's name to display"
+      param :form, :phone, :string, :required, "Account's phone"
+      param :form, :account_type, :integer, :required, "Account type"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :unauthorized
+    end
     def create
         @account = Account.new(account_params)
         @account.user = @user
@@ -105,7 +183,18 @@ class AccountsController < ApplicationController
         end
     end
 
-    # PUT /accounts/<id>
+    # PUT /accounts/<account_id>
+    swagger_api :update do
+      summary "Updates existing account"
+      param :path, :account_id, :integer, :required, "Account id"
+      param :form, :user_name, :string, :required, "Account's name"
+      param :form, :display_name, :string, :required, "Account's name to display"
+      param :form, :phone, :string, :required, "Account's phone"
+      param :form, :account_type, :integer, :required, "Account type"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :unauthorized
+    end
     def update
         set_image
         

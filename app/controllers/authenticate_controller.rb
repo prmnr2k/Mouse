@@ -7,8 +7,16 @@ require 'openssl'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 class AuthenticateController < ApplicationController
+	swagger_controller :auth, "Authentification"
 	
 	# POST /auth/login
+	swagger_api :login do
+		summary "Authorize by username and password"
+		param :form, :user_name, :string, :optional, "Username"
+		param :form, :email, :string, :optional, "Email"
+		param :form, :password, :password, :required, "Password"
+		response :unauthorized
+	end
 	def login
 		@password = User.encrypt_password(params[:password])
 		if params[:user_name]
@@ -22,11 +30,16 @@ class AuthenticateController < ApplicationController
 		render status: :unauthorized and return if @user.password != @password
 
 		token = AuthenticateHelper.process_token(request, @user)
-		render json: {token: @oken.token} , status: :ok
+		render json: {token: token.token} , status: :ok
 
 	end
 
 	# POST /auth/login_google
+	swagger_api :login_google do
+		summary "Authorize by google"
+		param :form, :authorization_code, :string, :required, "Code returned by authorization from google"
+		response :unauthorized
+	end
 	def login_google
 		client_secret = "LAEUpegdYyAZX3wFeyASBykl"
 		client_id = "844170394110-cms890g4tkp36jhbapec4eo7e6n3urt2.apps.googleusercontent.com"
@@ -65,6 +78,12 @@ class AuthenticateController < ApplicationController
 	end
 
 	# POST /auth/login_twitter
+	swagger_api :login_twitter do
+		summary "Authorize by twitter"
+		param :form, :access_token, :string, :required, "Access token from twitter"
+		param :form, :access_token_secret, :string, :required, "Access token secret from twitter"
+		response :unauthorized
+	end
 	def login_twitter
 		
 		client = Twitter::REST::Client.new do |config|
@@ -89,11 +108,20 @@ class AuthenticateController < ApplicationController
 	end
 
 	# POST /auth/login_facebook
+	swagger_api :login_facebook do
+		summary "Authorize by facebook"
+		response :unauthorized
+	end
 	def login_facebook
 		
 	end
 
 	# POST /auth/logout
+	swagger_api :logout do
+		summary "Logout"
+		param :header, 'Authorization', :string, :required, 'Authentication token'
+		response :bad_request
+	end
 	def logout
 		@token = Token.find_by token: request.headers['Authorization']
 		if @token != nil

@@ -8,42 +8,42 @@
       "path": "/users.json",
       "operations": [
         {
-          "summary": "Creates user",
-          "responseMessages": [
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
+          "summary": "Creates user credential for login",
           "parameters": [
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "email",
               "type": "string",
               "description": "Email",
               "required": true
             },
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "password",
-              "type": "string",
+              "type": "password",
               "description": "Your password",
               "required": true
             },
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "password_confirmation",
-              "type": "string",
+              "type": "password",
               "description": "Confirm your password",
               "required": true
             },
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "register_phone",
               "type": "string",
               "description": "Phone number",
               "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
             }
           ],
           "nickname": "Users#create",
@@ -55,7 +55,16 @@
       "path": "/users/me.json",
       "operations": [
         {
-          "summary": "Get my account information",
+          "summary": "Retrives User object of authorized user",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
           "responseMessages": [
             {
               "code": 401,
@@ -73,13 +82,6 @@
       "operations": [
         {
           "summary": "Update my user info",
-          "responseMessages": [
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
           "parameters": [
             {
               "paramType": "query",
@@ -91,80 +93,40 @@
             {
               "paramType": "query",
               "name": "password",
-              "type": "string",
+              "type": "password",
               "description": "Your password",
               "required": true
             },
             {
               "paramType": "query",
               "name": "password_confirmation",
-              "type": "string",
+              "type": "password",
               "description": "Confirm your password",
               "required": true
             },
             {
               "paramType": "query",
               "name": "old_password",
-              "type": "string",
+              "type": "password",
               "description": "Old password",
               "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
             }
           ],
           "nickname": "Users#update_me",
-          "method": "put"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}.json",
-      "operations": [
-        {
-          "summary": "Update user info",
-          "responseMessages": [
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "parameters": [
-            {
-              "paramType": "query",
-              "name": "id",
-              "type": "integer",
-              "description": "User id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "email",
-              "type": "string",
-              "description": "Email",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "password",
-              "type": "string",
-              "description": "Your password",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "password_confirmation",
-              "type": "string",
-              "description": "Confirm your password",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "old_password",
-              "type": "string",
-              "description": "Old password",
-              "required": true
-            }
-          ],
-          "nickname": "Users#update",
           "method": "put"
         }
       ]

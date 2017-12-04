@@ -1,5 +1,6 @@
 class PhoneValidationsController < ApplicationController
   before_action :set_phone_validation, only: [:show, :update, :destroy]
+  swagger_controller :phone, "Phone validation"
 
   # GET /phone_validations
   def index
@@ -14,6 +15,11 @@ class PhoneValidationsController < ApplicationController
   end
 
   # POST /phone_validations
+  swagger_api :create do
+    summary "Request code for validation"
+    param :form, :phone, :string, :required, "Phone number"
+    response :unprocessable_entity
+  end
   def create
     @phone_validation = PhoneValidation.find_by(phone: params[:phone])
     @phone_validation = PhoneValidation.new(phone_validation_params)  if not @phone_validation
@@ -28,6 +34,12 @@ class PhoneValidationsController < ApplicationController
   end
 
   # PATCH/PUT /phone_validations/1
+  swagger_api :update do
+    summary "Send validation code from SMS"
+    param :form, :phone, :string, :required, "Phone number"
+    param :query, :code, :string, :required, "Code"
+    response :unprocessable_entity
+  end
   def update
       if params[:code] == @phone_validation.code
           @phone_validation.is_validated = true

@@ -13,16 +13,16 @@ Rails.application.routes.draw do
 
   #Account routes
   get 'accounts', action: :get_all, controller: 'accounts'
-  get 'accounts/:id', action: :get, controller: 'accounts'
   get 'accounts/my', action: :get_my_accounts, controller: 'accounts'
+  get 'accounts/:id', action: :get, controller: 'accounts'
   get 'accounts/images/:id', action: :get_images, controller: 'accounts'
   get 'accounts/followers/:id', action: :get_followers, controller: 'accounts'
   get 'accounts/following/:id', action: :get_followed, controller: 'accounts'
   post 'accounts', action: :create, controller: 'accounts'
-  post 'accounts/images/:id', action: :upload_image, controller: 'accounts'
-  post 'accounts/follow/:id', action: :follow, controller: 'accounts'
-  put 'accounts/:id', action: :update, controller: 'users'
-  delete 'accounts/unfollow/:id', action: :unfollow, controller: 'accounts'
+  post 'accounts/images/:account_id', action: :upload_image, controller: 'accounts'
+  post 'accounts/follow/:account_id', action: :follow, controller: 'accounts'
+  put 'accounts/:account_id', action: :update, controller: 'users'
+  delete 'accounts/unfollow/:account_id', action: :unfollow, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
