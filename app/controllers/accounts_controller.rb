@@ -77,6 +77,7 @@ class AccountsController < ApplicationController
         if image.save
             @account.images << image
             render json: @account, status: :ok
+            
         else
             render json: image.errors, status: :unprocessable_entity
         end
