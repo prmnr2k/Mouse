@@ -18,6 +18,7 @@ Swagger::Docs::Config.register_apis(
             }
         }
     })
+    
 Swagger::Docs::Config.base_api_controller = ApplicationController
 class Swagger::Docs::Config
   def self.transform_path(path, api_version)
