@@ -1,0 +1,432 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://localhost:3000",
+  "resourcePath": "accounts",
+  "apis": [
+    {
+      "path": "/accounts.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of accounts",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Need extended info",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Accounts#get_all",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/my.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of my accounts",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Need extended info",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "nickname": "Accounts#get_my_accounts",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve account by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Need extended info",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/images/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of images",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get_images",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/followers/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of followers",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get_followers",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/following/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of followers",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get_followed",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts.json",
+      "operations": [
+        {
+          "summary": "Creates new account",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Account's name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "display_name",
+              "type": "string",
+              "description": "Account's name to display",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "phone",
+              "type": "string",
+              "description": "Account's phone",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_type",
+              "type": "integer",
+              "description": "Account type",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/images/{account_id}.json",
+      "operations": [
+        {
+          "summary": "Upload image to Account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image",
+              "type": "file",
+              "description": "Image to upload",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#upload_image",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/follow/{account_id}.json",
+      "operations": [
+        {
+          "summary": "Subscribe for account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "My account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "id",
+              "type": "integer",
+              "description": "Following account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#follow",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/unfollow/{account_id}.json",
+      "operations": [
+        {
+          "summary": "Unubscribe from account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "My account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "id",
+              "type": "integer",
+              "description": "Following account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#unfollow",
+          "method": "delete"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}
