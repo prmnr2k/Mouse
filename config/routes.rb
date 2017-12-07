@@ -21,14 +21,14 @@ Rails.application.routes.draw do
   post 'accounts', action: :create, controller: 'accounts'
   post 'accounts/images/:account_id', action: :upload_image, controller: 'accounts'
   post 'accounts/follow/:account_id', action: :follow, controller: 'accounts'
-  put 'accounts/:account_id', action: :update, controller: 'users'
+  put 'accounts/:account_id', action: :update, controller: 'accounts'
   delete 'accounts/unfollow/:account_id', action: :unfollow, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # images routes
   get 'images/:id', action: :show, controller: 'images'
-  delete 'images/:id', action: :delete, controller: 'accounts'
+  delete 'images/:id', action: :delete_image, controller: 'images'
 
 
   # phone validations routes

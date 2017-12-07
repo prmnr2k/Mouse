@@ -29,6 +29,37 @@
           "method": "get"
         }
       ]
+    },
+    {
+      "path": "/images/{id}.json",
+      "operations": [
+        {
+          "summary": "Delete image",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Image id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 403,
+              "responseModel": null,
+              "message": "Forbidden"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Images#delete_image",
+          "method": "delete"
+        }
+      ]
     }
   ],
   "authorizations": null
