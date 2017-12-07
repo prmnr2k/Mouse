@@ -156,12 +156,13 @@ class AccountsController < ApplicationController
     end
 
     # POST /accounts
+    # TODO
     swagger_api :create do
       summary "Creates new account"
       param :form, :user_name, :string, :required, "Account's name"
       param :form, :display_name, :string, :required, "Account's name to display"
       param :form, :phone, :string, :required, "Account's phone"
-      param :form, :account_type, :integer, :required, "Account type"
+      param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -185,14 +186,48 @@ class AccountsController < ApplicationController
     end
 
     # PUT /accounts/<account_id>
+    # TODO
     swagger_api :update do
       summary "Updates existing account"
       param :path, :account_id, :integer, :required, "Account id"
       param :form, :user_name, :string, :required, "Account's name"
       param :form, :display_name, :string, :required, "Account's name to display"
       param :form, :phone, :string, :required, "Account's phone"
-      param :form, :account_type, :integer, :required, "Account type"
+      param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
+      # param :form, :image, :file, :optional, "Image"
+      param :form, :bio, :string, :optional, "Fan bio"
+      param :form, :address, :string, :optional, "Fan address"
+      param :form, :lat, :float, :optional, "Fan lat"
+      param :form, :lng, :float, :optional, "Fan lng"
+      param :form, :description, :string, :optional, "Venue description"
+      param :form, :phone, :string, :optional, "Venue phone"
+      param :form, :fax, :string, :optional, "Venue fax"
+      param :form, :bank_name, :string, :optional, "Venue bank name"
+      param :form, :account_bank_number, :string, :optional, "Venue account bank number"
+      param :form, :account_bank_routing_number, :string, :optional, "Venue account routing number"
+      param :form, :capacity, :integer, :optional, "Venue capacity"
+      param :form, :num_of_bathrooms, :integer, :optional, "Venue num of bathrooms"
+      param :form, :min_age, :integer, :optional, "Venue min age"
+      param_list :form, :venue_type, :integer, :optional, "Venue type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+                                                                          "stadium_arena", "outdoor_space", "private_residence", "other"]
+      param :form, :has_bar, :boolean, :optional, "Has venue bar?"
+      param_list :form, :located, :string, :optional, "Venue located", ["indoors", "outdoors", "other_location"]
+      param :form, :dress_code, :string, :optional, "Venue dress code"
+      param :form, :has_vr, :boolean, :optional, "Has venue vr?"
+      param :form, :audio_description, :string, :optional, "Venue audio description"
+      param :form, :lighting_description, :string, :optional, "Venue lighting description"
+      param :form, :stage_description, :string, :optional, "Venue stage description"
+      param :form, :address, :string, :optional, "Venue address"
+      param :form, :lat, :float, :optional, "Venue lat"
+      param :form, :lng, :float, :optional, "Venue lng"
+      param :form, :dates, :array, :optional, "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',
+                                                            'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]"
+      param :form, :emails, :array, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
+      param :form, :office_hours, :array, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
+      param :form, :operating_hours, :array, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
+      param :form, :about, :string, :optional, "About artist"
       param :header, 'Authorization', :string, :required, 'Authentication token'
+      param :header, 'Content-Type', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
     end
