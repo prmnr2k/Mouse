@@ -383,6 +383,72 @@
       ]
     },
     {
+      "path": "/accounts/{account_id}.json",
+      "operations": [
+        {
+          "summary": "Updates existing account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Account's name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "display_name",
+              "type": "string",
+              "description": "Account's name to display",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "phone",
+              "type": "string",
+              "description": "Account's phone",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_type",
+              "type": "integer",
+              "description": "Account type",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#update",
+          "method": "put"
+        }
+      ]
+    },
+    {
       "path": "/accounts/unfollow/{account_id}.json",
       "operations": [
         {
