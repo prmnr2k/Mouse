@@ -2,6 +2,8 @@ class Account < ApplicationRecord
 	 
 	validates :account_type, presence: true
 
+	enum account_type: [:venue, :artist, :fan]
+
 	validates :user_name, presence: true, uniqueness: true, length: {:within => 3..30}
 
 	has_many :images, dependent: :destroy
@@ -18,6 +20,7 @@ class Account < ApplicationRecord
 	belongs_to :venue, optional: true
 
     belongs_to :image, optional: true
+	
     
 	def get_attrs
 		attrs = {}
