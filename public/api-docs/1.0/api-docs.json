@@ -4,6 +4,10 @@
   "basePath": "https://mouse-back.herokuapp.com",
   "apis": [
     {
+      "path": "/api-docs/1.0/events.{format}",
+      "description": "Accounts"
+    },
+    {
       "path": "/api-docs/1.0/authenticate.{format}",
       "description": "Authentification"
     },

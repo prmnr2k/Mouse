@@ -16,6 +16,8 @@ class Venue < ApplicationRecord
 
     has_one :account
 
+    has_many :events
+
     def as_json(options={})
         if options[:extended]
             res = super.merge(account.get_attrs)

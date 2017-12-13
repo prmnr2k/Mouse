@@ -20,6 +20,9 @@ class Account < ApplicationRecord
 	belongs_to :venue, optional: true
 
     belongs_to :image, optional: true
+
+	has_many :collaborated_events, through: :event_collaborators, class_name: 'Event'
+	has_many :events
 	
     
 	def get_attrs

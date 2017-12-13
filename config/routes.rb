@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :events
   #Auth routes
   post 'auth/login', action: :login, controller: 'authenticate'
   post 'auth/google', action: :login_google, controller: 'authenticate'
