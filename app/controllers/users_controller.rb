@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     summary "Creates user credential for login"
     param :form, :email, :string, :required, "Email"
     param :form, :password, :password, :required, "Your password"
-    param :form, :password_confirmation, :password, :required, "Confirm your password"
+    param :form, :password_confirmation, :password, :optional, "Confirm your password"
     param :form, :register_phone, :string, :optional, "Phone number"
     response :unprocessable_entity
   end
@@ -53,8 +53,8 @@ class UsersController < ApplicationController
     summary "Update my user info"
     param :query, :email, :string, :required, "Email"
     param :query, :password, :password, :required, "Your password"
-    param :query, :password_confirmation, :password, :required, "Confirm your password"
-    param :query, :old_password, :password, :required, "Old password"
+    param :query, :password_confirmation, :password, :optional, "Confirm your password"
+    param :query, :old_password, :password, :optional, "Old password"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unprocessable_entity
   end
