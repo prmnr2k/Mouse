@@ -86,8 +86,6 @@ GEM
     multipart-post (2.0.0)
     naught (1.1.0)
     nio4r (2.1.0)
-    nokogiri (1.8.1)
-      mini_portile2 (~> 2.3.0)
     nokogiri (1.8.1-x64-mingw32)
       mini_portile2 (~> 2.3.0)
     oauth2 (1.4.0)
@@ -104,16 +102,11 @@ GEM
     omniauth-oauth2 (1.4.0)
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
-    pg (0.21.0)
     pg (0.21.0-x64-mingw32)
     public_suffix (3.0.0)
     puma (3.10.0)
     rack (2.0.3)
-<<<<<<< HEAD
     rack-cors (0.4.1)
-=======
-    rack-cors (1.0.2)
->>>>>>> 18fe1f7099ad7a741f2a953414d932f99962f4b3
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
     rails (5.1.4)
@@ -169,14 +162,12 @@ GEM
       tzinfo (>= 1.0.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.4)
     unf_ext (0.0.7.4-x64-mingw32)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
 
 PLATFORMS
-  ruby
   x64-mingw32
 
 DEPENDENCIES
@@ -192,4 +183,4 @@ DEPENDENCIES
   tzinfo-data
 
 BUNDLED WITH
-   1.16.0
+   1.15.4

@@ -5,8 +5,6 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
-<<<<<<< HEAD
-
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   	 allow do
 	    origins '*'
@@ -15,15 +13,3 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
        	methods: [:get, :post, :put, :patch, :delete, :options, :head]
    	end
 end
-=======
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
-  allow do
-    origins 'https://mouse-back.herokuapp.com'
-
-    resource '*',
-      headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
-  end
-end
-
->>>>>>> 18fe1f7099ad7a741f2a953414d932f99962f4b3
