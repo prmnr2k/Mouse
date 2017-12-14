@@ -14,9 +14,9 @@ class AccountsController < ApplicationController
       response :not_found
     end
     def get
-        extended = true
-        extended = params[:extended] if params[:extended]
-        render json: @to_find, extended: extended, status: :ok
+        @extended = true
+        set_extended
+        render json: @to_find, extended: @extended, status: :ok
     end
 
     # GET /accounts/
@@ -29,9 +29,9 @@ class AccountsController < ApplicationController
     end
     def get_all
         @accounts = Account.all
-        extended = false
-        extended = params[:extended] if params[:extended]
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: extended, status: :ok
+        @extended = false
+        set_extended
+        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
 
     # GET /accounts/my
@@ -41,9 +41,9 @@ class AccountsController < ApplicationController
       param :header, 'Authorization', :string, :required, 'Authentication token'
     end
     def get_my_accounts   
-       extended = false
-       extended = params[:extended] if params[:extended]
-       render json: @user.accounts, extended: extended, status: :ok
+       @extended = false
+       set_extended
+       render json: @user.accounts, extended: @extended, status: :ok
     end
 
     # GET /accounts/images/<id>
@@ -243,7 +243,7 @@ class AccountsController < ApplicationController
     def set_fan_params
         if @account.account_type == 'fan'
             if @account.fan 
-                @fan = account.fan
+                @fan = @account.fan
                 @fan.update(fan_params)
             else
                 @fan = Fan.new(fan_params)
@@ -351,6 +351,14 @@ class AccountsController < ApplicationController
                 obj.save
                 @artist.genres << obj
             end
+        end
+    end
+
+    def set_extended
+        if params[:extended] == 'true'
+            @extended = true
+        elsif params[:extended] == 'false'
+            @extended = false
         end
     end
 
