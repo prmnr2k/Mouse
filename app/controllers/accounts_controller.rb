@@ -265,7 +265,7 @@ class AccountsController < ApplicationController
         set_venue_params
         set_artist_params
         if @account.update(account_params)
-            render json: @account, except: :password, status: :ok
+            render json: @account, extended: true, except: :password, status: :ok
         else
             render json: @account.errors, status: :unprocessable_entity
         end
