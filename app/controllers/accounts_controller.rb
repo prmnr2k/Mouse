@@ -305,7 +305,7 @@ class AccountsController < ApplicationController
     def set_fan_params
         if @account.account_type == 'fan'
             if @account.fan 
-                @fan = account.fan
+                @fan = @account.fan
                 @fan.update(fan_params)
             else
                 @fan = Fan.new(fan_params)
