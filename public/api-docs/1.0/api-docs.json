@@ -26,6 +26,10 @@
     {
       "path": "/api-docs/1.0/events.{format}",
       "description": "Accounts"
+    },
+    {
+      "path": "/api-docs/1.0/genres.{format}",
+      "description": "Genres"
     }
   ],
   "authorizations": null,

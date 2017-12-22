@@ -1,5 +1,5 @@
 class EventGenre < ApplicationRecord
-  enum genre: [:rock, :pop, :rap, :jazz]
+  enum genre: GenresHelper.all
 
   belongs_to :event
 
