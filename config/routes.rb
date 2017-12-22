@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :events
   #Auth routes
   post 'auth/login', action: :login, controller: 'authenticate'
   post 'auth/google', action: :login_google, controller: 'authenticate'
@@ -35,4 +34,13 @@ Rails.application.routes.draw do
   # phone validations routes
   post 'phone_validations', action: :create, controller: 'phone_validations'
   put 'phone_validations', action: :update, controller: 'phone_validations'
+
+  # event routes
+  resources :events
+  post 'events/:id/artist', action: :set_artist, controller: 'events'
+  post 'events/:id/venue', action: :set_venue, controller: 'events'
+  post 'events/:id/activate', action: :set_active, controller: 'events'
+  post 'events/:id/analytics', action: :analytics, controller: 'events'
+  post 'events/:id/like', action: :like, controller: 'events'
+  post 'events/:id/unlike', action: :unlike, controller: 'events'
 end

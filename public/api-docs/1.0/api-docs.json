@@ -1,12 +1,8 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-  "basePath": "https://mouse-back.herokuapp.com",
+  "basePath": "http://localhost:3000",
   "apis": [
-    {
-      "path": "/api-docs/1.0/events.{format}",
-      "description": "Accounts"
-    },
     {
       "path": "/api-docs/1.0/authenticate.{format}",
       "description": "Authentification"
@@ -26,6 +22,10 @@
     {
       "path": "/api-docs/1.0/phone_validations.{format}",
       "description": "Phone validation"
+    },
+    {
+      "path": "/api-docs/1.0/events.{format}",
+      "description": "Accounts"
     }
   ],
   "authorizations": null,

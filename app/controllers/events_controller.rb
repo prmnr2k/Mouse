@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy]
+  before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active, :like, :unlike, :analytics]
   before_action :authorize_account, only: [:create]
-  before_action :authorize_creator, only: [:update, :destroy]
+  before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
+  before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :accounts, "Accounts"
 
   # GET /events
@@ -24,7 +25,7 @@ class EventsController < ApplicationController
     response :ok
   end
   def show
-    render json: @event, status: :ok
+    render json: @event, extended: true, status: :ok
   end
 
   # POST /events
@@ -78,9 +79,120 @@ class EventsController < ApplicationController
     set_collaborators
 
     if @event.update(event_params)
-      render json: @event
+      render json: @event, extended: true, status: :ok
     else
       render json: @event.errors, status: :unprocessable_entity
+    end
+  end
+
+  # GET /event/1/analytics
+  swagger_api :analytics do
+    summary "Add artist to event"
+    param :path, :id, :integer, :required, "Event id"
+    response :unauthorized
+    response :not_found
+  end
+  def analytics
+    render json: @event, analytics: true, status: :ok
+  end
+
+  # POST /events/1/artist
+  swagger_api :set_artist do
+    summary "Add artist to event"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :artist_id, :integer, :required, "Artist account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def set_artist
+    @artist_acc = Account.find(params[:artist_id])
+    if @artist_acc
+      if @artist_acc.account_type == 'artist'
+        @event.artist = @artist_acc.artist
+        @event.save
+        render status: :ok
+      else
+        render status: :unprocessable_entity
+      end
+    else
+      render status: :not_found
+    end
+  end
+
+  # POST /events/1/venue
+  swagger_api :set_venue do
+    summary "Add venue to event"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :venue_id, :integer, :required, "Venue account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def set_venue
+    @venue_acc = Account.find(params[:venue_id])
+    if @venue_acc
+      if @venue_acc.account_type == 'venue'
+        @event.venue = @venue_acc.venue
+        @event.save
+        render status: :ok
+      else
+        render status: :unprocessable_entity
+      end
+    else
+      render status: :not_found
+    end
+  end
+
+  # POST /events/1/activate
+  swagger_api :set_active do
+    summary "Set event active"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def set_active
+    @event.is_active = true
+    @event.save
+
+    render status: :ok
+  end
+
+  # POST /events/1/like
+  swagger_api :like do
+    summary "Like event"
+    param :path, :id, :integer, :required, "Event id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+  end
+  def like
+    obj = Like.new(event_id: @event.id, user_id: @user.id)
+    obj.save
+
+    render status: :ok
+  end
+
+  # POST /events/1/unlike
+  swagger_api :unlike do
+    summary "Unlike event"
+    param :path, :id, :integer, :required, "Event id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def unlike
+    obj = Like.find_by(event_id: @event, user_id: @user)
+    if not obj
+      render status: :not_found
+    else
+      obj.destroy
+      render status: :ok
     end
   end
 
@@ -107,11 +219,11 @@ class EventsController < ApplicationController
       render status: :unauthorized if @user == nil or @account.user != @user
     end
 
-  def authorize_creator
-    authorize_account
-    @creator = Event.find(params[:id]).creator
-    render status: :unauthorized if @creator != @account or @creator.user != @user
-  end
+    def authorize_creator
+      authorize_account
+      @creator = Event.find(params[:id]).creator
+      render status: :unauthorized if @creator != @account or @creator.user != @user
+    end
 
     def set_genres
       if params[:genres]
@@ -136,5 +248,14 @@ class EventsController < ApplicationController
 
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to, :funding_goal)
+    end
+
+    def authorize
+      @user = AuthorizeHelper.authorize(request)
+      return @user != nil
+    end
+
+    def authorize_user
+      render status: :forbidden if not authorize
     end
 end
