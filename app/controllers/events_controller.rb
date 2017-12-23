@@ -3,7 +3,7 @@ class EventsController < ApplicationController
   before_action :authorize_account, only: [:create]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
-  swagger_controller :accounts, "Accounts"
+  swagger_controller :events, "Events"
 
   # GET /events
   swagger_api :index do
@@ -206,6 +206,27 @@ class EventsController < ApplicationController
   end
   def destroy
     @event.destroy
+    render status: :ok
+  end
+
+  # GET /events/search
+  swagger_api :search do
+    summary "Search for event"
+    param :query, :text, :string, :optional, "Text to search"
+    param :query, :is_active, :boolean, :optional, "Search only active events (do not send it for All option)"
+    param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
+    param :query, :limit, :integer, :required, "Limit"
+    param :query, :offset, :integer, :required, "Offset"
+    response :ok
+  end
+  def search
+    @events = Event.search(params[:text])
+    search_status
+    search_genre
+    search_location
+    search_distance
+
+    render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   private
@@ -245,6 +266,45 @@ class EventsController < ApplicationController
         end
       end
     end
+
+    def search_status
+      if params[:is_active]
+        @events = @events.where(is_active: params[:is_active])
+      end
+    end
+
+    # def search_date
+    #   if params[:date]
+    #   end
+    # end
+
+    def search_location
+      if params[:location]
+        #TODO
+      end
+    end
+
+    def search_distance
+      if params[:distance]
+        #TODO
+      end
+    end
+
+    def search_genre
+      if params[:genres]
+        genres = []
+        params[:genres].each do |genre|
+          genres.append(EventGenre.genres[genre])
+        end
+        @events = @events.joins(:genres).where(:event_genres => {genre: genres})
+      end
+    end
+
+    # def search_ticket_types
+    #   if params[:ticket_types]
+    #
+    #   end
+    # end
 
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to, :funding_goal)

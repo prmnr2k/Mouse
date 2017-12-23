@@ -5,6 +5,60 @@
   "resourcePath": "events",
   "apis": [
     {
+      "path": "/events/search.json",
+      "operations": [
+        {
+          "summary": "Search for event",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "text",
+              "type": "string",
+              "description": "Text to search",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "is_active",
+              "type": "boolean",
+              "description": "Search only active events (do not send it for All option)",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "genres",
+              "type": "string",
+              "description": "Genres list ['pop', 'rock', ...]",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Events#search",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/events.json",
       "operations": [
         {

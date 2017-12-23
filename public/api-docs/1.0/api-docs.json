@@ -25,7 +25,7 @@
     },
     {
       "path": "/api-docs/1.0/events.{format}",
-      "description": "Accounts"
+      "description": "Events"
     },
     {
       "path": "/api-docs/1.0/genres.{format}",

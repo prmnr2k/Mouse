@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   put 'phone_validations', action: :update, controller: 'phone_validations'
 
   # event routes
+  get 'events/search', action: :search, controller: 'events'
   resources :events
   post 'events/:id/artist', action: :set_artist, controller: 'events'
   post 'events/:id/venue', action: :set_venue, controller: 'events'
