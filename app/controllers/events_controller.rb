@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active, :like, :unlike, :analytics]
+  before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
+                                   :like, :unlike, :analytics, :click, :view]
   before_action :authorize_account, only: [:create]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
@@ -194,6 +195,32 @@ class EventsController < ApplicationController
       obj.destroy
       render status: :ok
     end
+  end
+
+  # GET /events/1/click
+  swagger_api :click do
+    summary "Add click to event"
+    param :path, :id, :integer, :required, "Event id"
+    response :not_found
+  end
+  def click
+    @event.clicks += 1
+    @event.save
+
+    render status: :ok
+  end
+
+  # GET /events/1/view
+  swagger_api :view do
+    summary "Add view to event"
+    param :path, :id, :integer, :required, "Event id"
+    response :not_found
+  end
+  def view
+    @event.views += 1
+    @event.save
+
+    render status: :ok
   end
 
   # DELETE /events/1

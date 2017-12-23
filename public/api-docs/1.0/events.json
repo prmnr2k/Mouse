@@ -551,6 +551,58 @@
           "method": "post"
         }
       ]
+    },
+    {
+      "path": "/events/{id}/click.json",
+      "operations": [
+        {
+          "summary": "Add click to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#click",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/view.json",
+      "operations": [
+        {
+          "summary": "Add view to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#view",
+          "method": "get"
+        }
+      ]
     }
   ],
   "authorizations": null

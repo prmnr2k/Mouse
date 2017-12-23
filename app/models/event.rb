@@ -22,8 +22,6 @@ class Event < ApplicationRecord
       #res[:tickets] = tickets
     elsif options[:analytics]
       res[:location] = venue.address
-      #res[:clicks] =
-      #res[:views] =
       #res[:comments] =
       res[:likes] = likes.count
     else

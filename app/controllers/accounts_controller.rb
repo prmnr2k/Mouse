@@ -144,6 +144,7 @@ class AccountsController < ApplicationController
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :not_found
       response :unauthorized
+      response :no_content
     end
     def unfollow
         follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)

@@ -958,6 +958,11 @@
           ],
           "responseMessages": [
             {
+              "code": 204,
+              "responseModel": null,
+              "message": "No Content"
+            },
+            {
               "code": 401,
               "responseModel": null,
               "message": "Unauthorized"

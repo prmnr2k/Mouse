@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   post 'events/:id/analytics', action: :analytics, controller: 'events'
   post 'events/:id/like', action: :like, controller: 'events'
   post 'events/:id/unlike', action: :unlike, controller: 'events'
+  get 'events/:id/click', action: :click, controller: 'events'
+  get 'events/:id/view', action: :view, controller: 'events'
 
   # genre routes
   get 'genres/all', action: :all, controller: 'genres'
