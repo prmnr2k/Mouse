@@ -29,4 +29,24 @@ class Event < ApplicationRecord
     end
     return res
   end
+
+  def self.search(text="")
+    @events = Event.all
+
+    if text
+      @events = @events.joins(:artist => :account, :venue => :account).where(
+        "events.name ILIKE :query", query: "%#{sanitize_sql_like(text)}%"
+      ).or(
+        Event.joins(:artist => :account, :venue => :account).where("events.tagline ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+      ).or(
+        Event.joins(:artist => :account, :venue => :account).where("events.description ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+      ).or(
+        Event.joins(:artist => :account, :venue => :account).where("accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+      ).or(
+        Event.joins(:artist => :account, :venue => :account).where("accounts_venues.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+      )
+    end
+
+    return @events
+  end
 end
