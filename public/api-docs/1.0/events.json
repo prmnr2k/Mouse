@@ -1,0 +1,609 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://localhost:3000",
+  "resourcePath": "events",
+  "apis": [
+    {
+      "path": "/events.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of events",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Events#index",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/events.json",
+      "operations": [
+        {
+          "summary": "Create event",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "name",
+              "type": "string",
+              "description": "Event name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "tagline",
+              "type": "string",
+              "description": "Tagline",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "description",
+              "type": "string",
+              "description": "Short description",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "funding_from",
+              "type": "datetime",
+              "description": "Finding duration from",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "funding_to",
+              "type": "datetime",
+              "description": "Finding duration to",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "funding_goal",
+              "type": "integer",
+              "description": "Funding goal",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "genres",
+              "type": "string",
+              "description": "Genres list ['pop', 'rock', ...]",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "collaborators",
+              "type": "string",
+              "description": "Collaborators list [1,2,3, ...]",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve event by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Events#show",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}.json",
+      "operations": [
+        {
+          "summary": "Create event",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "name",
+              "type": "string",
+              "description": "Event name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "tagline",
+              "type": "string",
+              "description": "Tagline",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "description",
+              "type": "string",
+              "description": "Short description",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "funding_from",
+              "type": "datetime",
+              "description": "Finding duration from",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "funding_to",
+              "type": "datetime",
+              "description": "Finding duration to",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "funding_goal",
+              "type": "integer",
+              "description": "Funding goal",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "genres",
+              "type": "string",
+              "description": "Genres list ['pop', 'rock', ...]",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "collaborators",
+              "type": "string",
+              "description": "Collaborators list [1,2,3, ...]",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#update",
+          "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}.json",
+      "operations": [
+        {
+          "summary": "Destroy event by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Events#destroy",
+          "method": "delete"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/artist.json",
+      "operations": [
+        {
+          "summary": "Add artist to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "artist_id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#set_artist",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/venue.json",
+      "operations": [
+        {
+          "summary": "Add venue to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "venue_id",
+              "type": "integer",
+              "description": "Venue account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#set_venue",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/activate.json",
+      "operations": [
+        {
+          "summary": "Set event active",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#set_active",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/analytics.json",
+      "operations": [
+        {
+          "summary": "Add artist to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#analytics",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/like.json",
+      "operations": [
+        {
+          "summary": "Like event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Events#like",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/unlike.json",
+      "operations": [
+        {
+          "summary": "Unlike event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#unlike",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/click.json",
+      "operations": [
+        {
+          "summary": "Add click to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#click",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/view.json",
+      "operations": [
+        {
+          "summary": "Add view to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#view",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

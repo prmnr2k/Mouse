@@ -144,6 +144,7 @@ class AccountsController < ApplicationController
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :not_found
       response :unauthorized
+      response :no_content
     end
     def unfollow
         follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)
@@ -265,7 +266,7 @@ class AccountsController < ApplicationController
         set_venue_params
         set_artist_params
         if @account.update(account_params)
-            render json: @account, except: :password, status: :ok
+            render json: @account, extended: true, except: :password, status: :ok
         else
             render json: @account.errors, status: :unprocessable_entity
         end

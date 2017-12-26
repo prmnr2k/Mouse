@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171116162535) do
+ActiveRecord::Schema.define(version: 20171223215754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,37 @@ ActiveRecord::Schema.define(version: 20171116162535) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "event_collaborators", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "collaborator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "event_genres", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "genre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "name"
+    t.string "tagline"
+    t.string "description"
+    t.datetime "funding_from"
+    t.datetime "funding_to"
+    t.integer "funding_goal"
+    t.integer "creator_id"
+    t.integer "artist_id"
+    t.integer "venue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "is_active", default: false
+    t.integer "views", default: 0
+    t.integer "clicks", default: 0
+  end
+
   create_table "fan_genres", force: :cascade do |t|
     t.integer "fan_id"
     t.integer "genre"
@@ -68,6 +99,13 @@ ActiveRecord::Schema.define(version: 20171116162535) do
   create_table "images", force: :cascade do |t|
     t.string "base64"
     t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

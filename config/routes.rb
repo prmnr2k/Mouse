@@ -34,4 +34,18 @@ Rails.application.routes.draw do
   # phone validations routes
   post 'phone_validations', action: :create, controller: 'phone_validations'
   put 'phone_validations', action: :update, controller: 'phone_validations'
+
+  # event routes
+  resources :events
+  post 'events/:id/artist', action: :set_artist, controller: 'events'
+  post 'events/:id/venue', action: :set_venue, controller: 'events'
+  post 'events/:id/activate', action: :set_active, controller: 'events'
+  post 'events/:id/analytics', action: :analytics, controller: 'events'
+  post 'events/:id/like', action: :like, controller: 'events'
+  post 'events/:id/unlike', action: :unlike, controller: 'events'
+  get 'events/:id/click', action: :click, controller: 'events'
+  get 'events/:id/view', action: :view, controller: 'events'
+
+  # genre routes
+  get 'genres/all', action: :all, controller: 'genres'
 end
