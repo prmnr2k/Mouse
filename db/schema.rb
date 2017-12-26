@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171223215754) do
+ActiveRecord::Schema.define(version: 20171226210022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,15 @@ ActiveRecord::Schema.define(version: 20171223215754) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fan_tickets", force: :cascade do |t|
+    t.integer "ticket_id"
+    t.integer "fan_id"
+    t.string "code"
+    t.integer "price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "fans", force: :cascade do |t|
     t.string "bio"
     t.string "address"
@@ -116,6 +125,31 @@ ActiveRecord::Schema.define(version: 20171223215754) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code"
+  end
+
+  create_table "tickets", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.integer "price"
+    t.integer "count"
+    t.boolean "is_special"
+    t.integer "event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tickets_categories", force: :cascade do |t|
+    t.integer "name"
+    t.integer "ticket_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tickets_types", force: :cascade do |t|
+    t.integer "name"
+    t.integer "ticket_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tokens", force: :cascade do |t|

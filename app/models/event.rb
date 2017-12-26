@@ -3,7 +3,7 @@ class Event < ApplicationRecord
 
   has_many :event_collaborators, foreign_key: 'event_id'
   has_many :collaborators, through: :event_collaborators, class_name: 'Account'
-  # has_many :tickets, foreign_key: 'ticket_id', class_name: 'Ticket'
+  has_many :tickets, dependent: :destroy
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
 
   has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
