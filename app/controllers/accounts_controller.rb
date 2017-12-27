@@ -72,7 +72,7 @@ class AccountsController < ApplicationController
       response :not_found
     end
     def upload_image
-        image = Image.new(base64: params[:image])
+        image = Image.new(base64: Base64.encode64(File.read(params[:image].path)))
         image.account = @account
         if image.save
             @account.images << image
@@ -296,7 +296,7 @@ class AccountsController < ApplicationController
     def set_image
         if params[:image]
             #@account.image.delete if @account.image != nil
-            image = Image.new(base64: params[:image])
+            image = Image.new(base64: Base64.encode64(File.read(params[:image].path)))
             #image.save
             @account.image = image
             @account.images << image

@@ -1,4 +1,5 @@
 class ImagesController < ApplicationController
+  before_action :authorize_account, only: [:delete_image]
   swagger_controller :images, "Images"
 
   # GET /images/1
@@ -16,23 +17,27 @@ class ImagesController < ApplicationController
   swagger_api :delete_image do
     summary "Delete image"
     param :path, :id, :integer, :required, "Image id"
+    param :form, :account_id, :integer, :required, "Account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
     response :not_found
     response :forbidden
   end
   def delete_image
       @image = Image.find(params[:id])
-        if @image.account.user == @user
-            @image.account.image = nil if @image.account.image == @image
-            @image.destroy
-            @account.save
-            render json: @account, status: :ok
-        else
-            render status: :forbidden
-        end
+      if @image.account.user == @user and @image.account == @account
+        @account.image = nil if @account.image == @image
+        @image.destroy
+        @account.save
+        render json: @account, status: :ok
+      else
+        render status: :forbidden
+      end
   end
 
-  def authorize_user
-        @user = AuthorizeHelper.authorize(request)
-        render status: :unauthorized if @user == nil
-  end
+  private
+    def authorize_account
+      @user = AuthorizeHelper.authorize(request)
+      @account = Account.find(params[:account_id])
+      render status: :unauthorized if @user == nil or @account.user != @user
+    end
 end
