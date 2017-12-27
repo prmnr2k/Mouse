@@ -14,12 +14,15 @@ class Event < ApplicationRecord
     res = super
     res.delete('artist_id')
     res.delete('venue_id')
+    res[:backers] = tickets.joins(:fan_tickets).pluck(:fan_id).uniq.count
+    res[:founded] = tickets.joins(:fan_tickets).sum("fan_tickets.price")
+
     if options[:extended]
       res[:collaborators] = collaborators
       res[:genres] = genres
       res[:artist] = artist
       res[:venue] = venue
-      #res[:tickets] = tickets
+      res[:tickets] = tickets.as_json(only: [:name, :type])
     elsif options[:analytics]
       res[:location] = venue.address
       #res[:comments] =

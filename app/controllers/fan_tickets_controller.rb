@@ -1,6 +1,7 @@
 class FanTicketsController < ApplicationController
   before_action :authorize_account
   before_action :set_ticket, only: [:create]
+  before_action :check_ticket, only: [:create]
   before_action :set_fan_ticket, only: [:show, :destroy]
   swagger_controller :fan_ticket, "FanTickets"
 
@@ -40,6 +41,7 @@ class FanTicketsController < ApplicationController
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
+    response :forbidden
   end
   def create
     @fan_ticket = FanTicket.new(fan_ticket_params)
@@ -74,6 +76,14 @@ class FanTicketsController < ApplicationController
 
     def set_ticket
       @ticket = Ticket.find(params[:ticket_id])
+    end
+
+    def check_ticket
+      sold_tickets = FanTicket.where(ticket_id: @ticket.id)
+
+      if sold_tickets and sold_tickets.count >= @ticket.count
+        render status: :forbidden
+      end
     end
 
     def generate_auth_code
