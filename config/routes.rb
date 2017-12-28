@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
 
   # phone validations routes
+  get 'phone_validations/codes', action: :get_codes, controller: 'phone_validations'
   post 'phone_validations', action: :create, controller: 'phone_validations'
   put 'phone_validations', action: :update, controller: 'phone_validations'
 

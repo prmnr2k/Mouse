@@ -5,6 +5,16 @@
   "resourcePath": "phone_validations",
   "apis": [
     {
+      "path": "/phone_validations/codes.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of phone codes",
+          "nickname": "PhoneValidations#get_codes",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/phone_validations.json",
       "operations": [
         {

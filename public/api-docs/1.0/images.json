@@ -42,6 +42,20 @@
               "type": "integer",
               "description": "Image id",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
             }
           ],
           "responseMessages": [
