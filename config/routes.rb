@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   get 'events/search', action: :search, controller: 'events'
   resources :events do
     resources :tickets, except: :index
+    resources :comments
   end
   post 'events/:id/artist', action: :set_artist, controller: 'events'
   post 'events/:id/venue', action: :set_venue, controller: 'events'

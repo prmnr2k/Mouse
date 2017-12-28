@@ -1,6 +1,7 @@
 class Fan < ApplicationRecord
     has_many :genres, foreign_key: 'fan_id', class_name: 'FanGenre'
     has_many :fan_tickets
+    has_many :comments
 
     has_one :account
 
