@@ -33,6 +33,13 @@
             },
             {
               "paramType": "query",
+              "name": "ticket_types",
+              "type": "string",
+              "description": "Ticket types ['in_person', 'vip']",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",

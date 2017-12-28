@@ -62,5 +62,13 @@ class Account < ApplicationRecord
 	  #attrs[:followed] = followed_conn.pluck(:to_id)
 	  #attrs[:followers] = followers_conn.pluck(:by_id)
 	  return get_attrs
+		end
+
+	def self.search(text)
+		return self.where(
+			"user_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%"
+		).or(
+			Account.where("display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+		)
 	end
 end

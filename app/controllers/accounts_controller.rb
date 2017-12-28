@@ -272,6 +272,27 @@ class AccountsController < ApplicationController
         end
     end
 
+    swagger_api :search do
+      summary "Search account"
+      param :query, :text, :string, :optional, "Search query"
+      param :query, :type, :string, :optional, "Account type to display"
+      param :query, :limit, :integer, :required, "Limit"
+      param :query, :offset, :integer, :required, "Offset"
+    end
+    def search
+      @accounts = Account.all
+
+      if params[:text]
+        @accounts = @accounts.search(params[:text])
+      end
+
+      if params[:type]
+        @accounts = @accounts.where(account_type: params[:type])
+      end
+
+      render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
+    end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def find_account

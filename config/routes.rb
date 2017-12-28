@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   #Account routes
   get 'accounts', action: :get_all, controller: 'accounts'
+  get 'accounts/search', action: :search, controller: 'accounts'
   get 'accounts/my', action: :get_my_accounts, controller: 'accounts'
   get 'accounts/:id', action: :get, controller: 'accounts'
   get 'accounts/images/:id', action: :get_images, controller: 'accounts'

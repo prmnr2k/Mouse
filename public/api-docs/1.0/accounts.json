@@ -45,6 +45,46 @@
       ]
     },
     {
+      "path": "/accounts/search.json",
+      "operations": [
+        {
+          "summary": "Search account",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "text",
+              "type": "string",
+              "description": "Search query",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "type",
+              "type": "string",
+              "description": "Account type to display",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": true
+            }
+          ],
+          "nickname": "Accounts#search",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/accounts/my.json",
       "operations": [
         {

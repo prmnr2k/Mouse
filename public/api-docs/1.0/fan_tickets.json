@@ -91,6 +91,11 @@
               "message": "Unauthorized"
             },
             {
+              "code": 403,
+              "responseModel": null,
+              "message": "Forbidden"
+            },
+            {
               "code": 422,
               "responseModel": null,
               "message": "Unprocessable Entity"
