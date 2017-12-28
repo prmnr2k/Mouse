@@ -242,6 +242,7 @@ class EventsController < ApplicationController
     param :query, :text, :string, :optional, "Text to search"
     param :query, :is_active, :boolean, :optional, "Search only active events (do not send it for All option)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
+    param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
     param :query, :limit, :integer, :required, "Limit"
     param :query, :offset, :integer, :required, "Offset"
     response :ok
@@ -252,8 +253,9 @@ class EventsController < ApplicationController
     search_genre
     search_location
     search_distance
+    search_ticket_types
 
-    render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   private
@@ -327,11 +329,15 @@ class EventsController < ApplicationController
       end
     end
 
-    # def search_ticket_types
-    #   if params[:ticket_types]
-    #
-    #   end
-    # end
+    def search_ticket_types
+      if params[:ticket_types]
+        types = []
+        params[:ticket_types].each do |type|
+          types.append(TicketsType.names[type])
+        end
+        @events = @events.joins(:tickets => :tickets_type).where(:tickets_types => {name: types})
+      end
+    end
 
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to, :funding_goal)

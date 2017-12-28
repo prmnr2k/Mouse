@@ -3,7 +3,7 @@ class Event < ApplicationRecord
 
   has_many :event_collaborators, foreign_key: 'event_id'
   has_many :collaborators, through: :event_collaborators, class_name: 'Account'
-  # has_many :tickets, foreign_key: 'ticket_id', class_name: 'Ticket'
+  has_many :tickets, dependent: :destroy
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
 
   has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
@@ -14,12 +14,15 @@ class Event < ApplicationRecord
     res = super
     res.delete('artist_id')
     res.delete('venue_id')
+    res[:backers] = tickets.joins(:fan_tickets).pluck(:fan_id).uniq.count
+    res[:founded] = tickets.joins(:fan_tickets).sum("fan_tickets.price")
+
     if options[:extended]
       res[:collaborators] = collaborators
       res[:genres] = genres
       res[:artist] = artist
       res[:venue] = venue
-      #res[:tickets] = tickets
+      res[:tickets] = tickets.as_json(only: [:name, :type])
     elsif options[:analytics]
       res[:location] = venue.address
       #res[:comments] =

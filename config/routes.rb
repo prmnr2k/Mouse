@@ -38,7 +38,9 @@ Rails.application.routes.draw do
 
   # event routes
   get 'events/search', action: :search, controller: 'events'
-  resources :events
+  resources :events do
+    resources :tickets, except: :index
+  end
   post 'events/:id/artist', action: :set_artist, controller: 'events'
   post 'events/:id/venue', action: :set_venue, controller: 'events'
   post 'events/:id/activate', action: :set_active, controller: 'events'
@@ -50,4 +52,7 @@ Rails.application.routes.draw do
 
   # genre routes
   get 'genres/all', action: :all, controller: 'genres'
+
+  # fan tickets routes
+  resources :fan_tickets, except: :update
 end
