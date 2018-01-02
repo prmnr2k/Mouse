@@ -32,7 +32,7 @@ class UsersController < ApplicationController
           token = AuthenticateHelper.process_token(request, @user)
           user = @user.as_json
           user[:token] = token.token
-          user.delete(:password)
+          user.delete("password")
           render json: user, except: :password, status: :created
       else
           render json: @user.errors, status: :unprocessable_entity
