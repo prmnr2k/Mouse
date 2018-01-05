@@ -150,6 +150,13 @@
           "summary": "Retrieve list of account events",
           "parameters": [
             {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",

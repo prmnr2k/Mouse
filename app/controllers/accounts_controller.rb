@@ -37,6 +37,7 @@ class AccountsController < ApplicationController
     # GET /accounts/events/1
     swagger_api :get_events do
       summary "Retrieve list of account events"
+      param :path, :account_id, :integer, :required, "Account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
     end
     def get_events
