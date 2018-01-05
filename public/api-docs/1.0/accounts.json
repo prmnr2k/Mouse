@@ -990,7 +990,7 @@
             }
           ],
           "nickname": "Accounts#update",
-          "method": "put"
+          "method": "patch"
         }
       ]
     },
