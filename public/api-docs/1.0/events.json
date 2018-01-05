@@ -222,8 +222,15 @@
       "path": "/events/{id}.json",
       "operations": [
         {
-          "summary": "Create event",
+          "summary": "Update event",
           "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
             {
               "paramType": "form",
               "name": "account_id",

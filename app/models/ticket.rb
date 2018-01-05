@@ -8,8 +8,8 @@ class Ticket < ApplicationRecord
 
   def as_json(options={})
     res = super
-    res[:type] = tickets_type
-    res[:category] = tickets_category
+    res[:type] = tickets_type ? tickets_type.name : nil
+    res[:category] = tickets_category ? tickets_category.name : nil
     return res
   end
 end

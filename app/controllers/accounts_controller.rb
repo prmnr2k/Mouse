@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:update, :upload_image, :follow, :unfollow]  
+    before_action :authorize_account, only: [:get_events, :update, :upload_image, :follow, :unfollow]  
     before_action :find_account, only: [:get, :follow, :unfollow, :get_images, :get_followers, :get_followed]  
     before_action :find_image, only: [:delete_image]
     swagger_controller :accounts, "Accounts"
@@ -32,6 +32,15 @@ class AccountsController < ApplicationController
         @extended = false
         set_extended
         render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
+    end
+
+    # GET /accounts/events/1
+    swagger_api :get_events do
+      summary "Retrieve list of account events"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+    end
+    def get_events
+       render json: @account.events
     end
 
     # GET /accounts/my

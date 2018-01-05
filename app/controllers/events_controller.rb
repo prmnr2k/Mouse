@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
                                    :like, :unlike, :analytics, :click, :view]
-  before_action :authorize_account, only: [:create]
+  before_action :authorize_account, only: [:create, :my_events]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
@@ -25,7 +25,7 @@ class EventsController < ApplicationController
     param :path, :id, :integer, :required, "Event id"
     response :ok
   end
-  def show
+  def show  
     render json: @event, extended: true, status: :ok
   end
 
@@ -61,7 +61,8 @@ class EventsController < ApplicationController
 
   # PATCH/PUT /events/1
   swagger_api :update do
-    summary 'Create event'
+    summary 'Update event'
+    param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :name, :string, :required, "Event name"
     param :form, :tagline, :string, :required, "Tagline"

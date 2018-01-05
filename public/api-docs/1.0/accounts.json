@@ -144,6 +144,25 @@
       ]
     },
     {
+      "path": "/accounts/events/{account_id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of account events",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "nickname": "Accounts#get_events",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/accounts/images/{id}.json",
       "operations": [
         {

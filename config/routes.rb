@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'accounts/search', action: :search, controller: 'accounts'
   get 'accounts/my', action: :get_my_accounts, controller: 'accounts'
   get 'accounts/:id', action: :get, controller: 'accounts'
+  get 'accounts/events/:account_id', action: :get_events, controller: 'accounts'
   get 'accounts/images/:id', action: :get_images, controller: 'accounts'
   get 'accounts/followers/:id', action: :get_followers, controller: 'accounts'
   get 'accounts/following/:id', action: :get_followed, controller: 'accounts'

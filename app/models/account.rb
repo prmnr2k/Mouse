@@ -22,7 +22,7 @@ class Account < ApplicationRecord
     belongs_to :image, optional: true
 
 	has_many :collaborated_events, through: :event_collaborators, class_name: 'Event'
-	has_many :events
+	has_many :events, foreign_key: 'creator_id'
 	
     
 	def get_attrs
