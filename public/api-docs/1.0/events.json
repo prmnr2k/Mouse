@@ -519,37 +519,6 @@
       ]
     },
     {
-      "path": "/events/{id}/analytics.json",
-      "operations": [
-        {
-          "summary": "Add artist to event",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Event id",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Events#analytics",
-          "method": "post"
-        }
-      ]
-    },
-    {
       "path": "/events/{id}/like.json",
       "operations": [
         {
@@ -668,6 +637,37 @@
             }
           ],
           "nickname": "Events#view",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/analytics.json",
+      "operations": [
+        {
+          "summary": "Add artist to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#analytics",
           "method": "get"
         }
       ]
