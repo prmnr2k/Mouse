@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   post 'users', action: :create, controller: 'users'
   post 'users/validate_phone', action: :validate_phone, controller: 'users'
   get 'users/me', action: :get_me, controller: 'users'
-  put 'users/me', action: :update_me, controller: 'users'
+  patch 'users/me', action: :update_me, controller: 'users'
 
   #Account routes
   get 'accounts', action: :get_all, controller: 'accounts'
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   post 'accounts', action: :create, controller: 'accounts'
   post 'accounts/images/:account_id', action: :upload_image, controller: 'accounts'
   post 'accounts/follow/:account_id', action: :follow, controller: 'accounts'
-  put 'accounts/:account_id', action: :update, controller: 'accounts'
+  patch 'accounts/:account_id', action: :update, controller: 'accounts'
   delete 'accounts/unfollow/:account_id', action: :unfollow, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   # phone validations routes
   get 'phone_validations/codes', action: :get_codes, controller: 'phone_validations'
   post 'phone_validations', action: :create, controller: 'phone_validations'
-  put 'phone_validations', action: :update, controller: 'phone_validations'
+  patch 'phone_validations', action: :update, controller: 'phone_validations'
 
   # event routes
   get 'events/search', action: :search, controller: 'events'
