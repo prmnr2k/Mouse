@@ -144,7 +144,7 @@
       ]
     },
     {
-      "path": "/accounts/events/{account_id}.json",
+      "path": "/accounts/{account_id}/events.json",
       "operations": [
         {
           "summary": "Retrieve list of account events",
