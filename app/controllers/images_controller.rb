@@ -13,6 +13,22 @@ class ImagesController < ApplicationController
     render json: @image
   end
 
+  swagger_api :preview do
+    summary "Get preview of image object"
+    param :path, :id, :integer, :required, "Image id"
+    param :query, :width, :integer, :required, "Width to crop"
+    param :query, :height, :integer, :required, "Height to crop"
+    response :not_found
+  end
+  def preview
+    resized = ResizedImage.find_by(image_id: params[:id], width: params[:width], height: params[:height])
+    if not resized
+      @image = Image.find(params[:id])
+      resize
+    end
+    send_data Base64.decode64(resized.base64), :type => 'image/png', :disposition => 'inline'
+  end
+
   #DELETE /images/<id>
   swagger_api :delete_image do
     summary "Delete image"
@@ -40,4 +56,25 @@ class ImagesController < ApplicationController
       @account = Account.find(params[:account_id])
       render status: :unauthorized if @user == nil or @account.user != @user
     end
+
+    def resize
+      blob = Base64.decode64(@image.base64)
+
+      res_w = params[:width].to_i
+      res_h = params[:height].to_i
+
+      image = MiniMagick::Image.read(blob)
+
+      pure = MiniMagick::Tool::Convert.new
+      pure << "-"
+      pure.resize "#{res_w}x#{res_h}"
+      pure << "-"
+      res = pure.call(stdin: blob)
+
+      @image.base64 = Base64.encode64(res)
+
+      resized = ResizedImage.new(base64: @image.base64, width: res_w, height: res_h, image_id: params[:iid]) 
+      resized.save
+    end
+
 end
