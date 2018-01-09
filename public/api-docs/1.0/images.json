@@ -31,7 +31,7 @@
       ]
     },
     {
-      "path": "/images/preview/{id}.json",
+      "path": "/images/{id}/preview.json",
       "operations": [
         {
           "summary": "Get preview of image object",

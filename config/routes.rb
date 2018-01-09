@@ -30,7 +30,7 @@ Rails.application.routes.draw do
 
   # images routes
   get 'images/:id', action: :show, controller: 'images'
-  get 'images/preview/:id', action: :preview, controller: 'images'
+  get 'images/:id/preview', action: :preview, controller: 'images'
   delete 'images/:id', action: :delete_image, controller: 'images'
 
 
