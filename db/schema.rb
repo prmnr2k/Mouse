@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171227214906) do
+ActiveRecord::Schema.define(version: 20180109105732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20171227214906) do
     t.boolean "is_active", default: false
     t.integer "views", default: 0
     t.integer "clicks", default: 0
+    t.datetime "date"
   end
 
   create_table "fan_genres", force: :cascade do |t|

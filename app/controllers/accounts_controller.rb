@@ -39,9 +39,14 @@ class AccountsController < ApplicationController
       summary "Retrieve list of account events"
       param :path, :account_id, :integer, :required, "Account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
+      param :query, :text, :string, :optional, "Text to search"
+      param :query, :limit, :integer, :required, "Limit"
+      param :query, :offset, :integer, :required, "Offset"
     end
     def get_events
-       render json: @account.events
+       @events = @account.events
+       @events = @events.simple_search(params[:text])
+       render json: @events.limit(params[:limit]).offset(params[:offset])
     end
 
     # GET /accounts/my

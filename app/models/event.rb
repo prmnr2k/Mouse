@@ -33,6 +33,17 @@ class Event < ApplicationRecord
     return res
   end
 
+  def self.simple_search(text)
+    @events = Event.all
+    if text
+      @events = @events.where(
+        "events.name ILIKE :query", query: "%#{sanitize_sql_like(text)}%"
+      )
+    end
+
+    return @events
+  end
+
   def self.search(text="")
     @events = Event.all
 

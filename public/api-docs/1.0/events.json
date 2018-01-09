@@ -19,6 +19,48 @@
             },
             {
               "paramType": "query",
+              "name": "location",
+              "type": "string",
+              "description": "Address",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "lat",
+              "type": "float",
+              "description": "Latitude (lng and distance must be present)",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "lng",
+              "type": "float",
+              "description": "Longitude (lat and distance must be present)",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "distance",
+              "type": "float",
+              "description": "Radius in km (lat, lng must be present)",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "from_date",
+              "type": "datetime",
+              "description": "Left bound of date (to_date must be presenty)",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "to_date",
+              "type": "datetime",
+              "description": "Right bound of date (from_date must be present)",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "is_active",
               "type": "boolean",
               "description": "Search only active events (do not send it for All option)",
@@ -117,6 +159,13 @@
               "type": "string",
               "description": "Event name",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "date",
+              "type": "datetime",
+              "description": "Event date",
+              "required": false
             },
             {
               "paramType": "form",
@@ -244,6 +293,13 @@
               "type": "string",
               "description": "Event name",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "date",
+              "type": "datetime",
+              "description": "Event date",
+              "required": false
             },
             {
               "paramType": "form",

@@ -34,6 +34,7 @@ class EventsController < ApplicationController
     summary 'Create event'
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :name, :string, :required, "Event name"
+    param :form, :date, :datetime, :optional, "Event date"
     param :form, :tagline, :string, :required, "Tagline"
     param :form, :description, :string, :required, "Short description"
     param :form, :funding_from, :datetime, :required, "Finding duration from"
@@ -65,6 +66,7 @@ class EventsController < ApplicationController
     param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :name, :string, :required, "Event name"
+    param :form, :date, :datetime, :optional, "Event date"
     param :form, :tagline, :string, :required, "Tagline"
     param :form, :description, :string, :required, "Short description"
     param :form, :funding_from, :datetime, :required, "Finding duration from"
@@ -241,6 +243,12 @@ class EventsController < ApplicationController
   swagger_api :search do
     summary "Search for event"
     param :query, :text, :string, :optional, "Text to search"
+    param :query, :location, :string, :optional, "Address"
+    param :query, :lat, :float, :optional, "Latitude (lng and distance must be present)"
+    param :query, :lng, :float, :optional, "Longitude (lat and distance must be present)"
+    param :query, :distance, :float, :optional, "Radius in km (lat, lng must be present)"
+    param :query, :from_date, :datetime, :optional, "Left bound of date (to_date must be presenty)"
+    param :query, :to_date, :datetime, :optional, "Right bound of date (from_date must be present)"
     param :query, :is_active, :boolean, :optional, "Search only active events (do not send it for All option)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
@@ -255,6 +263,7 @@ class EventsController < ApplicationController
     search_location
     search_distance
     search_ticket_types
+    search_date
 
     render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
@@ -303,20 +312,23 @@ class EventsController < ApplicationController
       end
     end
 
-    # def search_date
-    #   if params[:date]
-    #   end
-    # end
+    def search_date
+       if params[:from_date] and params[:to_date]
+         @events = @events.where(date: DateTime.parse(params[:from_date])..DateTime.parse(params[:to_date]))
+       end
+    end
 
     def search_location
       if params[:location]
-        #TODO
+        venues = Venue.near(params[:location]).select{|v| v.id}
+        @events = @events.where(venue_id: venues)
       end
     end
 
     def search_distance
-      if params[:distance]
-        #TODO
+      if params[:distance] and params[:lng] and params[:lat]
+        venues = Venue.near([params[:lat], params[:lng]], params[:distance]).select{|v| v.id} 
+        @events = @events.where(venue_id: venues)
       end
     end
 
@@ -341,7 +353,7 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.permit(:name, :tagline, :description, :funding_from, :funding_to, :funding_goal)
+      params.permit(:name, :tagline, :description, :funding_from, :funding_to, :funding_goal, :date)
     end
 
     def authorize
