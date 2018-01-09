@@ -31,6 +31,46 @@
       ]
     },
     {
+      "path": "/images/preview/{id}.json",
+      "operations": [
+        {
+          "summary": "Get preview of image object",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Image id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "width",
+              "type": "integer",
+              "description": "Width to crop",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "height",
+              "type": "integer",
+              "description": "Height to crop",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Images#preview",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/images/{id}.json",
       "operations": [
         {

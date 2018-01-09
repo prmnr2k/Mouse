@@ -78,6 +78,7 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     method_source (0.9.0)
+    mini_magick (4.8.0)
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
@@ -189,6 +190,7 @@ DEPENDENCIES
   byebug
   geocoder
   httparty
+  mini_magick
   omniauth-facebook
   pg (~> 0.18)
   pg_search
