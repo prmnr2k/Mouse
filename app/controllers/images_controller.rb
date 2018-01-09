@@ -73,7 +73,7 @@ class ImagesController < ApplicationController
 
       @image.base64 = Base64.encode64(res)
 
-      @resized = ResizedImage.new(base64: @image.base64, width: res_w, height: res_h, image_id: params[:iid]) 
+      @resized = ResizedImage.new(base64: @image.base64, width: res_w, height: res_h, image_id: params[:id]) 
       @resized.save
     end
 
