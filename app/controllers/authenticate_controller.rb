@@ -41,6 +41,7 @@ class AuthenticateController < ApplicationController
 		response :unauthorized
 	end
 	def login_vk
+		uid = ""
 		begin
 			@vk = VkontakteApi::Client.new(params[:access_token])
 			uid = @vk.users.get[0].uid
