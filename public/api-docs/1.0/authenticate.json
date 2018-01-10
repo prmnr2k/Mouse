@@ -45,32 +45,6 @@
       ]
     },
     {
-      "path": "/auth/vk.json",
-      "operations": [
-        {
-          "summary": "Authorize by VK",
-          "parameters": [
-            {
-              "paramType": "form",
-              "name": "access_token",
-              "type": "string",
-              "description": "Access token returned from VK",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            }
-          ],
-          "nickname": "Authenticate#login_vk",
-          "method": "post"
-        }
-      ]
-    },
-    {
       "path": "/auth/google.json",
       "operations": [
         {

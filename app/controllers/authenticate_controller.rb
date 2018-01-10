@@ -34,12 +34,7 @@ class AuthenticateController < ApplicationController
 
 	end
 
-	# POST /auth/vk
-	swagger_api :login_vk do
-		summary "Authorize by VK"
-		param :form, :access_token, :string, :required, "Access token returned from VK"
-		response :unauthorized
-	end
+	
 	def login_vk
 		begin
 			@vk = VkontakteApi::Client.new(params[:access_token])
