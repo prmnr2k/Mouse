@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   #Auth routes
   post 'auth/login', action: :login, controller: 'authenticate'
+  post 'auth/vk', action: :login_vk, controller: 'authenticate'
   post 'auth/google', action: :login_google, controller: 'authenticate'
   post 'auth/twitter', action: :login_twitter, controller: 'authenticate'
   post 'auth/logout', action: :logout, controller: 'authenticate'

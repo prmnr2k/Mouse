@@ -34,6 +34,32 @@ class AuthenticateController < ApplicationController
 
 	end
 
+	# POST /auth/vk
+	swagger_api :login_vk do
+		summary "Authorize by VK"
+		param :form, :access_token, :string, :required, "Access token returned from VK"
+		response :unauthorized
+	end
+	def login_vk
+		begin
+			@vk = VkontakteApi::Client.new(params[:access_token])
+			uid = @vk.users.get[0].uid
+		rescue => ex
+			render status: :unauthorized and return
+		end
+
+		@user = User.find_by(vk_id: uid)
+		if not @user
+			@user = User.new(vk_id: uid)
+			if not @user.save(validate: false)
+				render status: :unauthorized and return
+			end
+		end
+
+		token = AuthenticateHelper.process_token(request, @user)
+		render json: {token: token.token} , status: :ok
+	end
+
 	# POST /auth/login_google
 	swagger_api :login_google do
 		summary "Authorize by google"
@@ -65,8 +91,6 @@ class AuthenticateController < ApplicationController
 
 		@user = User.find_by(google_id: data['id'])
 		if not @user
-			fan = Fan.new(full_name: data['name'])
-			fan.save
 			@user = User.new(google_id: data['id'])
 			if not @user.save(validate: false)
 				render status: :unauthorized and return
@@ -95,8 +119,6 @@ class AuthenticateController < ApplicationController
 		@user = User.find_by(twitter_id: client.user.id)
 
 		if not @user
-			fan = Fan.new(full_name: client.user.name)
-			fan.save
 			@user = User.new(twitter_id: client.user.id)
 			if not @user.save(validate: false)
 				render status: :unauthorized and return
