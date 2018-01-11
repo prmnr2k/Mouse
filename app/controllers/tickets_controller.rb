@@ -23,7 +23,7 @@ class TicketsController < ApplicationController
     summary "Creates ticket for event"
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Creator id"
-    param :form, :name, :string, :required, "Ticket name"
+    param :form, :name, :string, :optional, "Ticket name"
     param :form, :description, :string, :optional, "Ticket description"
     param :form, :price, :integer, :required, "Ticket price"
     param :form, :count, :integer, :required, "Ticket count"
@@ -50,16 +50,16 @@ class TicketsController < ApplicationController
   # PATCH/PUT events/1/tickets/1
   swagger_api :update do
     summary "Update event's ticket"
-    param :path, :event_id, :integer, :required, "Event id"
+    param :path, :event_id, :integer, :optional, "Event id"
     param :path, :id, :integer, :required, "Ticket id"
-    param :form, :account_id, :integer, :required, "Creator id"
-    param :form, :name, :string, :required, "Ticket name"
+    param :form, :account_id, :integer, :optional, "Creator id"
+    param :form, :name, :string, :optional, "Ticket name"
     param :form, :description, :string, :optional, "Ticket description"
-    param :form, :price, :integer, :required, "Ticket price"
-    param :form, :count, :integer, :required, "Ticket count"
-    param_list :form, :type, :string, :required, "Ticket type", ["in_person", "vr"]
+    param :form, :price, :integer, :optional, "Ticket price"
+    param :form, :count, :integer, :optional, "Ticket count"
+    param_list :form, :type, :string, :optional, "Ticket type", ["in_person", "vr"]
     param_list :form, :category, :string, :optional, "Ticket category", ["regular", "gold", "gold_vip"]
-    param :form, :is_special, :boolean, :required, "If ticket is special"
+    param :form, :is_special, :boolean, :optional, "If ticket is special"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity

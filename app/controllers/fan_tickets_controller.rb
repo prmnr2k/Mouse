@@ -9,8 +9,8 @@ class FanTicketsController < ApplicationController
   swagger_api :index do
     summary "Retrieve list of fan tickets"
     param :query, :fan_id, :integer, :required, "Fan id"
-    param :query, :limit, :integer, :required, "Limit"
-    param :query, :offset, :integer, :required, "Offset"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :not_found

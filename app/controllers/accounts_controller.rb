@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
     swagger_api :get do
       summary "Retrieve account by id"
       param :path, :id, :integer, :required, "Account id"
-      param :query, :extended, :boolean, :required, "Need extended info"
+      param :query, :extended, :boolean, :optional, "Need extended info"
       response :not_found
     end
     def get
@@ -22,9 +22,9 @@ class AccountsController < ApplicationController
     # GET /accounts/
     swagger_api :get_all do
       summary "Retrieve list of accounts"
-      param :query, :extended, :boolean, :required, "Need extended info"
-      param :query, :limit, :integer, :required, "Limit"
-      param :query, :offset, :integer, :required, "Offset"
+      param :query, :extended, :boolean, :optional, "Need extended info"
+      param :query, :limit, :integer, :optional, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
       response :ok
     end
     def get_all
@@ -40,8 +40,8 @@ class AccountsController < ApplicationController
       param :path, :account_id, :integer, :required, "Account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       param :query, :text, :string, :optional, "Text to search"
-      param :query, :limit, :integer, :required, "Limit"
-      param :query, :offset, :integer, :required, "Offset"
+      param :query, :limit, :integer, :optional, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
     end
     def get_events
        @events = @account.events
@@ -52,7 +52,7 @@ class AccountsController < ApplicationController
     # GET /accounts/my
     swagger_api :get_my_accounts do
       summary "Retrieve list of my accounts"
-      param :query, :extended, :boolean, :required, "Need extended info"
+      param :query, :extended, :boolean, :optional, "Need extended info"
       param :header, 'Authorization', :string, :required, 'Authentication token'
     end
     def get_my_accounts   
@@ -65,8 +65,8 @@ class AccountsController < ApplicationController
     swagger_api :get_images do
       summary "Retrieve list of images"
       param :path, :id, :integer, :required, "Account id"
-      param :query, :limit, :integer, :required, "Limit"
-      param :query, :offset, :integer, :required, "Offset"
+      param :query, :limit, :integer, :optional, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
       response :not_found
     end
     def get_images
@@ -125,8 +125,8 @@ class AccountsController < ApplicationController
     swagger_api :get_followers do
       summary "Retrieve list of followers"
       param :path, :id, :integer, :required, "Account id"
-      param :query, :offset, :integer, :required, "Offset"
-      param :query, :limit, :integer, :required, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
+      param :query, :limit, :integer, :optional, "Limit"
       response :not_found
     end
     def get_followers 
@@ -140,8 +140,8 @@ class AccountsController < ApplicationController
     swagger_api :get_followed do
       summary "Retrieve list of followers"
       param :path, :id, :integer, :required, "Account id"
-      param :query, :offset, :integer, :required, "Offset"
-      param :query, :limit, :integer, :required, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
+      param :query, :limit, :integer, :optional, "Limit"
       response :not_found
     end
     def get_followed
@@ -173,8 +173,8 @@ class AccountsController < ApplicationController
     swagger_api :create do
       summary "Creates new account"
       param :form, :user_name, :string, :required, "Account's name"
-      param :form, :display_name, :string, :required, "Account's name to display"
-      param :form, :phone, :string, :required, "Account's phone"
+      param :form, :display_name, :string, :optional, "Account's name to display"
+      param :form, :phone, :string, :optional, "Account's phone"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
@@ -234,10 +234,10 @@ class AccountsController < ApplicationController
     swagger_api :update do
       summary "Updates existing account"
       param :path, :account_id, :integer, :required, "Account id"
-      param :form, :user_name, :string, :required, "Account's name"
-      param :form, :display_name, :string, :required, "Account's name to display"
-      param :form, :phone, :string, :required, "Account's phone"
-      param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
+      param :form, :user_name, :string, :optional, "Account's name"
+      param :form, :display_name, :string, :optional, "Account's name to display"
+      param :form, :phone, :string, :optional, "Account's phone"
+      param_list :form, :account_type, :string, :optional, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :address, :string, :optional, "Fan address"
@@ -291,8 +291,8 @@ class AccountsController < ApplicationController
       summary "Search account"
       param :query, :text, :string, :optional, "Search query"
       param :query, :type, :string, :optional, "Account type to display"
-      param :query, :limit, :integer, :required, "Limit"
-      param :query, :offset, :integer, :required, "Offset"
+      param :query, :limit, :integer, :optional, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
     end
     def search
       @accounts = Account.all

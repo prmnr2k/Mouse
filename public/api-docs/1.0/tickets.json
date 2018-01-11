@@ -29,7 +29,7 @@
               "name": "name",
               "type": "string",
               "description": "Ticket name",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
@@ -181,7 +181,7 @@
               "name": "event_id",
               "type": "integer",
               "description": "Event id",
-              "required": true
+              "required": false
             },
             {
               "paramType": "path",
@@ -195,14 +195,14 @@
               "name": "account_id",
               "type": "integer",
               "description": "Creator id",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "name",
               "type": "string",
               "description": "Ticket name",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
@@ -216,21 +216,21 @@
               "name": "price",
               "type": "integer",
               "description": "Ticket price",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "count",
               "type": "integer",
               "description": "Ticket count",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "type",
               "type": "string",
               "description": "Ticket type",
-              "required": true,
+              "required": false,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
@@ -259,7 +259,7 @@
               "name": "is_special",
               "type": "boolean",
               "description": "If ticket is special",
-              "required": true
+              "required": false
             },
             {
               "paramType": "header",

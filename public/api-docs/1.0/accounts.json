@@ -15,21 +15,21 @@
               "name": "extended",
               "type": "boolean",
               "description": "Need extended info",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             }
           ],
           "responseMessages": [
@@ -69,14 +69,14 @@
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             }
           ],
           "nickname": "Accounts#search",
@@ -95,7 +95,7 @@
               "name": "extended",
               "type": "boolean",
               "description": "Need extended info",
-              "required": true
+              "required": false
             },
             {
               "paramType": "header",
@@ -128,7 +128,7 @@
               "name": "extended",
               "type": "boolean",
               "description": "Need extended info",
-              "required": true
+              "required": false
             }
           ],
           "responseMessages": [
@@ -175,14 +175,14 @@
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             }
           ],
           "nickname": "Accounts#get_events",
@@ -208,14 +208,14 @@
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             }
           ],
           "responseMessages": [
@@ -248,14 +248,14 @@
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             }
           ],
           "responseMessages": [
@@ -288,14 +288,14 @@
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             }
           ],
           "responseMessages": [
@@ -328,14 +328,14 @@
               "name": "display_name",
               "type": "string",
               "description": "Account's name to display",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "phone",
               "type": "string",
               "description": "Account's phone",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
@@ -727,28 +727,28 @@
               "name": "user_name",
               "type": "string",
               "description": "Account's name",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "display_name",
               "type": "string",
               "description": "Account's name to display",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "phone",
               "type": "string",
               "description": "Account's phone",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",
               "name": "account_type",
               "type": "string",
               "description": "Account type",
-              "required": true,
+              "required": false,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [

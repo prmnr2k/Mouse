@@ -20,11 +20,11 @@ class AuthenticateController < ApplicationController
 	def login
 		@password = User.encrypt_password(params[:password])
 		if params[:user_name]
-			@account = Account.find_by(user_name: params[:user_name])
+			@account = Account.find_by("LOWER(user_name) = ?", params[:user_name].downcase)
 			render status: :unauthorized and return if not @account
 			@user = @account.user
 		else
-			@user = User.find_by(email: params[:email])
+			@user = User.find_by("LOWER(email) = ?", params[:email].downcase)
 			render status: :unauthorized and return if not @user
 		end
 		render status: :unauthorized and return if @user.password != @password

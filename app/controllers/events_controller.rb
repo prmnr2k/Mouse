@@ -33,13 +33,13 @@ class EventsController < ApplicationController
   swagger_api :create do
     summary 'Create event'
     param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :name, :string, :required, "Event name"
+    param :form, :name, :string, :optional, "Event name"
     param :form, :date, :datetime, :optional, "Event date"
-    param :form, :tagline, :string, :required, "Tagline"
-    param :form, :description, :string, :required, "Short description"
-    param :form, :funding_from, :datetime, :required, "Finding duration from"
-    param :form, :funding_to, :datetime, :required, "Finding duration to"
-    param :form, :funding_goal, :integer, :required, "Funding goal"
+    param :form, :tagline, :string, :optional, "Tagline"
+    param :form, :description, :string, :optional, "Short description"
+    param :form, :funding_from, :datetime, :optional, "Finding duration from"
+    param :form, :funding_to, :datetime, :optional, "Finding duration to"
+    param :form, :funding_goal, :integer, :optional, "Funding goal"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -65,13 +65,13 @@ class EventsController < ApplicationController
     summary 'Update event'
     param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :name, :string, :required, "Event name"
+    param :form, :name, :string, :optional, "Event name"
     param :form, :date, :datetime, :optional, "Event date"
-    param :form, :tagline, :string, :required, "Tagline"
-    param :form, :description, :string, :required, "Short description"
-    param :form, :funding_from, :datetime, :required, "Finding duration from"
-    param :form, :funding_to, :datetime, :required, "Finding duration to"
-    param :form, :funding_goal, :integer, :required, "Funding goal"
+    param :form, :tagline, :string, :optional, "Tagline"
+    param :form, :description, :string, :optional, "Short description"
+    param :form, :funding_from, :datetime, :optional, "Finding duration from"
+    param :form, :funding_to, :datetime, :optional, "Finding duration to"
+    param :form, :funding_goal, :integer, :optional, "Funding goal"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -252,8 +252,8 @@ class EventsController < ApplicationController
     param :query, :is_active, :boolean, :optional, "Search only active events (do not send it for All option)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
-    param :query, :limit, :integer, :required, "Limit"
-    param :query, :offset, :integer, :required, "Offset"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
     response :ok
   end
   def search
