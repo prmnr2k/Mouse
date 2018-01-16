@@ -25,7 +25,9 @@ class Event < ApplicationRecord
       res[:venue] = venue  
       res[:tickets] = tickets.as_json(only: [:name, :type])
     elsif options[:analytics]
-      res[:location] = venue.address
+      if venue
+        res[:location] = venue.address
+      end
       res[:comments] = comments.count
       res[:likes] = likes.count
     else

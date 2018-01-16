@@ -91,7 +91,7 @@ class EventsController < ApplicationController
 
   # GET /event/1/analytics
   swagger_api :analytics do
-    summary "Add artist to event"
+    summary "Get analytic data"
     param :path, :id, :integer, :required, "Event id"
     response :unauthorized
     response :not_found

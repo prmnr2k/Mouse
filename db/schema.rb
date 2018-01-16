@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180110143438) do
+ActiveRecord::Schema.define(version: 20180116093249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,8 +46,6 @@ ActiveRecord::Schema.define(version: 20180110143438) do
     t.integer "event_id"
     t.integer "fan_id"
     t.string "text"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "event_collaborators", force: :cascade do |t|
@@ -73,12 +71,13 @@ ActiveRecord::Schema.define(version: 20180110143438) do
     t.integer "funding_goal"
     t.integer "creator_id"
     t.integer "artist_id"
-    t.integer "venue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_active", default: false
     t.integer "views", default: 0
     t.integer "clicks", default: 0
+    t.datetime "date_from"
+    t.datetime "date_to"
     t.datetime "date"
   end
 
@@ -212,6 +211,13 @@ ActiveRecord::Schema.define(version: 20180110143438) do
     t.integer "venue_id"
     t.string "name"
     t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "venue_events", force: :cascade do |t|
+    t.integer "venue_id"
+    t.integer "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
