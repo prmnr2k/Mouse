@@ -4,6 +4,7 @@ class Event < ApplicationRecord
   has_many :event_collaborators, foreign_key: 'event_id'
   has_many :collaborators, through: :event_collaborators, class_name: 'Account'
   has_many :tickets, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
 
   has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
@@ -24,8 +25,8 @@ class Event < ApplicationRecord
       res[:venue] = venue  
       res[:tickets] = tickets.as_json(only: [:name, :type])
     elsif options[:analytics]
-      res[:location] = venue.address if venue
-      #res[:comments] =
+      res[:location] = venue.address
+      res[:comments] = comments.count
       res[:likes] = likes.count
     else
       res[:location] = venue.address if venue
