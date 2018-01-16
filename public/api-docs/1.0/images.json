@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-  "basePath": "https://mouse-back.herokuapp.com",
+  "basePath": "http://localhost:3000",
   "resourcePath": "images",
   "apis": [
     {
@@ -26,6 +26,32 @@
             }
           ],
           "nickname": "Images#show",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/images/{id}/full.json",
+      "operations": [
+        {
+          "summary": "Get full image",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Image id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Images#full",
           "method": "get"
         }
       ]
