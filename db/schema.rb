@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180116093249) do
+ActiveRecord::Schema.define(version: 20180116095547) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,8 @@ ActiveRecord::Schema.define(version: 20180116093249) do
     t.datetime "date_from"
     t.datetime "date_to"
     t.datetime "date"
+    t.boolean "has_vr", default: false
+    t.boolean "has_in_person", default: false
   end
 
   create_table "fan_genres", force: :cascade do |t|

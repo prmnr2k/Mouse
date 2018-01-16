@@ -23,7 +23,7 @@ class Event < ApplicationRecord
       res[:genres] = genres
       res[:artist] = artist
       res[:venue] = venue  
-      res[:tickets] = tickets.as_json(only: [:name, :type])
+      res[:tickets] = tickets.as_json(only: [:id, :name, :type])
     elsif options[:analytics]
       if venue
         res[:location] = venue.address

@@ -41,6 +41,7 @@ class TicketsController < ApplicationController
     set_category
 
     if @ticket.save
+      change_event_tickets
       render json: @ticket, status: :created
     else
       render json: @ticket.errors, status: :unprocessable_entity
@@ -69,6 +70,7 @@ class TicketsController < ApplicationController
     if @ticket.update(ticket_params)
       set_type
       set_category
+      change_event_tickets
 
       render json: @ticket, status: :ok
     else
@@ -88,7 +90,8 @@ class TicketsController < ApplicationController
     response :forbidden
   end
   def destroy
-    if not @ticket.fan_tickets
+    if @ticket.fan_tickets.empty?
+      before_delete_ticket
       @ticket.destroy
       render status: :ok
     else
@@ -123,6 +126,32 @@ class TicketsController < ApplicationController
           obj.save
 
           @ticket.tickets_category = obj
+        end
+      end
+    end
+
+    def change_event_tickets
+      if params[:type] == "in_person" and @event.has_in_person == false
+        @event.has_in_person = true
+        @event.save!
+      elsif params[:type] == "vr" and @event.has_vr == false
+        @event.has_vr = true
+        @event.save!
+      end
+    end
+
+    def before_delete_ticket
+      ticket_type = @ticket.tickets_type.name
+      event_tickets = @event.tickets.joins(
+        :tickets_type).where("tickets_types.name = :query", query: TicketsType.names[ticket_type])
+
+      if event_tickets.empty?
+        if @ticket.tickets_type.name == "in_person"
+          @event.has_in_person = false
+          @event.save!
+        elsif @ticket.tickets_type.name == "vr"
+          @event.has_vr = false
+          @event.save!
         end
       end
     end
