@@ -20,8 +20,8 @@ class ImagesController < ApplicationController
   end
   def full
     @image = Image.find(params[:id])
-    if not @resized
-      render status: :not_found
+    if not @image
+      render status: :not_found and return
     end
     send_data Base64.decode64(@image.base64), :type => 'image/png', :disposition => 'inline'
   end
