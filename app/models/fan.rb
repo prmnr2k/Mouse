@@ -8,7 +8,7 @@ class Fan < ApplicationRecord
     def as_json(options={})
         if options[:extended]
             res = super.merge(account.get_attrs)
-            res[:genres] = genres
+            res[:genres] = genres.pluck(:genre)
             return res
         else
             return account.get_attrs

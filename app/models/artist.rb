@@ -5,9 +5,9 @@ class Artist < ApplicationRecord
     has_many :events
 
     def as_json(options={})
-        if options[:extended] == true
+        if options[:extended]
             res = super.merge(account.get_attrs)
-            res[:genres] = genres
+            res[:genres] = genres.pluck(:genre)
             return res
         else
             return account.get_attrs

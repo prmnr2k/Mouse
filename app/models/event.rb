@@ -20,14 +20,12 @@ class Event < ApplicationRecord
 
     if options[:extended]
       res[:collaborators] = collaborators
-      res[:genres] = genres
+      res[:genres] = genres.pluck(:genre)
       res[:artist] = artist
       res[:venue] = venue  
       res[:tickets] = tickets.as_json(only: [:id, :name, :type])
     elsif options[:analytics]
-      if venue
-        res[:location] = venue.address
-      end
+      res[:location] = venue.address if venue
       res[:comments] = comments.count
       res[:likes] = likes.count
     else

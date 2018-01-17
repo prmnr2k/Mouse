@@ -191,14 +191,14 @@
       ]
     },
     {
-      "path": "/accounts/images/{id}.json",
+      "path": "/accounts/{account_id}/images.json",
       "operations": [
         {
           "summary": "Retrieve list of images",
           "parameters": [
             {
               "paramType": "path",
-              "name": "id",
+              "name": "account_id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -231,14 +231,14 @@
       ]
     },
     {
-      "path": "/accounts/followers/{id}.json",
+      "path": "/accounts/{account_id}/followers.json",
       "operations": [
         {
           "summary": "Retrieve list of followers",
           "parameters": [
             {
               "paramType": "path",
-              "name": "id",
+              "name": "account_id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -271,14 +271,14 @@
       ]
     },
     {
-      "path": "/accounts/following/{id}.json",
+      "path": "/accounts/{account_id}/following.json",
       "operations": [
         {
           "summary": "Retrieve list of followers",
           "parameters": [
             {
               "paramType": "path",
-              "name": "id",
+              "name": "account_id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -610,7 +610,7 @@
       ]
     },
     {
-      "path": "/accounts/images/{account_id}.json",
+      "path": "/accounts/{account_id}/images.json",
       "operations": [
         {
           "summary": "Upload image to Account",
@@ -660,7 +660,7 @@
       ]
     },
     {
-      "path": "/accounts/follow/{account_id}.json",
+      "path": "/accounts/{account_id}/follow.json",
       "operations": [
         {
           "summary": "Subscribe for account",
@@ -1016,7 +1016,7 @@
       ]
     },
     {
-      "path": "/accounts/unfollow/{account_id}.json",
+      "path": "/accounts/{account_id}/unfollow.json",
       "operations": [
         {
           "summary": "Unubscribe from account",
