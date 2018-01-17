@@ -13,6 +13,19 @@ class ImagesController < ApplicationController
     render json: @image
   end
 
+  swagger_api :full do
+    summary "Get full image"
+    param :path, :id, :integer, :required, "Image id"
+    response :not_found
+  end
+  def full
+    @image = Image.find(params[:id])
+    if not @image
+      render status: :not_found and return
+    end
+    send_data Base64.decode64(@image.base64), :type => 'image/png', :disposition => 'inline'
+  end
+
   swagger_api :preview do
     summary "Get preview of image object"
     param :path, :id, :integer, :required, "Image id"

@@ -31,6 +31,32 @@
       ]
     },
     {
+      "path": "/images/{id}/full.json",
+      "operations": [
+        {
+          "summary": "Get full image",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Image id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Images#full",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/images/{id}/preview.json",
       "operations": [
         {
