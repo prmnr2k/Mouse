@@ -13,6 +13,39 @@
           "method": "get"
         }
       ]
+    },
+    {
+      "path": "/genres/artists.json",
+      "operations": [
+        {
+          "summary": "Get list of artist by genres",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "genres",
+              "type": "string",
+              "description": "Array of genres ['rap', 'rock', ....]",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            }
+          ],
+          "nickname": "Genres#artists",
+          "method": "get"
+        }
+      ]
     }
   ],
   "authorizations": null

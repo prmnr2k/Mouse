@@ -58,6 +58,7 @@ Rails.application.routes.draw do
 
   # genre routes
   get 'genres/all', action: :all, controller: 'genres'
+  get 'genres/artists', action: :artists, controller: 'genres'
 
   # fan tickets routes
   resources :fan_tickets, except: :update
