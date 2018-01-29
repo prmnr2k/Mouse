@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:get_events, :update, :upload_image, :follow, :unfollow]  
+    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple]  
     before_action :find_account, only: [:get, :follow, :unfollow, :get_images, :get_followers, :get_followed]  
     before_action :find_image, only: [:delete_image]
     swagger_controller :accounts, "Accounts"
@@ -121,6 +121,30 @@ class AccountsController < ApplicationController
         end
     end
 
+    #POST /accounts/follow
+    swagger_api :follow_multiple do
+      summary "Subscribe for accounts"
+      param :path, :account_id, :integer, :required, "My account id"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      param :form, :follow, :string, :required, "Accounts ids, array: [1, 2, 3 ...]"
+      response :unprocessable_entity
+      response :not_found
+      response :unauthorized
+    end
+    def follow_multiple
+        params[:follow].each do |acc|
+            follower = Follower.find_by(by_id: @account.id, to_id: acc)
+            if not follower
+                follower = Follower.new(by: @account, to_id: acc)  
+                if not follower.save
+                    render json: follower.errors, status: :unprocessable_entity
+                    return
+                end
+            end
+        end
+        render status: :ok
+    end
+
     # GET /accounts/followers/<id>
     swagger_api :get_followers do
       summary "Retrieve list of followers"
@@ -138,7 +162,7 @@ class AccountsController < ApplicationController
 
     # GET /accounts/following/<id>
     swagger_api :get_followed do
-      summary "Retrieve list of followers"
+      summary "Retrieve list of following by me"
       param :path, :account_id, :integer, :required, "Account id"
       param :query, :offset, :integer, :optional, "Offset"
       param :query, :limit, :integer, :optional, "Limit"
@@ -306,6 +330,15 @@ class AccountsController < ApplicationController
       end
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
+    end
+
+    swagger_api :delete do
+      summary "Delete account"
+      param :path, :account_id, :integer, :required, "Account id"
+    end
+    def delete
+      @account.destroy
+      render status: :ok
     end
 
   private

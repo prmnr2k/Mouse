@@ -8,11 +8,11 @@ class Account < ApplicationRecord
 
 	has_many :images, dependent: :destroy
 
-	has_many :followers_conn, foreign_key: 'to_id', class_name: 'Follower'
-	has_many :followers, through: :followers_conn, source: 'to'
+	has_many :followers_conn, foreign_key: 'to_id', class_name: 'Follower', dependent: :destroy
+	has_many :followers, through: :followers_conn, source: 'by'
 
-	has_many :followings_conn, foreign_key: 'by_id', class_name: 'Follower'
-	has_many :following, through: :followings_conn, source: 'by'
+	has_many :followings_conn, foreign_key: 'by_id', class_name: 'Follower', dependent: :destroy
+	has_many :following, through: :followings_conn, source: 'to'
 
 	belongs_to :user
 	belongs_to :fan, optional: true
@@ -21,7 +21,7 @@ class Account < ApplicationRecord
 
 	belongs_to :image, optional: true
 
-	has_many :collaborated_events, through: :event_collaborators, class_name: 'Event'
+	has_many :collaborated_events, through: :event_collaborators, class_name: 'Event', dependent: :destroy
 	has_many :events, foreign_key: 'creator_id'
 	
     

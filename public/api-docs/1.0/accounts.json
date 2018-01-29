@@ -231,18 +231,11 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/followers.json",
+      "path": "/accounts/{id}/followers.json",
       "operations": [
         {
           "summary": "Retrieve list of followers",
           "parameters": [
-            {
-              "paramType": "path",
-              "name": "account_id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
             {
               "paramType": "query",
               "name": "offset",
@@ -271,18 +264,11 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/following.json",
+      "path": "/accounts/{id}/following.json",
       "operations": [
         {
-          "summary": "Retrieve list of followers",
+          "summary": "Retrieve list of following by me",
           "parameters": [
-            {
-              "paramType": "path",
-              "name": "account_id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
             {
               "paramType": "query",
               "name": "offset",
@@ -705,6 +691,49 @@
             }
           ],
           "nickname": "Accounts#follow",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/follow.json",
+      "operations": [
+        {
+          "summary": "Subscribe for accounts",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "follow",
+              "type": "string",
+              "description": "Accounts ids, array: [1, 2, 3 ...]",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#follow_multiple",
           "method": "post"
         }
       ]
