@@ -237,6 +237,13 @@
           "summary": "Retrieve list of followers",
           "parameters": [
             {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
               "paramType": "query",
               "name": "offset",
               "type": "integer",
@@ -269,6 +276,13 @@
         {
           "summary": "Retrieve list of following by me",
           "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
             {
               "paramType": "query",
               "name": "offset",
