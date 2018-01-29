@@ -78,9 +78,9 @@
           "parameters": [
             {
               "paramType": "form",
-              "name": "authorization_code",
+              "name": "access_token",
               "type": "string",
-              "description": "Code returned by authorization from google",
+              "description": "Access token returned by authorization from google",
               "required": true
             }
           ],

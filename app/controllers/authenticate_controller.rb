@@ -64,28 +64,13 @@ class AuthenticateController < ApplicationController
 	# POST /auth/login_google
 	swagger_api :login_google do
 		summary "Authorize by google"
-		param :form, :authorization_code, :string, :required, "Code returned by authorization from google"
+		param :form, :access_token, :string, :required, "Access token returned by authorization from google"
 		response :unauthorized
 	end
 	def login_google
-		client_secret = "LAEUpegdYyAZX3wFeyASBykl"
-		client_id = "844170394110-cms890g4tkp36jhbapec4eo7e6n3urt2.apps.googleusercontent.com"
-		response = HTTParty.post("https://www.googleapis.com/oauth2/v4/token",
-									headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-									body: {
-										'client_id': client_id,
-										'client_secret': client_secret,
-										'grant_type': 'authorization_code',
-										'redirect_uri': 'http://localhost',
-										'code': params[:authorization_code]
-									}
-								)								
-		render status: :unauthorized and return if response.code != 200
-
-		data = JSON.parse(response.body)
 		response = HTTParty.get('https://www.googleapis.com/oauth2/v2/userinfo',
-									headers: {Access_token: data['access_token'],
-									Authorization: "OAuth #{data['access_token']}"})
+									headers: {Access_token: params['access_token'],
+									Authorization: "OAuth #{params['access_token']}"})
 		render status: :unauthorized and return if response.code != 200
 
 		data = JSON.parse(response.body)
