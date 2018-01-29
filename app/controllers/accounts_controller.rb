@@ -148,7 +148,7 @@ class AccountsController < ApplicationController
     # GET /accounts/followers/<id>
     swagger_api :get_followers do
       summary "Retrieve list of followers"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
       param :query, :offset, :integer, :optional, "Offset"
       param :query, :limit, :integer, :optional, "Limit"
       response :not_found
@@ -163,7 +163,7 @@ class AccountsController < ApplicationController
     # GET /accounts/following/<id>
     swagger_api :get_followed do
       summary "Retrieve list of following by me"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
       param :query, :offset, :integer, :optional, "Offset"
       param :query, :limit, :integer, :optional, "Limit"
       response :not_found
