@@ -34,6 +34,7 @@ class CommentsController < ApplicationController
   end
   def create
     @comment = Comment.new(comment_params)
+    @comment.fan = @account
 
     if @comment.save
       render json: @comment, status: :created
