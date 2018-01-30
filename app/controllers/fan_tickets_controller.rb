@@ -8,7 +8,7 @@ class FanTicketsController < ApplicationController
   # GET /fan_tickets
   swagger_api :index do
     summary "Retrieve list of fan tickets"
-    param :query, :fan_id, :integer, :required, "Fan id"
+    param :query, :account_id, :integer, :required, "Fan account id"
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -24,7 +24,7 @@ class FanTicketsController < ApplicationController
   swagger_api :show do
     summary "Fan ticket info"
     param :path, :id, :integer, :required, "FanTicket id"
-    param :query, :fan_id, :integer, :required, "Fan id"
+    param :query, :account_id, :integer, :required, "Fan account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :not_found
@@ -36,7 +36,7 @@ class FanTicketsController < ApplicationController
   # POST /fan_tickets
   swagger_api :create do
     summary "Buy ticket"
-    param :form, :fan_id, :integer, :required, "Fan id"
+    param :form, :account_id, :integer, :required, "Fan account id"
     param :form, :ticket_id, :integer, :required, "Ticket id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -59,7 +59,7 @@ class FanTicketsController < ApplicationController
   swagger_api :destroy do
     summary "Return ticket"
     param :path, :id, :integer, :required, "Ticket id"
-    param :form, :fan_id, :integer, :required, "Fan id"
+    param :form, :account_id, :integer, :required, "Fan account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -91,12 +91,12 @@ class FanTicketsController < ApplicationController
     end
 
     def fan_ticket_params
-      params.permit(:ticket_id, :fan_id)
+      params.permit(:ticket_id, :account_id)
     end
 
     def authorize_account
       @user = AuthorizeHelper.authorize(request)
-      @account = Account.find(params[:fan_id])
+      @account = Account.find(params[:account_id])
       render status: :unauthorized if @user == nil or @account.user != @user or @account.account_type != 'fan'
     end
 end

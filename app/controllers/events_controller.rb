@@ -9,8 +9,8 @@ class EventsController < ApplicationController
   # GET /events
   swagger_api :index do
     summary "Retrieve list of events"
-    param :query, :limit, :integer, :required, "Limit"
-    param :query, :offset, :integer, :required, "Offset"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
     response :ok
   end
   def index

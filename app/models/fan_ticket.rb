@@ -1,4 +1,4 @@
 class FanTicket < ApplicationRecord
-  belongs_to :fan
+  belongs_to :account
   belongs_to :ticket
 end

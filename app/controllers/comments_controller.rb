@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
   swagger_api :create do
     summary "Create a comment"
     param :path, :event_id, :integer, :required, "Event id"
-    param :form, :fan_id, :integer, :required, "Fan id"
+    param :form, :account_id, :integer, :required, "Fan account id"
     param :form, :text, :string, :required, "Text"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -62,12 +62,16 @@ class CommentsController < ApplicationController
     end
 
     def comment_params
-      params.permit(:event_id, :fan_id, :text)
+      params.permit(:event_id, :account_id, :text)
+    end
+
+    def update_comment_params
+      params.permit(:text)
     end
 
     def authorize_account
       @user = AuthorizeHelper.authorize(request)
-      @account = Account.find(params[:fan_id])
+      @account = Account.find(params[:account_id])
       render status: :unauthorized if @user == nil or @account.user != @user or @account.account_type != 'fan'
     end
 end

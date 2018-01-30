@@ -12,9 +12,9 @@
           "parameters": [
             {
               "paramType": "query",
-              "name": "fan_id",
+              "name": "account_id",
               "type": "integer",
-              "description": "Fan id",
+              "description": "Fan account id",
               "required": true
             },
             {
@@ -64,9 +64,9 @@
           "parameters": [
             {
               "paramType": "form",
-              "name": "fan_id",
+              "name": "account_id",
               "type": "integer",
-              "description": "Fan id",
+              "description": "Fan account id",
               "required": true
             },
             {
@@ -121,9 +121,9 @@
             },
             {
               "paramType": "query",
-              "name": "fan_id",
+              "name": "account_id",
               "type": "integer",
-              "description": "Fan id",
+              "description": "Fan account id",
               "required": true
             },
             {
@@ -166,9 +166,9 @@
             },
             {
               "paramType": "form",
-              "name": "fan_id",
+              "name": "account_id",
               "type": "integer",
-              "description": "Fan id",
+              "description": "Fan account id",
               "required": true
             },
             {
