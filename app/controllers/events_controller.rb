@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
                                    :like, :unlike, :analytics, :click, :view]
-  before_action :authorize_account, only: [:create, :my_events]
+  before_action :authorize_account, only: [:create]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
@@ -40,6 +40,8 @@ class EventsController < ApplicationController
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
     param :form, :funding_to, :datetime, :optional, "Finding duration to"
     param :form, :funding_goal, :integer, :optional, "Funding goal"
+    param :form, :updates_available, :boolean, :optional, "Is updates available"
+    param :form, :comments_available, :boolean, :optional, "Is comments available"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -72,6 +74,8 @@ class EventsController < ApplicationController
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
     param :form, :funding_to, :datetime, :optional, "Finding duration to"
     param :form, :funding_goal, :integer, :optional, "Funding goal"
+    param :form, :updates_available, :boolean, :optional, "Is updates available"
+    param :form, :comments_available, :boolean, :optional, "Is comments available"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -353,7 +357,8 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.permit(:name, :tagline, :description, :funding_from, :funding_to, :funding_goal, :date)
+      params.permit(:name, :tagline, :description, :funding_from, :funding_to,
+                    :funding_goal, :date, :comments_available, :updates_available)
     end
 
     def authorize

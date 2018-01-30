@@ -1,6 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :destroy]
   before_action :authorize_account, only: :create
+  before_action :check_event, only: :create
   swagger_controller :comments, "Comments"
 
   # GET events/1/comments
@@ -67,6 +68,11 @@ class CommentsController < ApplicationController
 
     def update_comment_params
       params.permit(:text)
+    end
+
+    def check_event
+      @event = Event.find(params[:event_id])
+      render status: :unprocessable_entity if @event == nil or @event.comments_available == false
     end
 
     def authorize_account

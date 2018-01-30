@@ -204,6 +204,20 @@
             },
             {
               "paramType": "form",
+              "name": "updates_available",
+              "type": "boolean",
+              "description": "Is updates available",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "comments_available",
+              "type": "boolean",
+              "description": "Is comments available",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "genres",
               "type": "string",
               "description": "Genres list ['pop', 'rock', ...]",
@@ -334,6 +348,20 @@
               "name": "funding_goal",
               "type": "integer",
               "description": "Funding goal",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "updates_available",
+              "type": "boolean",
+              "description": "Is updates available",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "comments_available",
+              "type": "boolean",
+              "description": "Is comments available",
               "required": false
             },
             {
