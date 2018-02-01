@@ -71,13 +71,12 @@ ActiveRecord::Schema.define(version: 20180130210437) do
     t.integer "funding_goal"
     t.integer "creator_id"
     t.integer "artist_id"
+    t.integer "venue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_active", default: false
     t.integer "views", default: 0
     t.integer "clicks", default: 0
-    t.datetime "date_from"
-    t.datetime "date_to"
     t.datetime "date"
     t.boolean "has_vr", default: false
     t.boolean "has_in_person", default: false
@@ -215,13 +214,6 @@ ActiveRecord::Schema.define(version: 20180130210437) do
     t.integer "venue_id"
     t.string "name"
     t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "venue_events", force: :cascade do |t|
-    t.integer "venue_id"
-    t.integer "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

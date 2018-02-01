@@ -63,7 +63,7 @@ class Account < ApplicationRecord
 	  #attrs[:followed] = followed_conn.pluck(:to_id)
 	  #attrs[:followers] = followers_conn.pluck(:by_id)
 	  return get_attrs
-		end
+	end
 
 	def self.search(text)
 		return self.where(

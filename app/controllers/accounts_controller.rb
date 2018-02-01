@@ -156,7 +156,7 @@ class AccountsController < ApplicationController
     def get_followers 
         render json: {
             total_count: @to_find.followers.count,
-            followers: @to_find.followers.limit(params[:limit]).offset(params[:offset])
+            followers: @to_find.followers.order(:id).limit(params[:limit]).offset(params[:offset])
         }
     end
 
@@ -171,7 +171,7 @@ class AccountsController < ApplicationController
     def get_followed
         render json: {
             total_count: @to_find.following.count,
-            following: @to_find.following.limit(params[:limit]).offset(params[:offset])
+            following: @to_find.following.order(:id).limit(params[:limit]).offset(params[:offset])
         }
     end
 
