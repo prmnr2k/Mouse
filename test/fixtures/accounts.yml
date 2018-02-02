@@ -8,6 +8,8 @@ one:
   venue_id: 1
   account_type: 1
   user_id: 1
+  user_name: MyString
+  display_name: MyString
 
 two:
   image_id: 1
@@ -17,3 +19,5 @@ two:
   venue_id: 1
   account_type: 1
   user_id: 1
+  user_name: MyString
+  display_name: MyString

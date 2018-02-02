@@ -3,7 +3,9 @@
 one:
   token: MyString
   user_id: 1
+  info: MyString
 
 two:
   token: MyString
   user_id: 1
+  info: MyString

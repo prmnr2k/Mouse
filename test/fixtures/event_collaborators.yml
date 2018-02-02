@@ -2,8 +2,8 @@
 
 one:
   event_id: 1
-  collaborator_in: 1
+  collaborator_id: 1
 
 two:
   event_id: 1
-  collaborator_in: 1
+  collaborator_id: 1

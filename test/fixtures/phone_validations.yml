@@ -3,7 +3,9 @@
 one:
   phone: MyString
   is_validated: false
+  code: MyString
 
 two:
   phone: MyString
   is_validated: false
+  code: MyString

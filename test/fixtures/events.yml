@@ -5,13 +5,35 @@ one:
   tagline: MyString
   description: MyString
   funding_from: 2017-12-12 19:28:07
-  funding_to: 
+  funding_to: 2017-12-12 19:28:07
   funding_goal: 1
+  creator_id: 1
+  artist_id: 1
+  venue_id: 1
+  is_active: false
+  views: 0
+  clicks: 0
+  date: 2017-12-12 19:28:07
+  has_vr: false
+  has_in_person: false
+  updates_available: false
+  comments_available: false
 
 two:
   name: MyString
   tagline: MyString
   description: MyString
   funding_from: 2017-12-12 19:28:07
-  funding_to: 
+  funding_to: 2017-12-12 19:28:07
   funding_goal: 1
+  creator_id: 1
+  artist_id: 1
+  venue_id: 1
+  is_active: false
+  views: 0
+  clicks: 0
+  date: 2017-12-12 19:28:07
+  has_vr: false
+  has_in_person: false
+  updates_available: false
+  comments_available: false

@@ -1,15 +1,45 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  about: MyString
-  contact_info: MyString
   address: MyString
-  lat: 1.5
-  lng: 1.5
+  lat: 1.2
+  lng: 1.2
+  description: MyString
+  phone: MyString
+  fax: MyString
+  bank_name: MyString
+  account_bank_number: MyString
+  account_bank_routing_number: MyString
+  capacity: 1
+  num_of_bathrooms: 1
+  min_age: 1
+  venue_type: 1
+  has_bar: false
+  located: 1
+  dress_code: MyString
+  has_vr: false
+  audio_description: MyString
+  lighting_description: MyString
+  stage_description: MyString
 
 two:
-  about: MyString
-  contact_info: MyString
   address: MyString
-  lat: 1.5
-  lng: 1.5
+  lat: 1.2
+  lng: 1.2
+  description: MyString
+  phone: MyString
+  fax: MyString
+  bank_name: MyString
+  account_bank_number: MyString
+  account_bank_routing_number: MyString
+  capacity: 1
+  num_of_bathrooms: 1
+  min_age: 1
+  venue_type: 1
+  has_bar: false
+  located: 1
+  dress_code: MyString
+  has_vr: false
+  audio_description: MyString
+  lighting_description: MyString
+  stage_description: MyString

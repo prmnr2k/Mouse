@@ -5,15 +5,15 @@ one:
   description: MyString
   price: 1
   count: 1
-  type_id: 1
-  category_id: 1
+  is_special: false
   event_id: 1
+  video: MyString
 
 two:
   name: MyString
   description: MyString
   price: 1
   count: 1
-  type_id: 1
-  category_id: 1
+  is_special: false
   event_id: 1
+  video: MyString

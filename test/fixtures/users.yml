@@ -1,19 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  email: MyString
-  password: MyString
-  address: MyString
-  lat: 1.5
-  lng: 1.5
-  image_id: 1
+  email: aaa@aaa.com
+  password: bb798018bfa70cd636ad2e19c3124b1d95009edec36e647561d05eebaa911d7f  # 123123
+  google_id: MyString
+  twitter_id: MyString
+  register_phone: MyString
+  vk_id: MyString
 
 two:
-  name: MyString
-  email: MyString
-  password: MyString
-  address: MyString
-  lat: 1.5
-  lng: 1.5
-  image_id: 1
+  email: aaa@aaa.com
+  password: 123123
+  google_id: MyString
+  twitter_id: MyString
+  register_phone: MyString
+  vk_id: MyString
