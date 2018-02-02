@@ -131,12 +131,10 @@ class AuthenticateController < ApplicationController
 		response :bad_request
 	end
 	def logout
-		@token = Token.find_by token: request.headers['Authorization']
-		if @token != nil
+		@token = Token.find_by(token: request.headers['Authorization'])
+		if @token
 			@token.destroy
 			render status: :ok
-		else
-			render status: :bad_request
 		end
 	end
 end
