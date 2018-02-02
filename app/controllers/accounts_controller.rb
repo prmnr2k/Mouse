@@ -1,7 +1,8 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
     before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple]  
-    before_action :find_account, only: [:get, :follow, :unfollow, :get_images, :get_followers, :get_followed]  
+    before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed]
+    before_action :find_follower_account, only: [:follow, :unfollow]
     before_action :find_image, only: [:delete_image]
     swagger_controller :accounts, "Accounts"
 
@@ -37,7 +38,7 @@ class AccountsController < ApplicationController
     # GET /accounts/events/1
     swagger_api :get_events do
       summary "Retrieve list of account events"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       param :query, :text, :string, :optional, "Text to search"
       param :query, :limit, :integer, :optional, "Limit"
@@ -64,7 +65,7 @@ class AccountsController < ApplicationController
     # GET /accounts/images/<id>
     swagger_api :get_images do
       summary "Retrieve list of images"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
       param :query, :limit, :integer, :optional, "Limit"
       param :query, :offset, :integer, :optional, "Offset"
       response :not_found
@@ -79,7 +80,7 @@ class AccountsController < ApplicationController
     #POST /accounts/images/<account_id>
     swagger_api :upload_image do
       summary "Upload image to Account"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
       param :form, :image, :file, :required, "Image to upload"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
@@ -91,6 +92,7 @@ class AccountsController < ApplicationController
         image.account = @account
         if image.save
             @account.images << image
+            @account.image = image
             render json: @account, status: :ok
             
         else
@@ -102,8 +104,8 @@ class AccountsController < ApplicationController
     #POST /accounts/follow/<account_id>
     swagger_api :follow do
       summary "Subscribe for account"
-      param :path, :account_id, :integer, :required, "My account id"
-      param :query, :id, :integer, :required, "Following account id"
+      param :path, :id, :integer, :required, "My account id"
+      param :query, :follower_id, :integer, :required, "Following account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :not_found
@@ -124,7 +126,7 @@ class AccountsController < ApplicationController
     #POST /accounts/follow
     swagger_api :follow_multiple do
       summary "Subscribe for accounts"
-      param :path, :account_id, :integer, :required, "My account id"
+      param :path, :id, :integer, :required, "My account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       param :form, :follow, :string, :required, "Accounts ids, array: [1, 2, 3 ...]"
       response :unprocessable_entity
@@ -178,8 +180,8 @@ class AccountsController < ApplicationController
     #DELETE /accounts/unfollow/<account_id>
     swagger_api :unfollow do
       summary "Unubscribe from account"
-      param :path, :account_id, :integer, :required, "My account id"
-      param :query, :id, :integer, :required, "Following account id"
+      param :path, :id, :integer, :required, "My account id"
+      param :query, :follower_id, :integer, :required, "Following account id"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :not_found
       response :unauthorized
@@ -257,7 +259,7 @@ class AccountsController < ApplicationController
     # PUT /accounts/<account_id>
     swagger_api :update do
       summary "Updates existing account"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
       param :form, :user_name, :string, :optional, "Account's name"
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
@@ -334,7 +336,7 @@ class AccountsController < ApplicationController
 
     swagger_api :delete do
       summary "Delete account"
-      param :path, :account_id, :integer, :required, "Account id"
+      param :path, :id, :integer, :required, "Account id"
     end
     def delete
       @account.destroy
@@ -345,6 +347,10 @@ class AccountsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def find_account
         @to_find = Account.find(params[:id])
+    end
+
+    def find_follower_account
+      @to_find = Account.find(params[:follower_id])
     end
 
     def find_image
@@ -358,7 +364,7 @@ class AccountsController < ApplicationController
 
     def authorize_account
         @user = AuthorizeHelper.authorize(request)
-        @account = Account.find(params[:account_id])
+        @account = Account.find(params[:id])
         render status: :unauthorized if @user == nil or @account.user != @user
     end
 

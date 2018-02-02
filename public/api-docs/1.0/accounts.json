@@ -144,14 +144,14 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/events.json",
+      "path": "/accounts/{id}/events.json",
       "operations": [
         {
           "summary": "Retrieve list of account events",
           "parameters": [
             {
               "paramType": "path",
-              "name": "account_id",
+              "name": "id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -191,14 +191,14 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/images.json",
+      "path": "/accounts/{id}/images.json",
       "operations": [
         {
           "summary": "Retrieve list of images",
           "parameters": [
             {
               "paramType": "path",
-              "name": "account_id",
+              "name": "id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -610,14 +610,14 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/images.json",
+      "path": "/accounts/{id}/images.json",
       "operations": [
         {
           "summary": "Upload image to Account",
           "parameters": [
             {
               "paramType": "path",
-              "name": "account_id",
+              "name": "id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -660,21 +660,21 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/follow.json",
+      "path": "/accounts/{id}/follow.json",
       "operations": [
         {
           "summary": "Subscribe for account",
           "parameters": [
             {
               "paramType": "path",
-              "name": "account_id",
+              "name": "id",
               "type": "integer",
               "description": "My account id",
               "required": true
             },
             {
               "paramType": "query",
-              "name": "id",
+              "name": "follower_id",
               "type": "integer",
               "description": "Following account id",
               "required": true
@@ -753,14 +753,14 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}.json",
+      "path": "/accounts/{id}.json",
       "operations": [
         {
           "summary": "Updates existing account",
           "parameters": [
             {
               "paramType": "path",
-              "name": "account_id",
+              "name": "id",
               "type": "integer",
               "description": "Account id",
               "required": true
@@ -1059,21 +1059,21 @@
       ]
     },
     {
-      "path": "/accounts/{account_id}/unfollow.json",
+      "path": "/accounts/{id}/unfollow.json",
       "operations": [
         {
           "summary": "Unubscribe from account",
           "parameters": [
             {
               "paramType": "path",
-              "name": "account_id",
+              "name": "id",
               "type": "integer",
               "description": "My account id",
               "required": true
             },
             {
               "paramType": "query",
-              "name": "id",
+              "name": "follower_id",
               "type": "integer",
               "description": "Following account id",
               "required": true
