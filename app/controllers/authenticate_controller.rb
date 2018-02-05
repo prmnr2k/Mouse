@@ -9,6 +9,38 @@ OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class AuthenticateController < ApplicationController
 	swagger_controller :auth, "Authentification"
 	
+	# POST /auth/forgot_password
+	def forgot_password
+		if params[:user_name]
+			@account = Account.find_by("LOWER(user_name) = ?", params[:user_name].downcase)
+			render status: :unauthorized and return if not @account
+			@user = @account.user
+		else
+			@user = User.find_by("LOWER(email) = ?", params[:email].downcase)
+			render status: :unauthorized and return if not @user
+		end
+
+		@attempt = ForgotPassAttempt.where(user_id: @user.id, created_at: (Time.zone.now.beginning_of_day..Time.zone.now.end_of_day)).first
+		if @attempt 
+			render json: {error: :TOO_MANY_ATTEMPTS}, status: :bad_request and return if @attempt.attempt_count >= 3
+			@attempt.attempt_count += 1
+			@attempt.save
+		else
+			@attempt = ForgotPassAttempt.new(user_id: @user.id, attempt_count: 1)
+			@attempt.save
+		end
+
+		password = SecureRandom.hex(4)
+		@user.password = password
+		begin
+			ForgotPasswordMailer.forgot_password_email(params[:email], password).deliver 
+			@user.save(validate: false)
+			render status: :ok   
+		rescue => ex
+			render status: :bad_request
+		end 
+	end
+
 	# POST /auth/login
 	swagger_api :login do
 		summary "Authorize by username and password"
