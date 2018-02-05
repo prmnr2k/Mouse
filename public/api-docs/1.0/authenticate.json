@@ -48,7 +48,7 @@
       "path": "/auth/forgot_password.json",
       "operations": [
         {
-          "summary": "Authorize by username and password",
+          "summary": "Remind password",
           "parameters": [
             {
               "paramType": "form",

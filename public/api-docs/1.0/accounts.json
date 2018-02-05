@@ -311,6 +311,32 @@
       ]
     },
     {
+      "path": "/accounts/{id}/updates.json",
+      "operations": [
+        {
+          "summary": "Retrieve account updates by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Accounts#get_updates",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/accounts.json",
       "operations": [
         {

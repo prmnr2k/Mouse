@@ -23,7 +23,7 @@ class Account < ApplicationRecord
 
 	has_many :collaborated_events, through: :event_collaborators, class_name: 'Event', dependent: :destroy
 	has_many :events, foreign_key: 'creator_id'
-	
+	has_many :account_updates
     
 	def get_attrs
 		attrs = {}

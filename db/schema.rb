@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205142456) do
+ActiveRecord::Schema.define(version: 20180205170259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "account_updates", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "updated_by"
+    t.integer "action"
+    t.integer "field"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.integer "image_id"
@@ -58,6 +67,15 @@ ActiveRecord::Schema.define(version: 20180205142456) do
   create_table "event_genres", force: :cascade do |t|
     t.integer "event_id"
     t.integer "genre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "event_updates", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "updated_by"
+    t.integer "action"
+    t.integer "field"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -121,6 +139,16 @@ ActiveRecord::Schema.define(version: 20180205142456) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "history_actions", force: :cascade do |t|
+    t.integer "action"
+    t.integer "object_type"
+    t.integer "field"
+    t.integer "object_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "images", force: :cascade do |t|

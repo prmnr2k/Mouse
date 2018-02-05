@@ -11,7 +11,7 @@ class AuthenticateController < ApplicationController
 	
 	# POST /auth/forgot_password
 	swagger_api :forgot_password do
-		summary "Authorize by username and password"
+		summary "Remind password"
 		param :form, :user_name, :string, :optional, "Username"
 		param :form, :email, :string, :optional, "Email"
 		response :unauthorized

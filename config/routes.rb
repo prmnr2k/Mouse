@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'accounts/:id/images', action: :get_images, controller: 'accounts'
   get 'accounts/:id/followers', action: :get_followers, controller: 'accounts'
   get 'accounts/:id/following', action: :get_followed, controller: 'accounts'
+  get 'accounts/:id/updates', action: :get_updates, controller: 'accounts'
   post 'accounts', action: :create, controller: 'accounts'
   post 'accounts/:id/images', action: :upload_image, controller: 'accounts'
   post 'accounts/:id/follow', action: :follow, controller: 'accounts'
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
   get 'events/:id/click', action: :click, controller: 'events'
   get 'events/:id/view', action: :view, controller: 'events'
   get 'events/:id/analytics', action: :analytics, controller: 'events'
+  get 'events/:id/updates', action: :get_updates, controller: 'events'
 
   # genre routes
   get 'genres/all', action: :all, controller: 'genres'

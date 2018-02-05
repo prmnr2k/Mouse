@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
-                                   :like, :unlike, :analytics, :click, :view]
+                                   :like, :unlike, :analytics, :click, :view, :get_updates]
   before_action :authorize_account, only: [:create]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
@@ -27,6 +27,16 @@ class EventsController < ApplicationController
   end
   def show  
     render json: @event, extended: true, status: :ok
+  end
+
+  # GET /events/1/updates
+  swagger_api :get_updates do
+    summary "Retrieve event updates by id"
+    param :path, :id, :integer, :required, "Event id"
+    response :ok
+  end
+  def get_updates  
+    render json: @event.event_updates
   end
 
   # POST /events
@@ -87,6 +97,14 @@ class EventsController < ApplicationController
     set_collaborators
 
     if @event.update(event_params)
+
+      params.each do |param|
+        if HistoryHelper::EVENT_FIELDS.include?(param.to_sym)
+          action = EventUpdate.new(action: :update, updated_by: @account.id, event_id: @event.id, field: param)
+          action.save
+        end
+      end
+
       render json: @event, extended: true, status: :ok
     else
       render json: @event.errors, status: :unprocessable_entity

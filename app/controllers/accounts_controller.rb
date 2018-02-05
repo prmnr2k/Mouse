@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
     before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple]  
-    before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed]
+    before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates]
     before_action :find_follower_account, only: [:follow, :unfollow]
     before_action :find_image, only: [:delete_image]
     swagger_controller :accounts, "Accounts"
@@ -19,6 +19,17 @@ class AccountsController < ApplicationController
         set_extended
         render json: @to_find, extended: @extended, status: :ok
     end
+
+    # GET /account/1/updates
+    swagger_api :get_updates do
+        summary "Retrieve account updates by id"
+        param :path, :id, :integer, :required, "Account id"
+        response :ok
+    end
+    def get_updates  
+        render json: @to_find.account_updates
+    end
+
 
     # GET /accounts/
     swagger_api :get_all do
@@ -409,6 +420,12 @@ class AccountsController < ApplicationController
             if @account.venue 
                 @venue = @account.venue
                 @venue.update(venue_params)
+                params.each do |param|
+                    if HistoryHelper::VENUE_FIELDS.include?(param.to_sym)
+                        action = AccountUpdate.new(action: :update, updated_by: @account.id, account_id: @account.id, field: param)
+                        action.save
+                    end
+                end
             else
                 @venue = Venue.new(venue_params)
                 render @venue.errors and return if not @venue.save
@@ -471,6 +488,12 @@ class AccountsController < ApplicationController
             if @account.artist
                 @artist = @account.artist
                 @artist.update(artist_params)
+                params.each do |param|
+                    if HistoryHelper::ARTIST_FIELDS.include?(param.to_sym)
+                        action = AccountUpdate.new(action: :update, updated_by: @account.id, account_id: @account.id, field: param)
+                        action.save
+                    end
+                end
             else
                 @artist = Artist.new(artist_params)
                 render @artist.errors and return if not @artist.save

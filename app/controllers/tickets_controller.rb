@@ -42,6 +42,10 @@ class TicketsController < ApplicationController
 
     if @ticket.save
       change_event_tickets
+
+      action = EventUpdate.new(action: :add_ticket, updated_by: @account.id, event_id: @event.id)
+      action.save
+      
       render json: @ticket, status: :created
     else
       render json: @ticket.errors, status: :unprocessable_entity
