@@ -8,25 +8,8 @@
       "path": "/auth/login.json",
       "operations": [
         {
-          "summary": [
-            "Authorize by username and password",
-            "Authorize by username and password"
-          ],
+          "summary": "Authorize by username and password",
           "parameters": [
-            {
-              "paramType": "form",
-              "name": "user_name",
-              "type": "string",
-              "description": "Username",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "email",
-              "type": "string",
-              "description": "Email",
-              "required": false
-            },
             {
               "paramType": "form",
               "name": "user_name",
@@ -54,14 +37,42 @@
               "code": 401,
               "responseModel": null,
               "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Authenticate#login",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/auth/forgot_password.json",
+      "operations": [
+        {
+          "summary": "Authorize by username and password",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Username",
+              "required": false
             },
+            {
+              "paramType": "form",
+              "name": "email",
+              "type": "string",
+              "description": "Email",
+              "required": false
+            }
+          ],
+          "responseMessages": [
             {
               "code": 401,
               "responseModel": null,
               "message": "Unauthorized"
             }
           ],
-          "nickname": "Authenticate#login",
+          "nickname": "Authenticate#forgot_password",
           "method": "post"
         }
       ]
