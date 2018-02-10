@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205170259) do
+ActiveRecord::Schema.define(version: 20180209203822) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,8 @@ ActiveRecord::Schema.define(version: 20180205170259) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
+    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
   end
 
   create_table "event_collaborators", force: :cascade do |t|
@@ -89,17 +91,17 @@ ActiveRecord::Schema.define(version: 20180205170259) do
     t.integer "funding_goal"
     t.integer "creator_id"
     t.integer "artist_id"
-    t.integer "venue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_active", default: false
     t.integer "views", default: 0
     t.integer "clicks", default: 0
-    t.datetime "date"
     t.boolean "has_vr", default: false
     t.boolean "has_in_person", default: false
     t.boolean "updates_available", default: false
     t.boolean "comments_available", default: false
+    t.datetime "date_from"
+    t.datetime "date_to"
   end
 
   create_table "fan_genres", force: :cascade do |t|
@@ -139,16 +141,6 @@ ActiveRecord::Schema.define(version: 20180205170259) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
   end
 
   create_table "images", force: :cascade do |t|
@@ -251,6 +243,11 @@ ActiveRecord::Schema.define(version: 20180205170259) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "venue_events", force: :cascade do |t|
+    t.integer "venue_id"
+    t.integer "event_id"
   end
 
   create_table "venue_office_hours", force: :cascade do |t|

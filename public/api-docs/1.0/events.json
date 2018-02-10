@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-  "basePath": "https://mouse-back.herokuapp.com",
+  "basePath": "http://localhost:3000",
   "resourcePath": "events",
   "apis": [
     {
@@ -103,6 +103,53 @@
             }
           ],
           "nickname": "Events#search",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/events/my.json",
+      "operations": [
+        {
+          "summary": "Get my events",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Fan id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Auth token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Events#my",
           "method": "get"
         }
       ]

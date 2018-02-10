@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
-                                   :like, :unlike, :analytics, :click, :view, :get_updates]
-  before_action :authorize_account, only: [:create]
+                                   :like, :unlike, :analytics, :click, :view]
+  before_action :authorize_account, only: [:create, :my]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
@@ -163,7 +163,7 @@ class EventsController < ApplicationController
     @venue_acc = Account.find(params[:venue_id])
     if @venue_acc
       if @venue_acc.account_type == 'venue'
-        @event.venue = @venue_acc.venue
+        @event.venues << @venue_acc
         @event.save
         render status: :ok
       else
@@ -248,6 +248,21 @@ class EventsController < ApplicationController
     render status: :ok
   end
 
+  # GET /events/my
+  swagger_api :my do
+    summary "Get my events"
+    param :query, :account_id, :integer, :required, "Fan id"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
+    param :header, 'Authorization', :string, :required, "Auth token"
+    response :unauthorized
+  end
+  def my
+    @events = Event.where(creator: params[:account_id])
+
+    render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
+  end
+
   # DELETE /events/1
   swagger_api :destroy do
     summary "Destroy event by id"
@@ -298,7 +313,7 @@ class EventsController < ApplicationController
     def authorize_account
       @user = AuthorizeHelper.authorize(request)
       @account = Account.find(params[:account_id])
-      render status: :unauthorized if @user == nil or @account.user != @user
+      render status: :unauthorized if @user == nil or @account.user != @user or @account.account_type != 'fan'
     end
 
     def authorize_creator

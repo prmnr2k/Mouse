@@ -14,6 +14,9 @@ class Account < ApplicationRecord
 	has_many :followings_conn, foreign_key: 'by_id', class_name: 'Follower', dependent: :destroy
 	has_many :following, through: :followings_conn, source: 'to'
 
+	has_many :venue_events, foreign_key: 'venue_id'
+	has_many :events, through: :venue_events
+
 	belongs_to :user
 	belongs_to :fan, optional: true
 	belongs_to :artist, optional: true

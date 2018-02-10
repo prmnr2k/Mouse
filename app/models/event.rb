@@ -3,13 +3,16 @@ class Event < ApplicationRecord
 
   has_many :event_collaborators, foreign_key: 'event_id'
   has_many :collaborators, through: :event_collaborators, class_name: 'Account'
+
   has_many :tickets, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
   has_many :event_updates
 
+  has_many :venue_events, foreign_key: 'event_id'
+  has_many :venues, through: :venue_events, source: :account, class_name: 'Account'
+
   has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
-  belongs_to :venue, optional: true
   belongs_to :artist, optional: true
 
   def as_json(options={})
@@ -23,14 +26,14 @@ class Event < ApplicationRecord
       res[:collaborators] = collaborators
       res[:genres] = genres.pluck(:genre)
       res[:artist] = artist
-      res[:venue] = venue  
+      res[:venue] = venues
       res[:tickets] = tickets.as_json(only: [:id, :name, :type])
     elsif options[:analytics]
-      res[:location] = venue.address if venue
+      # res[:location] = venue.address if venue
       res[:comments] = comments.count
       res[:likes] = likes.count
     else
-      res[:location] = venue.address if venue
+      # res[:location] = venue.address if venue
     end
     return res
   end

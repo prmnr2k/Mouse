@@ -15,8 +15,6 @@ class Venue < ApplicationRecord
     has_many :emails, foreign_key: 'venue_id', class_name: 'VenueEmail'
 
     has_one :account
-
-    has_many :events
     
     geocoded_by :address, latitude: :lat, longitude: :lng 
     reverse_geocoded_by :lat, :lng, address: :address

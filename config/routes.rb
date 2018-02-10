@@ -47,6 +47,7 @@ Rails.application.routes.draw do
 
   # event routes
   get 'events/search', action: :search, controller: 'events'
+  get 'events/my', action: :my, controller: 'events'
   resources :events do
     resources :tickets, except: :index
     resources :comments
