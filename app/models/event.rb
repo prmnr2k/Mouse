@@ -1,19 +1,23 @@
 class Event < ApplicationRecord
+  validates_length_of :description, maximum: 500, allow_blank: true
+
   belongs_to :creator, class_name: 'Account'
+
+  enum event_month: [:jan, :feb, :mar, :apr, :may, :jun, :jul, :aug, :sep, :oct, :nov, :dec]
+  enum event_time: [:morning, :afternoon, :evening]
 
   has_many :event_collaborators, foreign_key: 'event_id'
   has_many :collaborators, through: :event_collaborators, class_name: 'Account'
 
+  has_many :venue_events, foreign_key: 'event_id'
+  has_many :venues, through: :venue_events, source: :account, class_name: 'Account'
+  belongs_to :artist, optional: true
+
+  has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
   has_many :tickets, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
   has_many :event_updates
-
-  has_many :venue_events, foreign_key: 'event_id'
-  has_many :venues, through: :venue_events, source: :account, class_name: 'Account'
-
-  has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
-  belongs_to :artist, optional: true
 
   def as_json(options={})
     res = super

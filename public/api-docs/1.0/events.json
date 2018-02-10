@@ -209,13 +209,6 @@
             },
             {
               "paramType": "form",
-              "name": "date",
-              "type": "datetime",
-              "description": "Event date",
-              "required": false
-            },
-            {
-              "paramType": "form",
               "name": "tagline",
               "type": "string",
               "description": "Tagline",
@@ -261,6 +254,76 @@
               "name": "comments_available",
               "type": "boolean",
               "description": "Is comments available",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "date_from",
+              "type": "datetime",
+              "description": "Date from",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "date_to",
+              "type": "datetime",
+              "description": "Date to",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "event_month",
+              "type": "integer",
+              "description": "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',\n                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "event_year",
+              "type": "integer",
+              "description": "Event year range",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "event_length",
+              "type": "integer",
+              "description": "Event length in hours",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "event_time",
+              "type": "integer",
+              "description": "Event time. One of ['morning', 'afternoon', 'evening']",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "crowdfunding_event",
+              "type": "boolean",
+              "description": "Is crowdfunding event",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "city_lat",
+              "type": "float",
+              "description": "Event city lat",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "city_lng",
+              "type": "float",
+              "description": "Event city lng",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "artists_number",
+              "type": "integer",
+              "description": "Event artists number",
               "required": false
             },
             {
@@ -409,6 +472,76 @@
               "name": "comments_available",
               "type": "boolean",
               "description": "Is comments available",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "date_from",
+              "type": "datetime",
+              "description": "Date from",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "date_to",
+              "type": "datetime",
+              "description": "Date to",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "event_month",
+              "type": "integer",
+              "description": "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',\n                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "event_year",
+              "type": "integer",
+              "description": "Event year range",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "event_length",
+              "type": "integer",
+              "description": "Event length in hours",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "event_time",
+              "type": "integer",
+              "description": "Event time. One of ['morning', 'afternoon', 'evening']",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "crowdfunding_event",
+              "type": "boolean",
+              "description": "Is crowdfunding event",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "city_lat",
+              "type": "float",
+              "description": "Event city lat",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "city_lng",
+              "type": "float",
+              "description": "Event city lng",
+              "required": false
+            },
+            {
+              "paramType": "events",
+              "name": "artists_number",
+              "type": "integer",
+              "description": "Event artists number",
               "required": false
             },
             {

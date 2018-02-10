@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180209203822) do
+ActiveRecord::Schema.define(version: 20180210173352) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 20180209203822) do
   create_table "events", force: :cascade do |t|
     t.string "name"
     t.string "tagline"
-    t.string "description"
+    t.string "description", limit: 500
     t.datetime "funding_from"
     t.datetime "funding_to"
     t.integer "funding_goal"
@@ -102,6 +102,14 @@ ActiveRecord::Schema.define(version: 20180209203822) do
     t.boolean "comments_available", default: false
     t.datetime "date_from"
     t.datetime "date_to"
+    t.integer "event_month"
+    t.integer "event_year"
+    t.integer "event_length"
+    t.integer "event_time"
+    t.boolean "crowdfunding_event"
+    t.float "city_lat"
+    t.float "city_lng"
+    t.integer "artists_number"
   end
 
   create_table "fan_genres", force: :cascade do |t|

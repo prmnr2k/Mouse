@@ -44,7 +44,6 @@ class EventsController < ApplicationController
     summary 'Create event'
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :name, :string, :optional, "Event name"
-    param :form, :date, :datetime, :optional, "Event date"
     param :form, :tagline, :string, :optional, "Tagline"
     param :form, :description, :string, :optional, "Short description"
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
@@ -52,6 +51,17 @@ class EventsController < ApplicationController
     param :form, :funding_goal, :integer, :optional, "Funding goal"
     param :form, :updates_available, :boolean, :optional, "Is updates available"
     param :form, :comments_available, :boolean, :optional, "Is comments available"
+    param :form, :date_from, :datetime, :optional, "Date from"
+    param :form, :date_to, :datetime, :optional, "Date to"
+    param :form, :event_month, :integer, :optional, "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']"
+    param :events, :event_year, :integer, :optional, "Event year range"
+    param :events, :event_length, :integer, :optional, "Event length in hours"
+    param :events, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
+    param :events, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
+    param :events, :city_lat, :float, :optional, "Event city lat"
+    param :events, :city_lng, :float, :optional, "Event city lng"
+    param :events, :artists_number, :integer, :optional, "Event artists number"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -86,6 +96,17 @@ class EventsController < ApplicationController
     param :form, :funding_goal, :integer, :optional, "Funding goal"
     param :form, :updates_available, :boolean, :optional, "Is updates available"
     param :form, :comments_available, :boolean, :optional, "Is comments available"
+    param :form, :date_from, :datetime, :optional, "Date from"
+    param :form, :date_to, :datetime, :optional, "Date to"
+    param :form, :event_month, :integer, :optional, "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']"
+    param :events, :event_year, :integer, :optional, "Event year range"
+    param :events, :event_length, :integer, :optional, "Event length in hours"
+    param :events, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
+    param :events, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
+    param :events, :city_lat, :float, :optional, "Event city lat"
+    param :events, :city_lng, :float, :optional, "Event city lng"
+    param :events, :artists_number, :integer, :optional, "Event artists number"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -391,7 +412,9 @@ class EventsController < ApplicationController
 
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to,
-                    :funding_goal, :date, :comments_available, :updates_available)
+                    :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
+                    :event_month, :event_year, :event_length, :event_time, :crowdfunding_event,
+                    :city_lat, :city_lng, :artists_number)
     end
 
     def authorize
