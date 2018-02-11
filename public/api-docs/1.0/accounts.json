@@ -365,6 +365,13 @@
             },
             {
               "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "account_type",
               "type": "string",
               "description": "Account type",
@@ -810,6 +817,13 @@
               "name": "phone",
               "type": "string",
               "description": "Account's phone",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
               "required": false
             },
             {

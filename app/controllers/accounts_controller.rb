@@ -212,6 +212,7 @@ class AccountsController < ApplicationController
       param :form, :user_name, :string, :required, "Account's name"
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
+      param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
@@ -256,7 +257,7 @@ class AccountsController < ApplicationController
         if @account.save
             set_image
             set_base64_image
-            
+
             set_fan_params
             set_venue_params
             set_artist_params
@@ -275,6 +276,7 @@ class AccountsController < ApplicationController
       param :form, :user_name, :string, :optional, "Account's name"
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
+      param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :optional, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
@@ -392,9 +394,9 @@ class AccountsController < ApplicationController
     end
 
     def set_base64_image
-        if params[:base64]
+        if params[:image_base64]
             #@account.image.delete if @account.image != nil
-            image = Image.new(base64: params[:base64])
+            image = Image.new(base64: params[:image_base64])
             #image.save
             @account.image = image
             @account.images << image
