@@ -255,7 +255,8 @@ class AccountsController < ApplicationController
 
         if @account.save
             set_image
-
+            set_base64_image
+            
             set_fan_params
             set_venue_params
             set_artist_params
@@ -313,7 +314,8 @@ class AccountsController < ApplicationController
     end
     def update
         set_image
-        
+        set_base64_image
+
         set_fan_params
         set_venue_params
         set_artist_params
@@ -388,6 +390,17 @@ class AccountsController < ApplicationController
             @account.images << image
         end
     end
+
+    def set_base64_image
+        if params[:base64]
+            #@account.image.delete if @account.image != nil
+            image = Image.new(base64: params[:base64])
+            #image.save
+            @account.image = image
+            @account.images << image
+        end
+    end
+
 
     def set_fan_params
         if @account.account_type == 'fan'
