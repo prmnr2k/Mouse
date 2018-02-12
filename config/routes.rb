@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
   patch 'accounts/:id', action: :update, controller: 'accounts'
   delete 'accounts/:id/unfollow', action: :unfollow, controller: 'accounts'
-  #delete 'accounts/:account_id', action: :delete, controller: 'accounts'
+  delete 'accounts/:id', action: :delete, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 

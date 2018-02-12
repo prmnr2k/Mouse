@@ -365,6 +365,13 @@
             },
             {
               "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "account_type",
               "type": "string",
               "description": "Account type",
@@ -814,6 +821,13 @@
             },
             {
               "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "account_type",
               "type": "string",
               "description": "Account type",
@@ -1130,6 +1144,25 @@
             }
           ],
           "nickname": "Accounts#unfollow",
+          "method": "delete"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}.json",
+      "operations": [
+        {
+          "summary": "Delete account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            }
+          ],
+          "nickname": "Accounts#delete",
           "method": "delete"
         }
       ]

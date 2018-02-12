@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple]  
+    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple, :delete]  
     before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates]
     before_action :find_follower_account, only: [:follow, :unfollow]
     before_action :find_image, only: [:delete_image]
@@ -212,6 +212,7 @@ class AccountsController < ApplicationController
       param :form, :user_name, :string, :required, "Account's name"
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
+      param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
@@ -255,6 +256,7 @@ class AccountsController < ApplicationController
 
         if @account.save
             set_image
+            set_base64_image
 
             set_fan_params
             set_venue_params
@@ -274,6 +276,7 @@ class AccountsController < ApplicationController
       param :form, :user_name, :string, :optional, "Account's name"
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
+      param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :optional, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
@@ -313,7 +316,8 @@ class AccountsController < ApplicationController
     end
     def update
         set_image
-        
+        set_base64_image
+
         set_fan_params
         set_venue_params
         set_artist_params
@@ -388,6 +392,17 @@ class AccountsController < ApplicationController
             @account.images << image
         end
     end
+
+    def set_base64_image
+        if params[:image_base64]
+            #@account.image.delete if @account.image != nil
+            image = Image.new(base64: params[:image_base64])
+            #image.save
+            @account.image = image
+            @account.images << image
+        end
+    end
+
 
     def set_fan_params
         if @account.account_type == 'fan'
