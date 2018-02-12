@@ -1147,6 +1147,25 @@
           "method": "delete"
         }
       ]
+    },
+    {
+      "path": "/accounts/{id}.json",
+      "operations": [
+        {
+          "summary": "Delete account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            }
+          ],
+          "nickname": "Accounts#delete",
+          "method": "delete"
+        }
+      ]
     }
   ],
   "authorizations": null

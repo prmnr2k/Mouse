@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple]  
+    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple, :delete]  
     before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates]
     before_action :find_follower_account, only: [:follow, :unfollow]
     before_action :find_image, only: [:delete_image]
