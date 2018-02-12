@@ -158,7 +158,7 @@ class EventsController < ApplicationController
     @artist_acc = Account.find(params[:artist_id])
     if @artist_acc
       if @artist_acc.account_type == 'artist'
-        @event.artist = @artist_acc.artist
+        @event.artists << @artist_acc
         @event.save
         render status: :ok
       else

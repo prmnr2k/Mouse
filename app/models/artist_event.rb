@@ -1,10 +1,10 @@
-class VenueEvent < ApplicationRecord
+class ArtistEvent < ApplicationRecord
   enum status: StatusHelper.all
 
   belongs_to :event
-  belongs_to :account, foreign_key: :venue_id
+  belongs_to :account, foreign_key: :artist_id
 
-  validates_uniqueness_of :event_id, scope: [:venue_id]
+  validates_uniqueness_of :event_id, scope: [:artist_id]
 
   def as_json(options={})
     res = super

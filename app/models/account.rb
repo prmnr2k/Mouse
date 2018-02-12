@@ -15,7 +15,7 @@ class Account < ApplicationRecord
 	has_many :following, through: :followings_conn, source: 'to'
 
 	has_many :venue_events, foreign_key: 'venue_id'
-	has_many :events, through: :venue_events
+	has_many :artist_events, foreign_key: 'artist_id'
 
 	belongs_to :user
 	belongs_to :fan, optional: true
