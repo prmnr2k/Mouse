@@ -63,6 +63,8 @@ Rails.application.routes.draw do
   get 'events/:id/view', action: :view, controller: 'events'
   get 'events/:id/analytics', action: :analytics, controller: 'events'
   get 'events/:id/updates', action: :get_updates, controller: 'events'
+  delete 'events/:id/artist', action: :delete_artist, controller: 'events'
+  delete 'events/:id/venue', action: :delete_venue, controller: 'events'
 
   # genre routes
   get 'genres/all', action: :all, controller: 'genres'

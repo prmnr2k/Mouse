@@ -1,5 +1,5 @@
 class StatusHelper
   def self.all
-    return [:active, :pending, :declined]
+    return [:pending, :active, :declined]
   end
 end

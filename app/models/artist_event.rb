@@ -6,6 +6,12 @@ class ArtistEvent < ApplicationRecord
 
   validates_uniqueness_of :event_id, scope: [:artist_id]
 
+  after_initialize :set_defaults
+
+  def set_defaults
+    self.status = "pending" if self.new_record?
+  end
+
   def as_json(options={})
     res = super
     res.delete('id')

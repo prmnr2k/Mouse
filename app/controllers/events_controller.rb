@@ -1,8 +1,9 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
-                                   :like, :unlike, :analytics, :click, :view]
+                                   :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist]
   before_action :authorize_account, only: [:create, :my]
-  before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :set_active]
+  before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
+                                           :delete_venue, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
 
@@ -155,17 +156,35 @@ class EventsController < ApplicationController
     response :not_found
   end
   def set_artist
-    @artist_acc = Account.find(params[:artist_id])
-    if @artist_acc
-      if @artist_acc.account_type == 'artist'
-        @event.artists << @artist_acc
-        @event.save
-        render status: :ok
-      else
-        render status: :unprocessable_entity
-      end
+    if artist_available?
+      @event.artists << @artist_acc
+      @event.save
+      render status: :ok
     else
-      render status: :not_found
+      render status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /events/1/artist
+  swagger_api :delete_artist do
+    summary "Remove artist from event"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :artist_id, :integer, :required, "Artist account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def delete_artist
+    @artist_acc = Account.find(params[:artist_id])
+
+    if @artist_acc and @artist_acc.account_type == 'artist'
+      @event.artists.delete(@artist_acc)
+      # @event.save
+      render status: :ok
+    else
+      render status: :unprocessable_entity
     end
   end
 
@@ -181,17 +200,35 @@ class EventsController < ApplicationController
     response :not_found
   end
   def set_venue
-    @venue_acc = Account.find(params[:venue_id])
-    if @venue_acc
-      if @venue_acc.account_type == 'venue'
-        @event.venues << @venue_acc
-        @event.save
-        render status: :ok
-      else
-        render status: :unprocessable_entity
-      end
+    if venue_available?
+      @event.venues << @venue_acc
+      @event.save
+      render status: :ok
     else
-      render status: :not_found
+      render status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /events/1/venue
+  swagger_api :delete_venue do
+    summary "Remove venue from event"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :venuee_id, :integer, :required, "Vneue account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def delete_venue
+    @venue_acc = Account.find(params[:venue_id])
+
+    if @venue_acc and @venue_acc.account_type == 'venue'
+      @event.venues.delete(@venue_acc)
+      # @event.save
+      render status: :ok
+    else
+      render status: :unprocessable_entity
     end
   end
 
@@ -408,6 +445,28 @@ class EventsController < ApplicationController
         end
         @events = @events.joins(:tickets => :tickets_type).where(:tickets_types => {name: types})
       end
+    end
+
+    def artist_available?
+      @artist_acc = Account.find(params[:artist_id])
+
+      if @artist_acc and @artist_acc.account_type == 'artist' and
+            @event.artist_events.where.not(status: 'declined').count < Rails.configuration.number_of_artists
+        return true
+      end
+
+      return false
+    end
+
+    def venue_available?
+      @venue_acc = Account.find(params[:venue_id])
+
+      if @venue_acc and @venue_acc.account_type == 'venue' and
+            @event.venue_events.where.not(status: 'declined').count < Rails.configuration.number_of_venues
+        return true
+      end
+
+      return false
     end
 
     def event_params
