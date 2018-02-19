@@ -332,6 +332,9 @@ class AccountsController < ApplicationController
       summary "Search account"
       param :query, :text, :string, :optional, "Search query"
       param :query, :type, :string, :optional, "Account type to display"
+      param :query, :price_from, :integer, :optional, "Artist price from"
+      param :query, :price_to, :integer, :optional, "Artist price to"
+      param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
       param :query, :limit, :integer, :optional, "Limit"
       param :query, :offset, :integer, :optional, "Offset"
     end
@@ -345,6 +348,9 @@ class AccountsController < ApplicationController
       if params[:type]
         @accounts = @accounts.where(account_type: params[:type])
       end
+
+      search_price
+      search_genres
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
     end
@@ -536,6 +542,22 @@ class AccountsController < ApplicationController
         elsif params[:extended] == 'false'
             @extended = false
         end
+    end
+
+    def search_price
+      if params[:price_from] and params[:price_to] and params[:type] == 'artist'
+        @accounts = @accounts.joins(:artist).where(price: params[:price_from]..params[:price_to])
+      end
+    end
+
+    def search_genres
+      if params[:genres] and params[:type] == 'artist'
+        genres = []
+        params[:genres].each do |genre|
+          genres.append(ArtistGenre.genres[genre])
+        end
+        @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
+      end
     end
 
     def account_params

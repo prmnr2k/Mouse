@@ -66,6 +66,27 @@
             },
             {
               "paramType": "query",
+              "name": "price_from",
+              "type": "integer",
+              "description": "Artist price from",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "price_to",
+              "type": "integer",
+              "description": "Artist price to",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "genres",
+              "type": "string",
+              "description": "Array of genres ['rap', 'rock', ....]",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",
