@@ -217,8 +217,8 @@ class AccountsController < ApplicationController
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :address, :string, :optional, "Fan address"
-      param :form, :lat, :float, :optional, "Fan lat"
-      param :form, :lng, :float, :optional, "Fan lng"
+      param :form, :lat, :float, :optional, "Fan/Artist lat"
+      param :form, :lng, :float, :optional, "Fan/Artist lng"
       param :form, :description, :string, :optional, "Venue description"
       param :form, :phone, :string, :optional, "Venue phone"
       param :form, :fax, :string, :optional, "Venue fax"
@@ -246,6 +246,7 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :about, :string, :optional, "About artist"
+      param :form, :price, :integer, :optional, "Artist price"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -281,8 +282,8 @@ class AccountsController < ApplicationController
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :address, :string, :optional, "Fan address"
-      param :form, :lat, :float, :optional, "Fan lat"
-      param :form, :lng, :float, :optional, "Fan lng"
+      param :form, :lat, :float, :optional, "Fan/Artist lat"
+      param :form, :lng, :float, :optional, "Fan/Artist lng"
       param :form, :description, :string, :optional, "Venue description"
       param :form, :phone, :string, :optional, "Venue phone"
       param :form, :fax, :string, :optional, "Venue fax"
@@ -310,6 +311,7 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :about, :string, :optional, "About artist"
+      param :form, :price, :integer, :optional, "Artist price"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -589,6 +591,6 @@ class AccountsController < ApplicationController
     end
 
     def artist_params
-        params.permit(:about)
+        params.permit(:about, :lat, :lng, :price)
     end
 end

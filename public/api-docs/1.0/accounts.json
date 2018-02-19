@@ -431,14 +431,14 @@
               "paramType": "form",
               "name": "lat",
               "type": "float",
-              "description": "Fan lat",
+              "description": "Fan/Artist lat",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lng",
               "type": "float",
-              "description": "Fan lng",
+              "description": "Fan/Artist lng",
               "required": false
             },
             {
@@ -636,6 +636,13 @@
               "name": "about",
               "type": "string",
               "description": "About artist",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price",
+              "type": "integer",
+              "description": "Artist price",
               "required": false
             },
             {
@@ -887,14 +894,14 @@
               "paramType": "form",
               "name": "lat",
               "type": "float",
-              "description": "Fan lat",
+              "description": "Fan/Artist lat",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lng",
               "type": "float",
-              "description": "Fan lng",
+              "description": "Fan/Artist lng",
               "required": false
             },
             {
@@ -1092,6 +1099,13 @@
               "name": "about",
               "type": "string",
               "description": "About artist",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price",
+              "type": "integer",
+              "description": "Artist price",
               "required": false
             },
             {
