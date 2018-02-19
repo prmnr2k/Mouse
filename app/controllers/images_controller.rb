@@ -26,6 +26,26 @@ class ImagesController < ApplicationController
     send_data Base64.decode64(@image.base64), :type => 'image/png', :disposition => 'inline'
   end
 
+  swagger_api :full_with_size do
+    summary "Get full image with size"
+    param :path, :id, :integer, :required, "Image id"
+    response :not_found
+  end
+  def full_with_size
+    @image = Image.find(params[:id])
+    if not @image
+      render status: :not_found and return
+    end
+    blob = Base64.decode64(@image.base64)
+    image = MiniMagick::Image.read(blob)
+    hashed = {
+      url: "https://mouse-back.herokuapp.com/images/#{params[:id]}/full",
+      width: image.width,
+      height: image.height
+    }
+    render json: hashed
+  end
+
   swagger_api :preview do
     summary "Get preview of image object"
     param :path, :id, :integer, :required, "Image id"

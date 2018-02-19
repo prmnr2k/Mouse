@@ -37,6 +37,8 @@ Rails.application.routes.draw do
   get 'images/:id', action: :show, controller: 'images'
   get 'images/:id/full', action: :full, controller: 'images'
   get 'images/:id/preview', action: :preview, controller: 'images'
+  get 'images/:id/size', action: :full_with_size, controller: 'images'
+
   delete 'images/:id', action: :delete_image, controller: 'images'
 
 

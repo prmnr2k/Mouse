@@ -97,6 +97,32 @@
       ]
     },
     {
+      "path": "/images/{id}/size.json",
+      "operations": [
+        {
+          "summary": "Get full image with size",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Image id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Images#full_with_size",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/images/{id}.json",
       "operations": [
         {
