@@ -278,49 +278,49 @@
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "event_year",
               "type": "integer",
               "description": "Event year range",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "event_length",
               "type": "integer",
               "description": "Event length in hours",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "event_time",
               "type": "integer",
               "description": "Event time. One of ['morning', 'afternoon', 'evening']",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "crowdfunding_event",
               "type": "boolean",
               "description": "Is crowdfunding event",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "city_lat",
               "type": "float",
               "description": "Event city lat",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "city_lng",
               "type": "float",
               "description": "Event city lng",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "artists_number",
               "type": "integer",
               "description": "Event artists number",
@@ -496,49 +496,49 @@
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "event_year",
               "type": "integer",
               "description": "Event year range",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "event_length",
               "type": "integer",
               "description": "Event length in hours",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "event_time",
               "type": "integer",
               "description": "Event time. One of ['morning', 'afternoon', 'evening']",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "crowdfunding_event",
               "type": "boolean",
               "description": "Is crowdfunding event",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "city_lat",
               "type": "float",
               "description": "Event city lat",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "city_lng",
               "type": "float",
               "description": "Event city lng",
               "required": false
             },
             {
-              "paramType": "events",
+              "paramType": "form",
               "name": "artists_number",
               "type": "integer",
               "description": "Event artists number",

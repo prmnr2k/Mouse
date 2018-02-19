@@ -56,13 +56,13 @@ class EventsController < ApplicationController
     param :form, :date_to, :datetime, :optional, "Date to"
     param :form, :event_month, :integer, :optional, "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
                                                       'jul', 'aug', 'sep', 'oct', 'nov', 'dec']"
-    param :events, :event_year, :integer, :optional, "Event year range"
-    param :events, :event_length, :integer, :optional, "Event length in hours"
-    param :events, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
-    param :events, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
-    param :events, :city_lat, :float, :optional, "Event city lat"
-    param :events, :city_lng, :float, :optional, "Event city lng"
-    param :events, :artists_number, :integer, :optional, "Event artists number"
+    param :form, :event_year, :integer, :optional, "Event year range"
+    param :form, :event_length, :integer, :optional, "Event length in hours"
+    param :form, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
+    param :form, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
+    param :form, :city_lat, :float, :optional, "Event city lat"
+    param :form, :city_lng, :float, :optional, "Event city lng"
+    param :form, :artists_number, :integer, :optional, "Event artists number"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -101,13 +101,13 @@ class EventsController < ApplicationController
     param :form, :date_to, :datetime, :optional, "Date to"
     param :form, :event_month, :integer, :optional, "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
                                                       'jul', 'aug', 'sep', 'oct', 'nov', 'dec']"
-    param :events, :event_year, :integer, :optional, "Event year range"
-    param :events, :event_length, :integer, :optional, "Event length in hours"
-    param :events, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
-    param :events, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
-    param :events, :city_lat, :float, :optional, "Event city lat"
-    param :events, :city_lng, :float, :optional, "Event city lng"
-    param :events, :artists_number, :integer, :optional, "Event artists number"
+    param :form, :event_year, :integer, :optional, "Event year range"
+    param :form, :event_length, :integer, :optional, "Event length in hours"
+    param :form, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
+    param :form, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
+    param :form, :city_lat, :float, :optional, "Event city lat"
+    param :form, :city_lng, :float, :optional, "Event city lng"
+    param :form, :artists_number, :integer, :optional, "Event artists number"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -451,7 +451,7 @@ class EventsController < ApplicationController
       @artist_acc = Account.find(params[:artist_id])
 
       if @artist_acc and @artist_acc.account_type == 'artist' and
-            @event.artist_events.where.not(status: 'declined').count < Rails.configuration.number_of_artists
+            @event.artist_events.where.not(status: 'declined').count < @event.artists_number
         return true
       end
 

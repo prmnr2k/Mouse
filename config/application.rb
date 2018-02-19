@@ -30,7 +30,6 @@ module Mouse
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.number_of_artists = 6
     config.number_of_venues = 6
   end
 end
