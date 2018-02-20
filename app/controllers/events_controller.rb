@@ -118,18 +118,13 @@ class EventsController < ApplicationController
     set_genres
     set_collaborators
 
-    if @event.update(event_params)
+    forbidden = check_params
+    if not forbidden and @event.update(event_params)
 
-      params.each do |param|
-        if HistoryHelper::EVENT_FIELDS.include?(param.to_sym)
-          action = EventUpdate.new(action: :update, updated_by: @account.id, event_id: @event.id, field: param)
-          action.save
-        end
-      end
-
+      log_update
       render json: @event, extended: true, status: :ok
     else
-      render json: @event.errors, status: :unprocessable_entity
+      render json: @event.errors, status: (forbidden ? forbidden : :unprocessable_entity)
     end
   end
 
@@ -468,6 +463,23 @@ class EventsController < ApplicationController
 
       return false
     end
+
+    def log_update
+      params.each do |param|
+        if HistoryHelper::EVENT_FIELDS.include?(param.to_sym)
+          action = EventUpdate.new(action: :update, updated_by: @account.id, event_id: @event.id, field: param)
+          action.save
+        end
+      end
+    end
+
+  def check_params
+    if params[:date_from] or params[:date_to]
+      founded = @event.tickets.joins(:fan_tickets).sum("fan_tickets.price")
+
+      return :forbidden if founded >= @event.funding_goal
+    end
+  end
 
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to,
