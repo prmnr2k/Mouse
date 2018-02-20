@@ -4,6 +4,10 @@ class Artist < ApplicationRecord
     has_one :account
     has_many :events
 
+    geocoded_by :address, latitude: :lat, longitude: :lng
+    reverse_geocoded_by :lat, :lng, address: :address
+    after_validation :geocode
+
     def as_json(options={})
         if options[:extended]
             res = super.merge(account.get_attrs)

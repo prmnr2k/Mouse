@@ -80,6 +80,13 @@
             },
             {
               "paramType": "query",
+              "name": "address",
+              "type": "string",
+              "description": "Artist address",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "genres",
               "type": "string",
               "description": "Array of genres ['rap', 'rock', ....]",
@@ -424,7 +431,7 @@
               "paramType": "form",
               "name": "address",
               "type": "string",
-              "description": "Fan address",
+              "description": "Fan/Artist address",
               "required": false
             },
             {
@@ -887,7 +894,7 @@
               "paramType": "form",
               "name": "address",
               "type": "string",
-              "description": "Fan address",
+              "description": "Fan/Artist address",
               "required": false
             },
             {

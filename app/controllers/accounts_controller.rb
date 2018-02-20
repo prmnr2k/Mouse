@@ -3,7 +3,6 @@ class AccountsController < ApplicationController
     before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple, :delete]  
     before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates]
     before_action :find_follower_account, only: [:follow, :unfollow]
-    before_action :find_image, only: [:delete_image]
     swagger_controller :accounts, "Accounts"
 
 
@@ -43,7 +42,7 @@ class AccountsController < ApplicationController
         @accounts = Account.all
         @extended = false
         set_extended
-        render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
+        render json: @accounts.order(:id).limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
 
     # GET /accounts/events/1
@@ -58,7 +57,7 @@ class AccountsController < ApplicationController
     def get_events
        @events = @account.events
        @events = @events.simple_search(params[:text])
-       render json: @events.limit(params[:limit]).offset(params[:offset])
+       render json: @events.order(:id).limit(params[:limit]).offset(params[:offset])
     end
 
     # GET /accounts/my
@@ -216,7 +215,7 @@ class AccountsController < ApplicationController
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
-      param :form, :address, :string, :optional, "Fan address"
+      param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
       param :form, :lng, :float, :optional, "Fan/Artist lng"
       param :form, :description, :string, :optional, "Venue description"
@@ -281,7 +280,7 @@ class AccountsController < ApplicationController
       param_list :form, :account_type, :string, :optional, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
-      param :form, :address, :string, :optional, "Fan address"
+      param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
       param :form, :lng, :float, :optional, "Fan/Artist lng"
       param :form, :description, :string, :optional, "Venue description"
@@ -336,6 +335,7 @@ class AccountsController < ApplicationController
       param :query, :type, :string, :optional, "Account type to display"
       param :query, :price_from, :integer, :optional, "Artist price from"
       param :query, :price_to, :integer, :optional, "Artist price to"
+      param :query, :address, :string, :optional, "Artist address"
       param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
       param :query, :limit, :integer, :optional, "Limit"
       param :query, :offset, :integer, :optional, "Offset"
@@ -343,16 +343,11 @@ class AccountsController < ApplicationController
     def search
       @accounts = Account.all
 
-      if params[:text]
-        @accounts = @accounts.search(params[:text])
-      end
-
-      if params[:type]
-        @accounts = @accounts.where(account_type: params[:type])
-      end
-
+      search_text
+      search_type
       search_price
       search_genres
+      search_address
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
     end
@@ -546,6 +541,18 @@ class AccountsController < ApplicationController
         end
     end
 
+    def search_text
+      if params[:text]
+        @accounts = @accounts.search(params[:text])
+      end
+    end
+
+    def search_type
+      if params[:type]
+        @accounts = @accounts.where(account_type: params[:type])
+      end
+    end
+
     def search_price
       if params[:price_from] and params[:price_to] and params[:type] == 'artist'
         @accounts = @accounts.joins(:artist).where(price: params[:price_from]..params[:price_to])
@@ -559,6 +566,13 @@ class AccountsController < ApplicationController
           genres.append(ArtistGenre.genres[genre])
         end
         @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
+      end
+    end
+
+    def search_address
+      if params[:address] and params[:type] == 'artist'
+        artists = Artist.near(params[:address]).select{|a| a.id}
+        @accounts = @accounts.where(artist_id: artists)
       end
     end
 
@@ -591,6 +605,6 @@ class AccountsController < ApplicationController
     end
 
     def artist_params
-        params.permit(:about, :lat, :lng, :price)
+        params.permit(:about, :lat, :lng, :address, :price)
     end
 end
