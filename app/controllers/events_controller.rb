@@ -1,6 +1,7 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
-                                   :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist]
+                                   :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist,
+                                   :get_updates]
   before_action :authorize_account, only: [:create, :my]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
                                            :delete_venue, :set_active]
