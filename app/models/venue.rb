@@ -15,10 +15,6 @@ class Venue < ApplicationRecord
     has_many :emails, foreign_key: 'venue_id', class_name: 'VenueEmail'
 
     has_one :account
-    
-    geocoded_by :address, latitude: :lat, longitude: :lng 
-    reverse_geocoded_by :lat, :lng, address: :address
-    after_validation :geocode
 
     def as_json(options={})
         if options[:extended]

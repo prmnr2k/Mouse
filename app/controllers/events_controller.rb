@@ -1,10 +1,10 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
                                    :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist,
-                                   :get_updates]
+                                   :get_updates, :accept_venue, :decline_venue]
   before_action :authorize_account, only: [:create, :my]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
-                                           :delete_venue, :set_active]
+                                           :delete_venue, :set_active, :accept_venue, :decline_venue]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
 
@@ -63,6 +63,7 @@ class EventsController < ApplicationController
     param :form, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
     param :form, :city_lat, :float, :optional, "Event city lat"
     param :form, :city_lng, :float, :optional, "Event city lng"
+    param :form, :address, :string, :optional, "Event address"
     param :form, :artists_number, :integer, :optional, "Event artists number"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
@@ -108,6 +109,7 @@ class EventsController < ApplicationController
     param :form, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
     param :form, :city_lat, :float, :optional, "Event city lat"
     param :form, :city_lng, :float, :optional, "Event city lng"
+    param :form, :address, :string, :optional, "Event address"
     param :form, :artists_number, :integer, :optional, "Event artists number"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
@@ -205,12 +207,70 @@ class EventsController < ApplicationController
     end
   end
 
+  # POST /events/1/venue/1/accept
+  swagger_api :accept_venue do
+    summary "Accept venue for event"
+    param :path, :id, :integer, :required, "Event id"
+    param :path, :venue_id, :integer, :required, "Venue account id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def accept_venue
+    if @event.venue_id == nil
+      @venue_event = @event.venue_events.find_by(venue_id: params[:venue_id])
+
+      if @venue_event and @venue_event.status == 'active'
+        @venue_event.status = 'accepted'
+        @venue_event.save
+
+        change_event
+        render status: :ok
+      else
+        render status: :not_found
+      end
+    else
+      render status: :unprocessable_entity
+    end
+  end
+
+  # POST /events/1/venue/1/decline
+  swagger_api :decline_venue do
+    summary "Decline venue for event"
+    param :path, :id, :integer, :required, "Event id"
+    param :path, :venue_id, :integer, :required, "Venue account id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def decline_venue
+    if @event.venue_id != nil
+      @venue_event = @event.venue_events.find_by(venue_id: params[:venue_id])
+
+      if @venue_event and @venue_event.status == 'accepted'
+        @venue_event.status = 'active'
+        @venue_event.save
+
+        change_event_back
+        render status: :ok
+      else
+        render status: :not_found
+      end
+    else
+      render status: :unprocessable_entity
+    end
+  end
+
   # DELETE /events/1/venue
   swagger_api :delete_venue do
     summary "Remove venue from event"
     param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :venuee_id, :integer, :required, "Vneue account id"
+    param :form, :venue_id, :integer, :required, "Venue account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -219,7 +279,7 @@ class EventsController < ApplicationController
   def delete_venue
     @venue_acc = Account.find(params[:venue_id])
 
-    if @venue_acc and @venue_acc.account_type == 'venue'
+    if @venue_acc and @venue_acc.account_type == 'venue' and @event.venue_id != nil
       @event.venues.delete(@venue_acc)
       # @event.save
       render status: :ok
@@ -411,15 +471,13 @@ class EventsController < ApplicationController
 
     def search_location
       if params[:location]
-        venues = Venue.near(params[:location]).select{|v| v.id}
-        @events = @events.where(venue_id: venues)
+        @events = @events.near(params[:location])
       end
     end
 
     def search_distance
       if params[:distance] and params[:lng] and params[:lat]
-        venues = Venue.near([params[:lat], params[:lng]], params[:distance]).select{|v| v.id} 
-        @events = @events.where(venue_id: venues)
+        @events = @events.near([params[:lat], params[:lng]], params[:distance])
       end
     end
 
@@ -480,13 +538,41 @@ class EventsController < ApplicationController
 
       return :forbidden if founded >= @event.funding_goal
     end
+
+    if (params[:address] or params[:city_lat] or params[:city_lng]) and @event.venue_id != nil
+      return :forbidden
+    end
+  end
+
+  def change_event
+    @venue_acc = @venue_event.account
+
+    # save to rollback
+    @event.old_address = @event.address
+    @event.old_city_lat = @event.city_lat
+    @event.old_city_lng = @event.city_lng
+
+    @event.address = @venue_acc.venue.address
+    @event.city_lat = @venue_acc.venue.lat
+    @event.city_lng = @venue_acc.venue.lng
+    @event.venue_id = @venue_acc.venue.id
+    @event.save!
+  end
+
+  def change_event_back
+    @event.address = @event.old_address
+    @event.city_lat = @event.old_city_lat
+    @event.city_lng = @event.old_city_lng
+    @event.venue_id = nil
+
+    @event.save!
   end
 
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to,
                     :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
                     :event_month, :event_year, :event_length, :event_time, :crowdfunding_event,
-                    :city_lat, :city_lng, :artists_number)
+                    :city_lat, :city_lng, :address, :artists_number)
     end
 
     def authorize

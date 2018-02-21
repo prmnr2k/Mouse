@@ -21,10 +21,17 @@ class Event < ApplicationRecord
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
   has_many :event_updates
 
+  geocoded_by :address, latitude: :city_lat, longitude: :city_lng
+  reverse_geocoded_by :city_lat, :city_lng, address: :address
+  after_validation :geocode
+
   def as_json(options={})
     res = super
     res.delete('artist_id')
     res.delete('venue_id')
+    res.delete('old_address')
+    res.delete('old_city_lat')
+    res.delete('old_city_lng')
     res[:backers] = tickets.joins(:fan_tickets).pluck(:account_id).uniq.count
     res[:founded] = tickets.joins(:fan_tickets).sum("fan_tickets.price")
 

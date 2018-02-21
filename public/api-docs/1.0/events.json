@@ -321,6 +321,13 @@
             },
             {
               "paramType": "form",
+              "name": "address",
+              "type": "string",
+              "description": "Event address",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "artists_number",
               "type": "integer",
               "description": "Event artists number",
@@ -539,6 +546,13 @@
             },
             {
               "paramType": "form",
+              "name": "address",
+              "type": "string",
+              "description": "Event address",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "artists_number",
               "type": "integer",
               "description": "Event artists number",
@@ -681,6 +695,63 @@
       ]
     },
     {
+      "path": "/events/{id}/artist.json",
+      "operations": [
+        {
+          "summary": "Remove artist from event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "artist_id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#delete_artist",
+          "method": "delete"
+        }
+      ]
+    },
+    {
       "path": "/events/{id}/venue.json",
       "operations": [
         {
@@ -734,6 +805,177 @@
           ],
           "nickname": "Events#set_venue",
           "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/venue/{venue_id}/accept.json",
+      "operations": [
+        {
+          "summary": "Accept venue for event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "venue_id",
+              "type": "integer",
+              "description": "Venue account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#accept_venue",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/venue/{venue_id}/decline.json",
+      "operations": [
+        {
+          "summary": "Decline venue for event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "venue_id",
+              "type": "integer",
+              "description": "Venue account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#decline_venue",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{id}/venue.json",
+      "operations": [
+        {
+          "summary": "Remove venue from event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "venue_id",
+              "type": "integer",
+              "description": "Venue account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Events#delete_venue",
+          "method": "delete"
         }
       ]
     },
@@ -959,120 +1201,6 @@
           ],
           "nickname": "Events#get_updates",
           "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/events/{id}/artist.json",
-      "operations": [
-        {
-          "summary": "Remove artist from event",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Event id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "account_id",
-              "type": "integer",
-              "description": "Authorized account id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "artist_id",
-              "type": "integer",
-              "description": "Artist account id",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Events#delete_artist",
-          "method": "delete"
-        }
-      ]
-    },
-    {
-      "path": "/events/{id}/venue.json",
-      "operations": [
-        {
-          "summary": "Remove venue from event",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Event id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "account_id",
-              "type": "integer",
-              "description": "Authorized account id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "venuee_id",
-              "type": "integer",
-              "description": "Vneue account id",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Events#delete_venue",
-          "method": "delete"
         }
       ]
     }

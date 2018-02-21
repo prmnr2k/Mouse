@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220151535) do
+ActiveRecord::Schema.define(version: 20180221194416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,11 @@ ActiveRecord::Schema.define(version: 20180220151535) do
     t.float "city_lat"
     t.float "city_lng"
     t.integer "artists_number"
+    t.integer "venue_id"
+    t.string "address"
+    t.string "old_address"
+    t.float "old_city_lat"
+    t.float "old_city_lng"
   end
 
   create_table "fan_genres", force: :cascade do |t|
