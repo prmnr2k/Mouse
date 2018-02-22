@@ -355,10 +355,19 @@ class AccountsController < ApplicationController
     swagger_api :delete do
       summary "Delete account"
       param :path, :id, :integer, :required, "Account id"
+      param :form, :password, :string, :required, "Account password"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :unauthorized
+      response :forbidden
     end
     def delete
-      @account.destroy
-      render status: :ok
+      if User.encrypt_password(params[:password]) == @account.user.password
+        @account.destroy
+        render status: :ok
+      else
+        render status: :forbidden
+      end
     end
 
   private

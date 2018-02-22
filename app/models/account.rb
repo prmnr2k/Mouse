@@ -24,7 +24,8 @@ class Account < ApplicationRecord
 
 	belongs_to :image, optional: true
 
-	has_many :collaborated_events, through: :event_collaborators, class_name: 'Event', dependent: :destroy
+	has_many :event_collaborators, foreign_key: :collaborator_id
+	has_many :collaborated, through: :event_collaborators, source: :event, class_name: 'Event', dependent: :destroy
 	has_many :events, foreign_key: 'creator_id'
 	has_many :account_updates
     
