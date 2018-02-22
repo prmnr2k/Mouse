@@ -55,9 +55,9 @@ class TicketsController < ApplicationController
   # PATCH/PUT events/1/tickets/1
   swagger_api :update do
     summary "Update event's ticket"
-    param :path, :event_id, :integer, :optional, "Event id"
+    param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Ticket id"
-    param :form, :account_id, :integer, :optional, "Creator id"
+    param :form, :account_id, :integer, :required, "Creator id"
     param :form, :name, :string, :optional, "Ticket name"
     param :form, :description, :string, :optional, "Ticket description"
     param :form, :price, :integer, :optional, "Ticket price"
@@ -71,7 +71,7 @@ class TicketsController < ApplicationController
     response :not_found
   end
   def update
-    if @ticket.update(ticket_params)
+    if @ticket.update(ticket_params) and allowed
       set_type
       set_category
       change_event_tickets
@@ -158,6 +158,18 @@ class TicketsController < ApplicationController
           @event.save!
         end
       end
+    end
+
+    def allowed
+      if params[:price]
+        bought_tickets = @ticket.fan_tickets.count
+
+        if bought_tickets > 0
+          return false
+        end
+      end
+
+      return true
     end
 
     def ticket_params

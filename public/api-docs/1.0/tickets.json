@@ -181,7 +181,7 @@
               "name": "event_id",
               "type": "integer",
               "description": "Event id",
-              "required": false
+              "required": true
             },
             {
               "paramType": "path",
@@ -195,7 +195,7 @@
               "name": "account_id",
               "type": "integer",
               "description": "Creator id",
-              "required": false
+              "required": true
             },
             {
               "paramType": "form",
