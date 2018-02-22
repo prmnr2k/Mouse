@@ -2,7 +2,8 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
                                    :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist,
                                    :get_updates, :accept_venue, :decline_venue]
-  before_action :authorize_account, only: [:create, :my]
+  before_action :authorize_fan, only: [:create]
+  before_action :authorize_account, only: [:my]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
                                            :delete_venue, :set_active, :accept_venue, :decline_venue]
   before_action :authorize_user, only: [:like, :unlike]
@@ -365,14 +366,24 @@ class EventsController < ApplicationController
   # GET /events/my
   swagger_api :my do
     summary "Get my events"
-    param :query, :account_id, :integer, :required, "Fan id"
+    param :query, :account_id, :integer, :required, "Account id"
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
     param :header, 'Authorization', :string, :required, "Auth token"
     response :unauthorized
   end
   def my
-    @events = Event.where(creator: params[:account_id])
+    @events = Event.all
+
+    if @account.account_type == 'fan'
+      @events = @events.where(creator: params[:account_id])
+    elsif @account.account_type == 'artist'
+      @events = @events.joins(:artist_events).where(
+        :artist_events => {artist_id: params[:account_id], status: 'accepted'})
+    elsif @account.account_type == 'venue'
+      @events = @events.where(venue_id: params[:account_id])
+    end
+
 
     render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
@@ -427,11 +438,16 @@ class EventsController < ApplicationController
     def authorize_account
       @user = AuthorizeHelper.authorize(request)
       @account = Account.find(params[:account_id])
-      render status: :unauthorized if @user == nil or @account.user != @user or @account.account_type != 'fan'
+      render status: :unauthorized if @user == nil or @account.user != @user
+    end
+
+    def authorize_fan
+      authorize_account
+      render status: :unauthorized if @account.account_type != 'fan'
     end
 
     def authorize_creator
-      authorize_account
+      authorize_fan
       @creator = Event.find(params[:id]).creator
       render status: :unauthorized if @creator != @account or @creator.user != @user
     end
@@ -555,7 +571,7 @@ class EventsController < ApplicationController
     @event.address = @venue_acc.venue.address
     @event.city_lat = @venue_acc.venue.lat
     @event.city_lng = @venue_acc.venue.lng
-    @event.venue_id = @venue_acc.venue.id
+    @event.venue_id = @venue_acc.id
     @event.save!
   end
 

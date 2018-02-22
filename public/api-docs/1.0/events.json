@@ -117,7 +117,7 @@
               "paramType": "query",
               "name": "account_id",
               "type": "integer",
-              "description": "Fan id",
+              "description": "Account id",
               "required": true
             },
             {
