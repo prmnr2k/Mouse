@@ -322,7 +322,7 @@ class AccountsController < ApplicationController
         set_fan_params
         set_venue_params
         set_artist_params
-        if @account.update(account_params)
+        if @account.update(account_update_params)
             render json: @account, extended: true, except: :password, status: :ok
         else
             render json: @account.errors, status: :unprocessable_entity
@@ -587,6 +587,10 @@ class AccountsController < ApplicationController
 
     def account_params
         params.permit(:user_name, :display_name, :phone, :account_type)
+    end
+    
+    def account_update_params
+        params.permit(:user_name, :display_name, :phone)
     end
 
     def fan_params
