@@ -216,6 +216,7 @@ class AccountsController < ApplicationController
       param :form, :image, :file, :optional, "Image"
       param :form, :video_links, :string, :optional, "Array of links"
       param :form, :bio, :string, :optional, "Fan bio"
+      param :form, :genres, :string, :optional, "Fan Genres ['genre1', 'genre2', ...]"
       param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
       param :form, :lng, :float, :optional, "Fan/Artist lng"
@@ -283,6 +284,7 @@ class AccountsController < ApplicationController
       param :form, :image, :file, :optional, "Image"
       param :form, :video_links, :string, :optional, "Array of links"
       param :form, :bio, :string, :optional, "Fan bio"
+      param :form, :genres, :string, :optional, "Fan Genres ['genre1', 'genre2', ...]"
       param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
       param :form, :lng, :float, :optional, "Fan/Artist lng"
@@ -326,7 +328,7 @@ class AccountsController < ApplicationController
         set_venue_params
         set_artist_params
         set_video_links
-        if @account.update(account_params)
+        if @account.update(account_update_params)
             render json: @account, extended: true, except: :password, status: :ok
         else
             render json: @account.errors, status: :unprocessable_entity
@@ -616,6 +618,10 @@ class AccountsController < ApplicationController
 
     def account_params
         params.permit(:user_name, :display_name, :phone, :account_type)
+    end
+
+    def account_update_params
+        params.permit(:user_name, :display_name, :phone)
     end
 
     def fan_params

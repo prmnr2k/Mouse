@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price"
-    t.float "lng"
     t.float "lat"
+    t.float "lng"
     t.string "address"
   end
 
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
-    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
-    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "created_at", default: "2018-02-11 16:10:10", null: false
+    t.datetime "updated_at", default: "2018-02-11 16:10:11", null: false
   end
 
   create_table "event_collaborators", force: :cascade do |t|
@@ -174,6 +174,16 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "history_actions", force: :cascade do |t|
+    t.integer "action"
+    t.integer "object_type"
+    t.integer "field"
+    t.integer "object_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "images", force: :cascade do |t|
