@@ -61,7 +61,7 @@ class EventsController < ApplicationController
     param :form, :event_year, :integer, :optional, "Event year range"
     param :form, :event_length, :integer, :optional, "Event length in hours"
     param :form, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
-    param :form, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
+    param :form, :is_crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
     param :form, :city_lat, :float, :optional, "Event city lat"
     param :form, :city_lng, :float, :optional, "Event city lng"
     param :form, :address, :string, :optional, "Event address"
@@ -107,7 +107,7 @@ class EventsController < ApplicationController
     param :form, :event_year, :integer, :optional, "Event year range"
     param :form, :event_length, :integer, :optional, "Event length in hours"
     param :form, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
-    param :form, :crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
+    param :form, :is_crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
     param :form, :city_lat, :float, :optional, "Event city lat"
     param :form, :city_lng, :float, :optional, "Event city lng"
     param :form, :address, :string, :optional, "Event address"
@@ -587,7 +587,7 @@ class EventsController < ApplicationController
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to,
                     :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
-                    :event_month, :event_year, :event_length, :event_time, :crowdfunding_event,
+                    :event_month, :event_year, :event_length, :event_time, :is_crowdfunding_event,
                     :city_lat, :city_lng, :address, :artists_number)
     end
 

@@ -214,6 +214,7 @@ class AccountsController < ApplicationController
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
+      param :form, :video_links, :string, :optional, "Array of links"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
@@ -261,6 +262,7 @@ class AccountsController < ApplicationController
             set_fan_params
             set_venue_params
             set_artist_params
+            set_video_links
 
             #AccessHelper.grant_account_access(@account)
             render json: @account, extended: true, except: :password, status: :created
@@ -279,6 +281,7 @@ class AccountsController < ApplicationController
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :optional, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
+      param :form, :video_links, :string, :optional, "Array of links"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
@@ -322,6 +325,7 @@ class AccountsController < ApplicationController
         set_fan_params
         set_venue_params
         set_artist_params
+        set_video_links
         if @account.update(account_params)
             render json: @account, extended: true, except: :password, status: :ok
         else
@@ -460,10 +464,24 @@ class AccountsController < ApplicationController
                 @account.save!
             end
         end
+        set_public_venue
         set_venue_dates
         set_venue_emails
         set_venue_office_hours
         set_venue_operating_hours
+    end
+
+    def set_public_venue
+      if @venue.venue_type != 'private_residence'
+        if @venue.public_venue
+          @public_venue = @venue.public_venue
+          @public_venue.update(public_venue_params)
+        else
+          @public_venue = PublicVenue.new(public_venue_params)
+          @public_venue.venue_id = @venue.id
+          render @public_venue.errors and return if not @public_venue.save
+        end
+      end
     end
 
     def set_venue_dates
@@ -542,6 +560,17 @@ class AccountsController < ApplicationController
         end
     end
 
+    def set_video_links
+      if params[:video_links]
+        @account.account_video_links.clear
+        params[:video_links].each do |link|
+          obj = AccountVideoLink.new(link: link)
+          obj.save
+          @account.account_video_links << obj
+        end
+      end
+    end
+
     def set_extended
         if params[:extended] == 'true'
             @extended = true
@@ -594,7 +623,11 @@ class AccountsController < ApplicationController
     end
 
     def venue_params
-        params.permit(:description, :phone, :fax, :bank_name, :account_bank_number, :account_bank_routing_number, :capacity, :num_of_bathrooms, :min_age, :venue_type, :has_bar, :located, :dress_code, :has_vr, :audio_description, :lighting_description, :stage_description, :address, :lat, :lng)
+        params.permit(:description, :phone, :capacity, :venue_type, :has_vr, :address, :lat, :lng)
+    end
+
+    def public_venue_params
+      params.permit(:fax, :bank_name, :account_bank_number, :account_bank_routing_number, :num_of_bathrooms, :min_age, :has_bar, :located, :dress_code, :audio_description, :lighting_description, :stage_description)
     end
     
     def venue_dates_params(date)

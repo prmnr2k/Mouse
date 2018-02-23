@@ -28,6 +28,7 @@ class Account < ApplicationRecord
 	has_many :collaborated, through: :event_collaborators, source: :event, class_name: 'Event', dependent: :destroy
 	has_many :events, foreign_key: 'creator_id'
 	has_many :account_updates
+	has_many :account_video_links
     
 	def get_attrs
 		attrs = {}
@@ -39,6 +40,7 @@ class Account < ApplicationRecord
 		attrs[:updated_at] = updated_at
 		attrs[:image_id] = image_id
 		attrs[:account_type] = account_type
+		attrs[:video_links] = account_video_links.pluck(:link)
 		return attrs
 	end
 

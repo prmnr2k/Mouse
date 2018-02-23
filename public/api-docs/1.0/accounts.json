@@ -422,6 +422,13 @@
             },
             {
               "paramType": "form",
+              "name": "video_links",
+              "type": "string",
+              "description": "Array of links",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "bio",
               "type": "string",
               "description": "Fan bio",
@@ -881,6 +888,13 @@
               "name": "image",
               "type": "file",
               "description": "Image",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "video_links",
+              "type": "string",
+              "description": "Array of links",
               "required": false
             },
             {

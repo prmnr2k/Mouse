@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221194416) do
+ActiveRecord::Schema.define(version: 20180222215120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,13 @@ ActiveRecord::Schema.define(version: 20180221194416) do
     t.integer "updated_by"
     t.integer "action"
     t.integer "field"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "account_video_links", force: :cascade do |t|
+    t.integer "account_id"
+    t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -119,7 +126,7 @@ ActiveRecord::Schema.define(version: 20180221194416) do
     t.integer "event_year"
     t.integer "event_length"
     t.integer "event_time"
-    t.boolean "crowdfunding_event"
+    t.boolean "is_crowdfunding_event"
     t.float "city_lat"
     t.float "city_lng"
     t.integer "artists_number"
@@ -189,6 +196,24 @@ ActiveRecord::Schema.define(version: 20180221194416) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "code"
+  end
+
+  create_table "public_venues", force: :cascade do |t|
+    t.string "fax"
+    t.string "bank_name"
+    t.string "account_bank_number"
+    t.string "account_bank_routing_number"
+    t.integer "num_of_bathrooms"
+    t.integer "min_age"
+    t.boolean "has_bar"
+    t.integer "located"
+    t.string "dress_code"
+    t.string "audio_description"
+    t.string "lightning_description"
+    t.string "stage_description"
+    t.integer "venue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "resized_images", force: :cascade do |t|
@@ -308,21 +333,9 @@ ActiveRecord::Schema.define(version: 20180221194416) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.string "phone"
-    t.string "fax"
-    t.string "bank_name"
-    t.string "account_bank_number"
-    t.string "account_bank_routing_number"
     t.integer "capacity"
-    t.integer "num_of_bathrooms"
-    t.integer "min_age"
     t.integer "venue_type"
-    t.boolean "has_bar"
-    t.integer "located"
-    t.string "dress_code"
     t.boolean "has_vr"
-    t.string "audio_description"
-    t.string "lighting_description"
-    t.string "stage_description"
   end
 
 end

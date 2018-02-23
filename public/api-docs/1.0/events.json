@@ -300,7 +300,7 @@
             },
             {
               "paramType": "form",
-              "name": "crowdfunding_event",
+              "name": "is_crowdfunding_event",
               "type": "boolean",
               "description": "Is crowdfunding event",
               "required": false
@@ -525,7 +525,7 @@
             },
             {
               "paramType": "form",
-              "name": "crowdfunding_event",
+              "name": "is_crowdfunding_event",
               "type": "boolean",
               "description": "Is crowdfunding event",
               "required": false
