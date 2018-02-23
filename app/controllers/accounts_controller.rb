@@ -465,12 +465,13 @@ class AccountsController < ApplicationController
                 @account.venue_id = @venue.id
                 @account.save!
             end
+            
+            set_public_venue
+            set_venue_dates
+            set_venue_emails
+            set_venue_office_hours
+            set_venue_operating_hours
         end
-        set_public_venue
-        set_venue_dates
-        set_venue_emails
-        set_venue_office_hours
-        set_venue_operating_hours
     end
 
     def set_public_venue
