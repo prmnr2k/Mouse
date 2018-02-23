@@ -899,6 +899,13 @@
             },
             {
               "paramType": "form",
+              "name": "genres",
+              "type": "string",
+              "description": "Fan Genres ['genre1', 'genre2', ...]",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "address",
               "type": "string",
               "description": "Fan/Artist address",
