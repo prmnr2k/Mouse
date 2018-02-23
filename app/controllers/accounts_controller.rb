@@ -215,6 +215,7 @@ class AccountsController < ApplicationController
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :bio, :string, :optional, "Fan bio"
+      param :form, :genres, :string, :optional, "Fan Genres ['genre1', 'genre2', ...]"
       param :form, :address, :string, :optional, "Fan/Artist address"
       param :form, :lat, :float, :optional, "Fan/Artist lat"
       param :form, :lng, :float, :optional, "Fan/Artist lng"
