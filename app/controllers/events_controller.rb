@@ -38,8 +38,18 @@ class EventsController < ApplicationController
     param :path, :id, :integer, :required, "Event id"
     response :ok
   end
-  def get_updates  
-    render json: @event.event_updates
+  def get_updates
+    event_updates = @event.event_updates.select(:action, :field, :created_at).as_json.each {|e| e[:type] = "event"}
+    venue_updates = @event.venue.account_updates.select(
+      :action, :field, :created_at).as_json.each {|e| e[:type] = "venue"}
+
+    artists_ids = @event.artist_events.where(status: 'accepted').pluck(:artist_id)
+    artists_updates = AccountUpdate.where(account_id: artists_ids).select(
+      :action, :field, :created_at).as_json.each {|e| e[:type] = "artist"}
+
+    event_updates.concat(artists_updates).concat(venue_updates).sort_by{|u| u[:created_at]}
+
+    render json: event_updates
   end
 
   # POST /events
