@@ -17,7 +17,7 @@ class EventsController < ApplicationController
     response :ok
   end
   def index
-    @events = Event.all
+    @events = Event.where(is_active: true)
 
     render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
