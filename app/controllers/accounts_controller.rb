@@ -615,18 +615,25 @@ class AccountsController < ApplicationController
       end
     end
 
+    def collect_genres(_class)
+      genres = []
+      params[:genres].each do |genre|
+        genres.append(_class.genres[genre])
+      end
+
+      return genres
+    end
+
     def search_genres
       if params[:genres]
-        genres = []
-        params[:genres].each do |genre|
-          genres.append(GenresHelper.all[genre])
-        end
-
         if params[:type] == 'artist'
+          genres = collect_genres(ArtistGenre)
           @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
         elsif params[:type] == 'venue'
+          genres = collect_genres(VenueGenre)
           @accounts = @accounts.joins(:venue => :genres).where(:venue_genres => {genre: genres})
         elsif params[:type] == 'fan'
+          genres = collect_genres(FanGenre)
           @accounts = @accounts.joins(:fan => :genres).where(:fan_genres => {genre: genres})
         end
       end
@@ -654,7 +661,7 @@ class AccountsController < ApplicationController
       if params[:type_of_space] and params[:type] == "venue"
         @accounts = @accounts.joins(
           :venue => :public_venue
-        ).where(public_venues: {type_of_space: params[:type_of_space]})
+        ).where(public_venues: {type_of_space: PublicVenue.type_of_spaces[params[:type_of_space]]})
       end
     end
 
