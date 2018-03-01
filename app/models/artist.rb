@@ -3,6 +3,7 @@ class Artist < ApplicationRecord
 
     has_one :account
     has_many :events
+    has_many :audio_links
 
     geocoded_by :address, latitude: :lat, longitude: :lng
     reverse_geocoded_by :lat, :lng, address: :address
@@ -12,6 +13,7 @@ class Artist < ApplicationRecord
         if options[:extended]
             res = super.merge(account.get_attrs)
             res[:genres] = genres.pluck(:genre)
+            res[:audio_links] = audio_links.pluck(:audio_link)
             return res
         else
             return account.get_attrs

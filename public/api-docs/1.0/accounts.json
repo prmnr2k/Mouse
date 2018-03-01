@@ -701,6 +701,62 @@
               "required": false
             },
             {
+              "paramType": "form",
+              "name": "is_price_private",
+              "type": "boolean",
+              "description": "Is artist price private",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "technical_rider",
+              "type": "string",
+              "description": "Artist technical rider",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "stage_rider",
+              "type": "string",
+              "description": "Artist stage rider",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "backstage_rider",
+              "type": "string",
+              "description": "Artist backstage rider",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "Artist first name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Artist last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "hospitality",
+              "type": "string",
+              "description": "Artist hospitality",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "audio_links",
+              "type": "string",
+              "description": "Array of links to audio of artist",
+              "required": false
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",
@@ -1167,6 +1223,62 @@
               "name": "price",
               "type": "integer",
               "description": "Artist/Venue (public only) price",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_price_private",
+              "type": "boolean",
+              "description": "Is artist price private",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "technical_rider",
+              "type": "string",
+              "description": "Artist technical rider",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "stage_rider",
+              "type": "string",
+              "description": "Artist stage rider",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "backstage_rider",
+              "type": "string",
+              "description": "Artist backstage rider",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "Artist first name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Artist last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "hospitality",
+              "type": "string",
+              "description": "Artist hospitality",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "audio_links",
+              "type": "string",
+              "description": "Array of links to audio of artist",
               "required": false
             },
             {

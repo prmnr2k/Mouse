@@ -246,6 +246,14 @@ class AccountsController < ApplicationController
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :about, :string, :optional, "About artist"
       param :form, :price, :integer, :optional, "Artist/Venue (public only) price"
+      param :form, :is_price_private, :boolean, :optional, "Is artist price private"
+      param :form, :technical_rider, :string, :optional, "Artist technical rider"
+      param :form, :stage_rider, :string, :optional, "Artist stage rider"
+      param :form, :backstage_rider, :string, :optional, "Artist backstage rider"
+      param :form, :first_name, :string, :optional, "Artist first name"
+      param :form, :last_name, :string, :optional, "Artist last name"
+      param :form, :hospitality, :string, :optional, "Artist hospitality"
+      param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -312,6 +320,14 @@ class AccountsController < ApplicationController
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :about, :string, :optional, "About artist"
       param :form, :price, :integer, :optional, "Artist/Venue (public only) price"
+      param :form, :is_price_private, :boolean, :optional, "Is artist price private"
+      param :form, :technical_rider, :string, :optional, "Artist technical rider"
+      param :form, :stage_rider, :string, :optional, "Artist stage rider"
+      param :form, :backstage_rider, :string, :optional, "Artist backstage rider"
+      param :form, :first_name, :string, :optional, "Artist first name"
+      param :form, :last_name, :string, :optional, "Artist last name"
+      param :form, :hospitality, :string, :optional, "Artist hospitality"
+      param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -562,6 +578,7 @@ class AccountsController < ApplicationController
                 @account.save
             end
             set_artist_genres
+            set_artist_audios
         end
     end
 
@@ -583,6 +600,17 @@ class AccountsController < ApplicationController
           obj = AccountVideoLink.new(link: link)
           obj.save
           @account.account_video_links << obj
+        end
+      end
+    end
+
+    def set_artist_audios
+      if params[:audio_links]
+        @account.artist.audio_links.clear
+        params[:audio_links].each do |link|
+          obj = AudioLink.new(audio_link: link)
+          obj.save
+          @account.artist.audio_links << obj
         end
       end
     end
@@ -704,6 +732,7 @@ class AccountsController < ApplicationController
     end
 
     def artist_params
-        params.permit(:about, :lat, :lng, :address, :price)
+        params.permit(:about, :lat, :lng, :address, :price, :is_price_private, :technical_rider,
+                      :stage_rider, :backstage_rider, :first_name, :last_name, :hospitality)
     end
 end
