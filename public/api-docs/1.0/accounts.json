@@ -62,28 +62,70 @@
               "name": "type",
               "type": "string",
               "description": "Account type to display",
-              "required": false
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "venue",
+                  "artist",
+                  "fan"
+                ]
+              }
             },
             {
               "paramType": "query",
               "name": "price_from",
               "type": "integer",
-              "description": "Artist price from",
+              "description": "Artist/Venue price from",
               "required": false
             },
             {
               "paramType": "query",
               "name": "price_to",
               "type": "integer",
-              "description": "Artist price to",
+              "description": "Artist/Venue price to",
               "required": false
             },
             {
               "paramType": "query",
               "name": "address",
               "type": "string",
-              "description": "Artist address",
+              "description": "Artist/Venue address",
               "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "capacity_from",
+              "type": "integer",
+              "description": "Venue capacity from",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "capacity_to",
+              "type": "integer",
+              "description": "Venue capacity to",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "type_of_space",
+              "type": "string",
+              "description": "Venue type of space",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
             },
             {
               "paramType": "query",
@@ -438,28 +480,28 @@
               "paramType": "form",
               "name": "genres",
               "type": "string",
-              "description": "Fan Genres ['genre1', 'genre2', ...]",
+              "description": "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]",
               "required": false
             },
             {
               "paramType": "form",
               "name": "address",
               "type": "string",
-              "description": "Fan/Artist address",
+              "description": "Fan/Artist/Venue address",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lat",
               "type": "float",
-              "description": "Fan/Artist lat",
+              "description": "Fan/Artist/Venue lat",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lng",
               "type": "float",
-              "description": "Fan/Artist lng",
+              "description": "Fan/Artist/Venue lng",
               "required": false
             },
             {
@@ -480,28 +522,28 @@
               "paramType": "form",
               "name": "fax",
               "type": "string",
-              "description": "Venue fax",
+              "description": "Venue fax (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "bank_name",
               "type": "string",
-              "description": "Venue bank name",
+              "description": "Venue bank name (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "account_bank_number",
               "type": "string",
-              "description": "Venue account bank number",
+              "description": "Venue account bank number (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "account_bank_routing_number",
               "type": "string",
-              "description": "Venue account routing number",
+              "description": "Venue account routing number (public_venue only)",
               "required": false
             },
             {
@@ -515,21 +557,35 @@
               "paramType": "form",
               "name": "num_of_bathrooms",
               "type": "integer",
-              "description": "Venue num of bathrooms",
+              "description": "Venue num of bathrooms (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "min_age",
               "type": "integer",
-              "description": "Venue min age",
+              "description": "Venue min age (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "venue_type",
-              "type": "integer",
+              "type": "string",
               "description": "Venue type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "public_venue",
+                  "private_residence"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "type_of_space",
+              "type": "string",
+              "description": "Venue type of space (public_venue only)",
               "required": false,
               "allowableValues": {
                 "valueType": "LIST",
@@ -541,7 +597,6 @@
                   "additional_room",
                   "stadium_arena",
                   "outdoor_space",
-                  "private_residence",
                   "other"
                 ]
               }
@@ -550,14 +605,14 @@
               "paramType": "form",
               "name": "has_bar",
               "type": "boolean",
-              "description": "Has venue bar?",
+              "description": "Has venue bar? (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "located",
               "type": "string",
-              "description": "Venue located",
+              "description": "Venue located (public_venue only)",
               "required": false,
               "allowableValues": {
                 "valueType": "LIST",
@@ -572,7 +627,7 @@
               "paramType": "form",
               "name": "dress_code",
               "type": "string",
-              "description": "Venue dress code",
+              "description": "Venue dress code (public_venue only)",
               "required": false
             },
             {
@@ -586,42 +641,21 @@
               "paramType": "form",
               "name": "audio_description",
               "type": "string",
-              "description": "Venue audio description",
+              "description": "Venue audio description (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lighting_description",
               "type": "string",
-              "description": "Venue lighting description",
+              "description": "Venue lighting description (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "stage_description",
               "type": "string",
-              "description": "Venue stage description",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "address",
-              "type": "string",
-              "description": "Venue address",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "lat",
-              "type": "float",
-              "description": "Venue lat",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "lng",
-              "type": "float",
-              "description": "Venue lng",
+              "description": "Venue stage description (public_venue only)",
               "required": false
             },
             {
@@ -663,7 +697,7 @@
               "paramType": "form",
               "name": "price",
               "type": "integer",
-              "description": "Artist price",
+              "description": "Artist/Venue (public only) price",
               "required": false
             },
             {
@@ -880,7 +914,7 @@
               "name": "account_type",
               "type": "string",
               "description": "Account type",
-              "required": false,
+              "required": true,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
@@ -915,28 +949,28 @@
               "paramType": "form",
               "name": "genres",
               "type": "string",
-              "description": "Fan Genres ['genre1', 'genre2', ...]",
+              "description": "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]",
               "required": false
             },
             {
               "paramType": "form",
               "name": "address",
               "type": "string",
-              "description": "Fan/Artist address",
+              "description": "Fan/Artist/Venue address",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lat",
               "type": "float",
-              "description": "Fan/Artist lat",
+              "description": "Fan/Artist/Venue lat",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lng",
               "type": "float",
-              "description": "Fan/Artist lng",
+              "description": "Fan/Artist/Venue lng",
               "required": false
             },
             {
@@ -957,28 +991,28 @@
               "paramType": "form",
               "name": "fax",
               "type": "string",
-              "description": "Venue fax",
+              "description": "Venue fax (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "bank_name",
               "type": "string",
-              "description": "Venue bank name",
+              "description": "Venue bank name (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "account_bank_number",
               "type": "string",
-              "description": "Venue account bank number",
+              "description": "Venue account bank number (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "account_bank_routing_number",
               "type": "string",
-              "description": "Venue account routing number",
+              "description": "Venue account routing number (public_venue only)",
               "required": false
             },
             {
@@ -992,21 +1026,35 @@
               "paramType": "form",
               "name": "num_of_bathrooms",
               "type": "integer",
-              "description": "Venue num of bathrooms",
+              "description": "Venue num of bathrooms (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "min_age",
               "type": "integer",
-              "description": "Venue min age",
+              "description": "Venue min age (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "venue_type",
-              "type": "integer",
+              "type": "string",
               "description": "Venue type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "public_venue",
+                  "private_residence"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "type_of_space",
+              "type": "string",
+              "description": "Venue type of space (public_venue only)",
               "required": false,
               "allowableValues": {
                 "valueType": "LIST",
@@ -1018,7 +1066,6 @@
                   "additional_room",
                   "stadium_arena",
                   "outdoor_space",
-                  "private_residence",
                   "other"
                 ]
               }
@@ -1027,14 +1074,14 @@
               "paramType": "form",
               "name": "has_bar",
               "type": "boolean",
-              "description": "Has venue bar?",
+              "description": "Has venue bar? (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "located",
               "type": "string",
-              "description": "Venue located",
+              "description": "Venue located (public_venue only)",
               "required": false,
               "allowableValues": {
                 "valueType": "LIST",
@@ -1049,7 +1096,7 @@
               "paramType": "form",
               "name": "dress_code",
               "type": "string",
-              "description": "Venue dress code",
+              "description": "Venue dress code (public_venue only)",
               "required": false
             },
             {
@@ -1063,42 +1110,21 @@
               "paramType": "form",
               "name": "audio_description",
               "type": "string",
-              "description": "Venue audio description",
+              "description": "Venue audio description (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "lighting_description",
               "type": "string",
-              "description": "Venue lighting description",
+              "description": "Venue lighting description (public_venue only)",
               "required": false
             },
             {
               "paramType": "form",
               "name": "stage_description",
               "type": "string",
-              "description": "Venue stage description",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "address",
-              "type": "string",
-              "description": "Venue address",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "lat",
-              "type": "float",
-              "description": "Venue lat",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "lng",
-              "type": "float",
-              "description": "Venue lng",
+              "description": "Venue stage description (public_venue only)",
               "required": false
             },
             {
@@ -1140,7 +1166,7 @@
               "paramType": "form",
               "name": "price",
               "type": "integer",
-              "description": "Artist price",
+              "description": "Artist/Venue (public only) price",
               "required": false
             },
             {

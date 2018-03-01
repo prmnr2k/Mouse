@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180222215120) do
+ActiveRecord::Schema.define(version: 20180301211704) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price"
-    t.float "lat"
     t.float "lng"
+    t.float "lat"
     t.string "address"
   end
 
@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
-    t.datetime "created_at", default: "2018-02-11 16:10:10", null: false
-    t.datetime "updated_at", default: "2018-02-11 16:10:11", null: false
+    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
   end
 
   create_table "event_collaborators", force: :cascade do |t|
@@ -126,7 +126,7 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.integer "event_year"
     t.integer "event_length"
     t.integer "event_time"
-    t.boolean "is_crowdfunding_event"
+    t.boolean "is_crowdfunding_event", default: true
     t.float "city_lat"
     t.float "city_lng"
     t.integer "artists_number"
@@ -176,16 +176,6 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
-  end
-
   create_table "images", force: :cascade do |t|
     t.string "base64"
     t.integer "account_id"
@@ -224,6 +214,8 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.integer "venue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "type_of_space"
+    t.integer "price"
   end
 
   create_table "resized_images", force: :cascade do |t|
@@ -317,6 +309,13 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.datetime "updated_at"
   end
 
+  create_table "venue_genres", force: :cascade do |t|
+    t.integer "venue_id"
+    t.integer "genre"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "venue_office_hours", force: :cascade do |t|
     t.integer "venue_id"
     t.integer "day"
@@ -342,7 +341,6 @@ ActiveRecord::Schema.define(version: 20180222215120) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
-    t.string "phone"
     t.integer "capacity"
     t.integer "venue_type"
     t.boolean "has_vr"

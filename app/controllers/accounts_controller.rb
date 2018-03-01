@@ -216,38 +216,36 @@ class AccountsController < ApplicationController
       param :form, :image, :file, :optional, "Image"
       param :form, :video_links, :string, :optional, "Array of links"
       param :form, :bio, :string, :optional, "Fan bio"
-      param :form, :genres, :string, :optional, "Fan Genres ['genre1', 'genre2', ...]"
-      param :form, :address, :string, :optional, "Fan/Artist address"
-      param :form, :lat, :float, :optional, "Fan/Artist lat"
-      param :form, :lng, :float, :optional, "Fan/Artist lng"
+      param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
+      param :form, :address, :string, :optional, "Fan/Artist/Venue address"
+      param :form, :lat, :float, :optional, "Fan/Artist/Venue lat"
+      param :form, :lng, :float, :optional, "Fan/Artist/Venue lng"
       param :form, :description, :string, :optional, "Venue description"
       param :form, :phone, :string, :optional, "Venue phone"
-      param :form, :fax, :string, :optional, "Venue fax"
-      param :form, :bank_name, :string, :optional, "Venue bank name"
-      param :form, :account_bank_number, :string, :optional, "Venue account bank number"
-      param :form, :account_bank_routing_number, :string, :optional, "Venue account routing number"
+      param :form, :fax, :string, :optional, "Venue fax (public_venue only)"
+      param :form, :bank_name, :string, :optional, "Venue bank name (public_venue only)"
+      param :form, :account_bank_number, :string, :optional, "Venue account bank number (public_venue only)"
+      param :form, :account_bank_routing_number, :string, :optional, "Venue account routing number (public_venue only)"
       param :form, :capacity, :integer, :optional, "Venue capacity"
-      param :form, :num_of_bathrooms, :integer, :optional, "Venue num of bathrooms"
-      param :form, :min_age, :integer, :optional, "Venue min age"
-      param_list :form, :venue_type, :integer, :optional, "Venue type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                         "stadium_arena", "outdoor_space", "private_residence", "other"]
-      param :form, :has_bar, :boolean, :optional, "Has venue bar?"
-      param_list :form, :located, :string, :optional, "Venue located", ["indoors", "outdoors", "other_location"]
-      param :form, :dress_code, :string, :optional, "Venue dress code"
+      param :form, :num_of_bathrooms, :integer, :optional, "Venue num of bathrooms (public_venue only)"
+      param :form, :min_age, :integer, :optional, "Venue min age (public_venue only)"
+      param_list :form, :venue_type, :string, :optional, "Venue type", ["public_venue", "private_residence"]
+      param_list :form, :type_of_space, :string, :optional, "Venue type of space (public_venue only)", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+                                                                                     "stadium_arena", "outdoor_space", "other"]
+      param :form, :has_bar, :boolean, :optional, "Has venue bar? (public_venue only)"
+      param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "other_location"]
+      param :form, :dress_code, :string, :optional, "Venue dress code (public_venue only)"
       param :form, :has_vr, :boolean, :optional, "Has venue vr?"
-      param :form, :audio_description, :string, :optional, "Venue audio description"
-      param :form, :lighting_description, :string, :optional, "Venue lighting description"
-      param :form, :stage_description, :string, :optional, "Venue stage description"
-      param :form, :address, :string, :optional, "Venue address"
-      param :form, :lat, :float, :optional, "Venue lat"
-      param :form, :lng, :float, :optional, "Venue lng"
+      param :form, :audio_description, :string, :optional, "Venue audio description (public_venue only)"
+      param :form, :lighting_description, :string, :optional, "Venue lighting description (public_venue only)"
+      param :form, :stage_description, :string, :optional, "Venue stage description (public_venue only)"
       param :form, :dates, :string, :optional, "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',
                                                             'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]"
       param :form, :emails, :string, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :about, :string, :optional, "About artist"
-      param :form, :price, :integer, :optional, "Artist price"
+      param :form, :price, :integer, :optional, "Artist/Venue (public only) price"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -280,42 +278,40 @@ class AccountsController < ApplicationController
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
       param :form, :image_base64, :string, :optional, "Image base64 string"
-      param_list :form, :account_type, :string, :optional, "Account type", ["venue", "artist", "fan"]
+      param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :video_links, :string, :optional, "Array of links"
       param :form, :bio, :string, :optional, "Fan bio"
-      param :form, :genres, :string, :optional, "Fan Genres ['genre1', 'genre2', ...]"
-      param :form, :address, :string, :optional, "Fan/Artist address"
-      param :form, :lat, :float, :optional, "Fan/Artist lat"
-      param :form, :lng, :float, :optional, "Fan/Artist lng"
+      param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
+      param :form, :address, :string, :optional, "Fan/Artist/Venue address"
+      param :form, :lat, :float, :optional, "Fan/Artist/Venue lat"
+      param :form, :lng, :float, :optional, "Fan/Artist/Venue lng"
       param :form, :description, :string, :optional, "Venue description"
       param :form, :phone, :string, :optional, "Venue phone"
-      param :form, :fax, :string, :optional, "Venue fax"
-      param :form, :bank_name, :string, :optional, "Venue bank name"
-      param :form, :account_bank_number, :string, :optional, "Venue account bank number"
-      param :form, :account_bank_routing_number, :string, :optional, "Venue account routing number"
+      param :form, :fax, :string, :optional, "Venue fax (public_venue only)"
+      param :form, :bank_name, :string, :optional, "Venue bank name (public_venue only)"
+      param :form, :account_bank_number, :string, :optional, "Venue account bank number (public_venue only)"
+      param :form, :account_bank_routing_number, :string, :optional, "Venue account routing number (public_venue only)"
       param :form, :capacity, :integer, :optional, "Venue capacity"
-      param :form, :num_of_bathrooms, :integer, :optional, "Venue num of bathrooms"
-      param :form, :min_age, :integer, :optional, "Venue min age"
-      param_list :form, :venue_type, :integer, :optional, "Venue type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                          "stadium_arena", "outdoor_space", "private_residence", "other"]
-      param :form, :has_bar, :boolean, :optional, "Has venue bar?"
-      param_list :form, :located, :string, :optional, "Venue located", ["indoors", "outdoors", "other_location"]
-      param :form, :dress_code, :string, :optional, "Venue dress code"
+      param :form, :num_of_bathrooms, :integer, :optional, "Venue num of bathrooms (public_venue only)"
+      param :form, :min_age, :integer, :optional, "Venue min age (public_venue only)"
+      param_list :form, :venue_type, :string, :optional, "Venue type", ["public_venue", "private_residence"]
+      param_list :form, :type_of_space, :string, :optional, "Venue type of space (public_venue only)", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+                                                                                                         "stadium_arena", "outdoor_space", "other"]
+      param :form, :has_bar, :boolean, :optional, "Has venue bar? (public_venue only)"
+      param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "other_location"]
+      param :form, :dress_code, :string, :optional, "Venue dress code (public_venue only)"
       param :form, :has_vr, :boolean, :optional, "Has venue vr?"
-      param :form, :audio_description, :string, :optional, "Venue audio description"
-      param :form, :lighting_description, :string, :optional, "Venue lighting description"
-      param :form, :stage_description, :string, :optional, "Venue stage description"
-      param :form, :address, :string, :optional, "Venue address"
-      param :form, :lat, :float, :optional, "Venue lat"
-      param :form, :lng, :float, :optional, "Venue lng"
+      param :form, :audio_description, :string, :optional, "Venue audio description (public_venue only)"
+      param :form, :lighting_description, :string, :optional, "Venue lighting description (public_venue only)"
+      param :form, :stage_description, :string, :optional, "Venue stage description (public_venue only)"
       param :form, :dates, :string, :optional, "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',
                                                             'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]"
       param :form, :emails, :string, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :about, :string, :optional, "About artist"
-      param :form, :price, :integer, :optional, "Artist price"
+      param :form, :price, :integer, :optional, "Artist/Venue (public only) price"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -338,10 +334,13 @@ class AccountsController < ApplicationController
     swagger_api :search do
       summary "Search account"
       param :query, :text, :string, :optional, "Search query"
-      param :query, :type, :string, :optional, "Account type to display"
-      param :query, :price_from, :integer, :optional, "Artist price from"
-      param :query, :price_to, :integer, :optional, "Artist price to"
-      param :query, :address, :string, :optional, "Artist address"
+      param_list :query, :type, :string, :optional, "Account type to display", ["venue", "artist", "fan"]
+      param :query, :price_from, :integer, :optional, "Artist/Venue price from"
+      param :query, :price_to, :integer, :optional, "Artist/Venue price to"
+      param :query, :address, :string, :optional, "Artist/Venue address"
+      param :query, :capacity_from, :integer, :optional, "Venue capacity from"
+      param :query, :capacity_to, :integer, :optional, "Venue capacity to"
+      param_list :query, :type_of_space, :string, :optional, "Venue type of space", ["night_club", "concert_hall", "event_space", "theatre", "additional_room", "stadium_arena", "outdoor_space", "other"]
       param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
       param :query, :limit, :integer, :optional, "Limit"
       param :query, :offset, :integer, :optional, "Offset"
@@ -354,6 +353,8 @@ class AccountsController < ApplicationController
       search_price
       search_genres
       search_address
+      search_capacity
+      search_type_of_space
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
     end
@@ -467,6 +468,7 @@ class AccountsController < ApplicationController
             end
             
             set_public_venue
+            set_venue_genres
             set_venue_dates
             set_venue_emails
             set_venue_office_hours
@@ -483,6 +485,17 @@ class AccountsController < ApplicationController
           @public_venue = PublicVenue.new(public_venue_params)
           @public_venue.venue_id = @venue.id
           render @public_venue.errors and return if not @public_venue.save
+        end
+      end
+    end
+
+    def set_venue_genres
+      if params[:genres] and @venue.venue_type != 'private_residence'
+        @venue.public_venue.genres.clear
+        params[:genres].each do |genre|
+          obj = VenueGenre.new(genre: genre)
+          obj.save
+          @venue.public_venue.genres << obj
         end
       end
     end
@@ -597,23 +610,51 @@ class AccountsController < ApplicationController
     def search_price
       if params[:price_from] and params[:price_to] and params[:type] == 'artist'
         @accounts = @accounts.joins(:artist).where(price: params[:price_from]..params[:price_to])
+      elsif params[:price_from] and params[:price_to] and params[:type] == 'venue'
+        @accounts = @accounts.joins(:venue => :public_venue).where(price: params[:price_from]..params[:price_to])
       end
     end
 
     def search_genres
-      if params[:genres] and params[:type] == 'artist'
+      if params[:genres]
         genres = []
         params[:genres].each do |genre|
-          genres.append(ArtistGenre.genres[genre])
+          genres.append(GenresHelper.all[genre])
         end
-        @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
+
+        if params[:type] == 'artist'
+          @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
+        elsif params[:type] == 'venue'
+          @accounts = @accounts.joins(:venue => :genres).where(:venue_genres => {genre: genres})
+        elsif params[:type] == 'fan'
+          @accounts = @accounts.joins(:fan => :genres).where(:fan_genres => {genre: genres})
+        end
       end
     end
 
     def search_address
-      if params[:address] and params[:type] == 'artist'
-        artists = Artist.near(params[:address]).select{|a| a.id}
-        @accounts = @accounts.where(artist_id: artists)
+      if params[:address]
+        if params[:type] == 'artist'
+          artists = Artist.near(params[:address]).select{|a| a.id}
+          @accounts = @accounts.where(artist_id: artists)
+        elsif params[:type] == 'venue'
+          venues = Venue.near(params[:address]).select{|a| a.id}
+          @accounts = @accounts.where(venue_id: venues)
+        end
+      end
+    end
+
+    def search_capacity
+      if params[:capacity_from] and params[:capacity_to] and params[:type] == "venue"
+        @accounts = @accounts.joins(:venue).where(venues: {capacity: params[:capacity_from]..params[:capacity_to]})
+      end
+    end
+
+    def search_type_of_space
+      if params[:type_of_space] and params[:type] == "venue"
+        @accounts = @accounts.joins(
+          :venue => :public_venue
+        ).where(public_venues: {type_of_space: params[:type_of_space]})
       end
     end
 
@@ -634,7 +675,9 @@ class AccountsController < ApplicationController
     end
 
     def public_venue_params
-      params.permit(:fax, :bank_name, :account_bank_number, :account_bank_routing_number, :num_of_bathrooms, :min_age, :has_bar, :located, :dress_code, :audio_description, :lighting_description, :stage_description)
+      params.permit(:fax, :bank_name, :account_bank_number, :account_bank_routing_number,
+                    :num_of_bathrooms, :min_age, :has_bar, :located, :dress_code, :audio_description,
+                    :lighting_description, :stage_description, :type_of_space, :price)
     end
     
     def venue_dates_params(date)

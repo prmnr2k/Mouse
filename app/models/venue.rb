@@ -2,8 +2,7 @@ class Venue < ApplicationRecord
 
     validates_inclusion_of :capacity, in: 1..1000000, allow_nil: true
 
-    enum venue_type: [:night_club, :concert_hall, :event_space, :theatre, :additional_room,
-                     :stadium_arena, :outdoor_space, :private_residence, :other]
+    enum venue_type: [:public_venue, :private_residence]
 
     has_many :operating_hours, foreign_key: 'venue_id', class_name: 'VenueOperatingHour'
     has_many :office_hours, foreign_key: 'venue_id', class_name: 'VenueOfficeHour'

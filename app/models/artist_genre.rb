@@ -1,6 +1,6 @@
 class ArtistGenre < ApplicationRecord
     enum genre: GenresHelper.all
-	validates :genre, presence: true
+	  validates :genre, presence: true
 
     belongs_to :artist
 

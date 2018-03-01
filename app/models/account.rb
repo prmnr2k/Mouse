@@ -41,15 +41,14 @@ class Account < ApplicationRecord
 		attrs[:image_id] = image_id
 		attrs[:account_type] = account_type
 		attrs[:video_links] = account_video_links.pluck(:link)
+		attrs[:followers_count] = followers.count
+		attrs[:following_count] = following.count
 		return attrs
 	end
 
     def as_json(options={})
       if fan
-          _fan = fan.as_json(options)
-					_fan[:followers_count] = followers.count
-					_fan[:following_count] = following.count
-				return _fan
+				return fan.as_json(options)
       end
 
 	  	if venue
