@@ -457,7 +457,10 @@ class EventsController < ApplicationController
     end
 
     def authorize_creator
-      authorize_fan
+      @user = AuthorizeHelper.authorize(request)
+      @account = Account.find(params[:account_id])
+      render status: :unauthorized if @user == nil or @account.user != @user
+
       @creator = Event.find(params[:id]).creator
       render status: :unauthorized if @creator != @account or @creator.user != @user
     end
