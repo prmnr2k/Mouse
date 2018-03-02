@@ -445,6 +445,7 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
     end
 
+    #TODO: отрефакторить как-нибудь
     def authorize_account
       @user = AuthorizeHelper.authorize(request)
       @account = Account.find(params[:account_id])
@@ -452,14 +453,17 @@ class EventsController < ApplicationController
     end
 
     def authorize_fan
-      authorize_account
+      @user = AuthorizeHelper.authorize(request)
+      @account = Account.find(params[:account_id])
+      render status: :unauthorized and return if @user == nil or @account.user != @user
+
       render status: :unauthorized if @account.account_type != 'fan'
     end
 
     def authorize_creator
       @user = AuthorizeHelper.authorize(request)
       @account = Account.find(params[:account_id])
-      render status: :unauthorized if @user == nil or @account.user != @user
+      render status: :unauthorized and return if @user == nil or @account.user != @user
 
       @creator = Event.find(params[:id]).creator
       render status: :unauthorized if @creator != @account or @creator.user != @user
@@ -532,9 +536,9 @@ class EventsController < ApplicationController
 
     def artist_available?
       @artist_acc = Account.find(params[:artist_id])
-
+      number = @event.artists_number != nil ? @event.artists_number : 0
       if @artist_acc and @artist_acc.account_type == 'artist' and
-            @event.artist_events.where.not(status: 'declined').count < @event.artists_number
+            @event.artist_events.where.not(status: 'declined').count < number
         return true
       end
 
