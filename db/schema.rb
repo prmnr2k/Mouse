@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301215613) do
+ActiveRecord::Schema.define(version: 20180302101741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20180301215613) do
     t.string "old_address"
     t.float "old_city_lat"
     t.float "old_city_lng"
+    t.integer "image_id"
   end
 
   create_table "fan_genres", force: :cascade do |t|
@@ -195,6 +196,7 @@ ActiveRecord::Schema.define(version: 20180301215613) do
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "event_id"
   end
 
   create_table "likes", force: :cascade do |t|

@@ -57,6 +57,8 @@ class EventsController < ApplicationController
     summary 'Create event'
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :name, :string, :optional, "Event name"
+    param :form, :image_base64, :string, :optional, "Image base64 string"
+    param :form, :image, :file, :optional, "Image"
     param :form, :tagline, :string, :optional, "Tagline"
     param :form, :description, :string, :optional, "Short description"
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
@@ -87,6 +89,8 @@ class EventsController < ApplicationController
     @event.creator = @account
 
     if @event.save
+      set_image
+      set_base64_image
       set_genres
       set_collaborators
 
@@ -101,6 +105,8 @@ class EventsController < ApplicationController
     summary 'Update event'
     param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :image_base64, :string, :optional, "Image base64 string"
+    param :form, :image, :file, :optional, "Image"
     param :form, :name, :string, :optional, "Event name"
     param :form, :date, :datetime, :optional, "Event date"
     param :form, :tagline, :string, :optional, "Tagline"
@@ -129,6 +135,8 @@ class EventsController < ApplicationController
     response :unauthorized
   end
   def update
+    set_image
+    set_base64_image
     set_genres
     set_collaborators
 
@@ -467,6 +475,22 @@ class EventsController < ApplicationController
 
       @creator = Event.find(params[:id]).creator
       render status: :unauthorized if @creator != @account or @creator.user != @user
+    end
+
+    def set_image
+      if params[:image]
+        image = Image.new(base64: Base64.encode64(File.read(params[:image].path)))
+        @event.image = image
+        @event.images << image
+      end
+    end
+
+    def set_base64_image
+      if params[:image_base64]
+        image = Image.new(base64: params[:image_base64])
+        @event.image = image
+        @event.images << image
+      end
     end
 
     def set_genres

@@ -66,18 +66,26 @@ class ImagesController < ApplicationController
   swagger_api :delete_image do
     summary "Delete image"
     param :path, :id, :integer, :required, "Image id"
-    param :form, :account_id, :integer, :required, "Account id"
+    param :form, :account_id, :integer, :required, "Account/Event owner id"
+    param :form, :event_id, :integer, :optional, "Event id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :not_found
     response :forbidden
   end
   def delete_image
       @image = Image.find(params[:id])
-      if @image.account.user == @user and @image.account == @account
+      if @image.account_id != nil and @image.account.user == @user and @image.account == @account
         @account.image = nil if @account.image == @image
         @image.destroy
         @account.save
         render json: @account, status: :ok
+      elsif @image.event_id != nil and @image.event.creator.user == @user and @image.event.creator == @account
+        _event = @image.event
+
+        _event.image = nil if _event.image == @image
+        @image.destroy
+        _event.save
+        render json: _event, status: :ok
       else
         render status: :forbidden
       end

@@ -139,8 +139,15 @@
               "paramType": "form",
               "name": "account_id",
               "type": "integer",
-              "description": "Account id",
+              "description": "Account/Event owner id",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": false
             },
             {
               "paramType": "header",

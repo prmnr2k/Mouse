@@ -23,6 +23,9 @@ class Event < ApplicationRecord
 
   belongs_to :venue, class_name: 'Account', optional: true
 
+  belongs_to :image, optional: true
+  has_many :images, dependent: :destroy
+
   geocoded_by :address, latitude: :city_lat, longitude: :city_lng
   reverse_geocoded_by :city_lat, :city_lng, address: :address
   after_validation :geocode

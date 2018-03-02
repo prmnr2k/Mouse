@@ -438,7 +438,6 @@ class AccountsController < ApplicationController
         end
     end
 
-
     def set_fan_params
         if @account.account_type == 'fan'
             if @account.fan 

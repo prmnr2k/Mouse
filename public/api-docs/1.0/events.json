@@ -209,6 +209,20 @@
             },
             {
               "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image",
+              "type": "file",
+              "description": "Image",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "tagline",
               "type": "string",
               "description": "Tagline",
@@ -417,6 +431,20 @@
               "type": "integer",
               "description": "Authorized account id",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image",
+              "type": "file",
+              "description": "Image",
+              "required": false
             },
             {
               "paramType": "form",
