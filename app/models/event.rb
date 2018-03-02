@@ -21,7 +21,7 @@ class Event < ApplicationRecord
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
   has_many :event_updates
 
-  belongs_to :venue, class_name: 'Account'
+  belongs_to :venue, class_name: 'Account', optional: true
 
   geocoded_by :address, latitude: :city_lat, longitude: :city_lng
   reverse_geocoded_by :city_lat, :city_lng, address: :address
