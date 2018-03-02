@@ -538,7 +538,7 @@ class EventsController < ApplicationController
       @artist_acc = Account.find(params[:artist_id])
       number = @event.artists_number != nil ? @event.artists_number : 0
       if @artist_acc and @artist_acc.account_type == 'artist' and
-            @event.artist_events.where.not(status: 'declined').count < @event.artists_number
+            @event.artist_events.where.not(status: 'declined').count < number
         return true
       end
 
