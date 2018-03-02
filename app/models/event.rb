@@ -47,6 +47,9 @@ class Event < ApplicationRecord
       # res[:location] = venue.address if venue
       res[:comments] = comments.count
       res[:likes] = likes.count
+      res[:purchased_tickets] = tickets.joins(:fan_tickets).count
+      res[:in_person_tickets_sold] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).count
+      res[:vr_tickets_sold] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).count
     else
       # res[:location] = venue.address if venue
     end
