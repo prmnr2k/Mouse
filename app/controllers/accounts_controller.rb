@@ -503,7 +503,7 @@ class AccountsController < ApplicationController
     end
 
     def set_venue_genres
-      if params[:genres] and @venue.venue_type != 'private_residence'
+      if params[:genres] and @venue.venue_type == 'public_venue'
         @venue.public_venue.genres.clear
         params[:genres].each do |genre|
           obj = VenueGenre.new(genre: genre)
