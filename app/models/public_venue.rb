@@ -21,7 +21,7 @@ class PublicVenue < ApplicationRecord
     attrs[:located] = located
     attrs[:dress_code] = dress_code
     attrs[:audio_description] = audio_description
-    attrs[:lightning_description] = lightning_description
+    attrs[:lighting_description] = lighting_description
     attrs[:stage_description] = stage_description
     return attrs
   end

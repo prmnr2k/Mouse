@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180302101741) do
+ActiveRecord::Schema.define(version: 20180303101634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(version: 20180302101741) do
     t.integer "located"
     t.string "dress_code"
     t.string "audio_description"
-    t.string "lightning_description"
+    t.string "lighting_description"
     t.string "stage_description"
     t.integer "venue_id"
     t.datetime "created_at", null: false

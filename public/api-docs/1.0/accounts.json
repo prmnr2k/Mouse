@@ -513,13 +513,6 @@
             },
             {
               "paramType": "form",
-              "name": "phone",
-              "type": "string",
-              "description": "Venue phone",
-              "required": false
-            },
-            {
-              "paramType": "form",
               "name": "fax",
               "type": "string",
               "description": "Venue fax (public_venue only)",
@@ -1034,13 +1027,6 @@
               "name": "description",
               "type": "string",
               "description": "Venue description",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "phone",
-              "type": "string",
-              "description": "Venue phone",
               "required": false
             },
             {
