@@ -705,7 +705,7 @@ class AccountsController < ApplicationController
     end
 
     def venue_params
-        params.permit(:description, :phone, :capacity, :venue_type, :has_vr, :address, :lat, :lng)
+        params.permit(:description, :capacity, :venue_type, :has_vr, :address, :lat, :lng)
     end
 
     def public_venue_params
