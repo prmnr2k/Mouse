@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   post 'events/:id/activate', action: :set_active, controller: 'events'
   post 'events/:id/like', action: :like, controller: 'events'
   post 'events/:id/unlike', action: :unlike, controller: 'events'
+  get 'events/:id/get_likes', action: :get_likes, controller: 'events'
   get 'events/:id/click', action: :click, controller: 'events'
   get 'events/:id/view', action: :view, controller: 'events'
   get 'events/:id/analytics', action: :analytics, controller: 'events'

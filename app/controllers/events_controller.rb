@@ -1,11 +1,11 @@
 class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
                                    :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist,
-                                   :get_updates, :accept_venue, :decline_venue]
+                                   :get_updates, :accept_venue, :decline_venue, :get_likes]
   before_action :authorize_fan, only: [:create]
   before_action :authorize_account, only: [:my]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
-                                           :delete_venue, :set_active, :accept_venue, :decline_venue]
+                                           :delete_venue, :set_active, :accept_venue, :decline_venue, :get_likes]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
 
@@ -353,6 +353,23 @@ class EventsController < ApplicationController
       obj.destroy
       render status: :ok
     end
+  end
+
+  # POST /events/1/get_likes
+  swagger_api :get_likes do
+    summary "Retrieve list of accounts liked"
+    param :path, :id, :integer, :required, "Event id"
+    param :query, :account_id, :integer, :required, "Authorized account id"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def get_likes
+    @accounts = Account.joins(:user => :likes).where(likes: {event_id: @event}).group('user_id').order('accounts.account_type DESC')
+
+    render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # GET /events/1/click
