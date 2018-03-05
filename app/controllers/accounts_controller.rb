@@ -254,6 +254,13 @@ class AccountsController < ApplicationController
       param :form, :hospitality, :string, :optional, "Artist hospitality"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
       param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': '', {...}]"
+      param :form, :facebook, :string, :optional, "Artist facebook username"
+      param :form, :twitter, :string, :optional, "Artist twitter username"
+      param :form, :instagram, :string, :optional, "Artist instagram username"
+      param :form, :snapchat, :string, :optional, "Artist snapchat username"
+      param :form, :spotify, :string, :optional, "Artist spotify username"
+      param :form, :soundcloud, :string, :optional, "Artist soundcloud username"
+      param :form, :youtube, :string, :optional, "Artist youtube username"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -328,6 +335,13 @@ class AccountsController < ApplicationController
       param :form, :hospitality, :string, :optional, "Artist hospitality"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
       param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': '', {...}]"
+      param :form, :facebook, :string, :optional, "Artist facebook username"
+      param :form, :twitter, :string, :optional, "Artist twitter username"
+      param :form, :instagram, :string, :optional, "Artist instagram username"
+      param :form, :snapchat, :string, :optional, "Artist snapchat username"
+      param :form, :spotify, :string, :optional, "Artist spotify username"
+      param :form, :soundcloud, :string, :optional, "Artist soundcloud username"
+      param :form, :youtube, :string, :optional, "Artist youtube username"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -358,12 +372,15 @@ class AccountsController < ApplicationController
       param :query, :capacity_to, :integer, :optional, "Venue capacity to"
       param_list :query, :type_of_space, :string, :optional, "Venue type of space", ["night_club", "concert_hall", "event_space", "theatre", "additional_room", "stadium_arena", "outdoor_space", "other"]
       param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
+      param :query, :extended, :boolean, :optional, "Extended info"
       param :query, :limit, :integer, :optional, "Limit"
       param :query, :offset, :integer, :optional, "Offset"
     end
     def search
-      @accounts = Account.all
+      @extended = true
+      set_extended
 
+      @accounts = Account.all
       search_text
       search_type
       search_price
@@ -372,7 +389,7 @@ class AccountsController < ApplicationController
       search_capacity
       search_type_of_space
 
-      render json: @accounts.limit(params[:limit]).offset(params[:offset]), status: :ok
+      render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
 
     swagger_api :delete do
@@ -744,7 +761,8 @@ class AccountsController < ApplicationController
 
     def artist_params
         params.permit(:about, :lat, :lng, :address, :price, :is_price_private, :technical_rider,
-                      :stage_rider, :backstage_rider, :first_name, :last_name, :hospitality)
+                      :stage_rider, :backstage_rider, :first_name, :last_name, :hospitality,
+                      :facebook, :twitter, :instagram, :snapchat, :spotify, :soundcloud, :youtube)
     end
 
     def artist_dates_params(date)

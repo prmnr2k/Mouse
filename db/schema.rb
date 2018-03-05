@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305212603) do
+ActiveRecord::Schema.define(version: 20180305214450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,13 @@ ActiveRecord::Schema.define(version: 20180305212603) do
     t.string "first_name"
     t.string "last_name"
     t.string "hospitality"
+    t.string "facebook"
+    t.string "twitter"
+    t.string "instagram"
+    t.string "snapchat"
+    t.string "spotify"
+    t.string "soundcloud"
+    t.string "youtube"
   end
 
   create_table "audio_links", force: :cascade do |t|

@@ -136,6 +136,13 @@
             },
             {
               "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Extended info",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",
@@ -757,6 +764,55 @@
               "required": false
             },
             {
+              "paramType": "form",
+              "name": "facebook",
+              "type": "string",
+              "description": "Artist facebook username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "twitter",
+              "type": "string",
+              "description": "Artist twitter username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "instagram",
+              "type": "string",
+              "description": "Artist instagram username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "snapchat",
+              "type": "string",
+              "description": "Artist snapchat username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "spotify",
+              "type": "string",
+              "description": "Artist spotify username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "soundcloud",
+              "type": "string",
+              "description": "Artist soundcloud username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "youtube",
+              "type": "string",
+              "description": "Artist youtube username",
+              "required": false
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",
@@ -1279,6 +1335,55 @@
               "name": "available_dates",
               "type": "string",
               "description": "Artist available dates [{'begin_date': '', 'end_date': '', {...}]",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "facebook",
+              "type": "string",
+              "description": "Artist facebook username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "twitter",
+              "type": "string",
+              "description": "Artist twitter username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "instagram",
+              "type": "string",
+              "description": "Artist instagram username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "snapchat",
+              "type": "string",
+              "description": "Artist snapchat username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "spotify",
+              "type": "string",
+              "description": "Artist spotify username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "soundcloud",
+              "type": "string",
+              "description": "Artist soundcloud username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "youtube",
+              "type": "string",
+              "description": "Artist youtube username",
               "required": false
             },
             {
