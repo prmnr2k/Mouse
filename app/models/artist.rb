@@ -4,6 +4,7 @@ class Artist < ApplicationRecord
     has_one :account
     has_many :events
     has_many :audio_links
+    has_many :available_dates, foreign_key: 'artist_id', class_name: ArtistDate
 
     geocoded_by :address, latitude: :lat, longitude: :lng
     reverse_geocoded_by :lat, :lng, address: :address
@@ -14,6 +15,11 @@ class Artist < ApplicationRecord
             res = super.merge(account.get_attrs)
             res[:genres] = genres.pluck(:genre)
             res[:audio_links] = audio_links.pluck(:audio_link)
+
+            if options[:my]
+                res[:available_dates] = available_dates
+            end
+
             return res
         else
             return account.get_attrs

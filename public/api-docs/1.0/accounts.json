@@ -750,6 +750,13 @@
               "required": false
             },
             {
+              "paramType": "form",
+              "name": "available_dates",
+              "type": "string",
+              "description": "Artist available dates [{'begin_date': '', 'end_date': '', {...}]",
+              "required": false
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",
@@ -1265,6 +1272,13 @@
               "name": "audio_links",
               "type": "string",
               "description": "Array of links to audio of artist",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "available_dates",
+              "type": "string",
+              "description": "Artist available dates [{'begin_date': '', 'end_date': '', {...}]",
               "required": false
             },
             {

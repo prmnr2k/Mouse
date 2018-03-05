@@ -253,6 +253,7 @@ class AccountsController < ApplicationController
       param :form, :last_name, :string, :optional, "Artist last name"
       param :form, :hospitality, :string, :optional, "Artist hospitality"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
+      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': '', {...}]"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -271,7 +272,7 @@ class AccountsController < ApplicationController
             set_video_links
 
             #AccessHelper.grant_account_access(@account)
-            render json: @account, extended: true, except: :password, status: :created
+            render json: @account, extended: true, my: true, except: :password, status: :created
         else
             render json: @account.errors, status: :unprocessable_entity
         end
@@ -326,6 +327,7 @@ class AccountsController < ApplicationController
       param :form, :last_name, :string, :optional, "Artist last name"
       param :form, :hospitality, :string, :optional, "Artist hospitality"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
+      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': '', {...}]"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -339,7 +341,7 @@ class AccountsController < ApplicationController
         set_artist_params
         set_video_links
         if @account.update(account_update_params)
-            render json: @account, extended: true, except: :password, status: :ok
+            render json: @account, extended: true, my: true, except: :password, status: :ok
         else
             render json: @account.errors, status: :unprocessable_entity
         end
@@ -576,6 +578,7 @@ class AccountsController < ApplicationController
             end
             set_artist_genres
             set_artist_audios
+            set_artist_dates
         end
     end
 
@@ -603,11 +606,22 @@ class AccountsController < ApplicationController
 
     def set_artist_audios
       if params[:audio_links]
-        @account.artist.audio_links.clear
+        @artist.audio_links.clear
         params[:audio_links].each do |link|
           obj = AudioLink.new(audio_link: link)
           obj.save
-          @account.artist.audio_links << obj
+          @artist.audio_links << obj
+        end
+      end
+    end
+
+    def set_artist_dates
+      if params[:available_dates]
+        @artist.available_dates.clear
+        params[:available_dates].each do |date_range|
+          obj = ArtistDate.new(artist_dates_params(date_range))
+          obj.save
+          @artist.available_dates << obj
         end
       end
     end
@@ -732,4 +746,9 @@ class AccountsController < ApplicationController
         params.permit(:about, :lat, :lng, :address, :price, :is_price_private, :technical_rider,
                       :stage_rider, :backstage_rider, :first_name, :last_name, :hospitality)
     end
+
+    def artist_dates_params(date)
+      date.permit(:begin_date, :end_date)
+    end
+
 end
