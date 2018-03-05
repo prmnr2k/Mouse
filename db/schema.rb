@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305204216) do
+ActiveRecord::Schema.define(version: 20180305212603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,13 +151,14 @@ ActiveRecord::Schema.define(version: 20180305204216) do
     t.boolean "is_crowdfunding_event", default: true
     t.float "city_lat"
     t.float "city_lng"
-    t.integer "artists_number"
+    t.integer "artists_number", default: 6
     t.integer "venue_id"
     t.string "address"
     t.string "old_address"
     t.float "old_city_lat"
     t.float "old_city_lng"
     t.integer "image_id"
+    t.string "video_link"
   end
 
   create_table "fan_genres", force: :cascade do |t|

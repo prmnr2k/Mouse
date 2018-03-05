@@ -2,8 +2,7 @@ class EventsController < ApplicationController
   before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
                                    :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist,
                                    :get_updates, :accept_venue, :decline_venue]
-  before_action :authorize_fan, only: [:create]
-  before_action :authorize_account, only: [:my]
+  before_action :authorize_account, only: [:my, :create]
   before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
                                            :delete_venue, :set_active, :accept_venue, :decline_venue]
   before_action :authorize_user, only: [:like, :unlike]
@@ -59,6 +58,7 @@ class EventsController < ApplicationController
     param :form, :name, :string, :optional, "Event name"
     param :form, :image_base64, :string, :optional, "Image base64 string"
     param :form, :image, :file, :optional, "Image"
+    param :form, :video_link, :string, :optional, "Event video"
     param :form, :tagline, :string, :optional, "Tagline"
     param :form, :description, :string, :optional, "Short description"
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
@@ -107,8 +107,8 @@ class EventsController < ApplicationController
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :image_base64, :string, :optional, "Image base64 string"
     param :form, :image, :file, :optional, "Image"
+    param :form, :video_link, :string, :optional, "Event video"
     param :form, :name, :string, :optional, "Event name"
-    param :form, :date, :datetime, :optional, "Event date"
     param :form, :tagline, :string, :optional, "Tagline"
     param :form, :description, :string, :optional, "Short description"
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
@@ -460,14 +460,6 @@ class EventsController < ApplicationController
       render status: :unauthorized if @user == nil or @account.user != @user
     end
 
-    def authorize_fan
-      @user = AuthorizeHelper.authorize(request)
-      @account = Account.find(params[:account_id])
-      render status: :unauthorized and return if @user == nil or @account.user != @user
-
-      render status: :unauthorized if @account.account_type != 'fan'
-    end
-
     def authorize_creator
       @user = AuthorizeHelper.authorize(request)
       @account = Account.find(params[:account_id])
@@ -560,9 +552,8 @@ class EventsController < ApplicationController
 
     def artist_available?
       @artist_acc = Account.find(params[:artist_id])
-      number = @event.artists_number != nil ? @event.artists_number : 0
       if @artist_acc and @artist_acc.account_type == 'artist' and
-            @event.artist_events.where.not(status: 'declined').count < number
+            @event.artist_events.where.not(status: 'declined').count < @event.artists_number
         return true
       end
 
@@ -629,7 +620,7 @@ class EventsController < ApplicationController
       params.permit(:name, :tagline, :description, :funding_from, :funding_to,
                     :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
                     :event_month, :event_year, :event_length, :event_time, :is_crowdfunding_event,
-                    :city_lat, :city_lng, :address, :artists_number)
+                    :city_lat, :city_lng, :address, :artists_number, :video_link)
     end
 
     def authorize

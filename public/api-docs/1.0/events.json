@@ -223,6 +223,13 @@
             },
             {
               "paramType": "form",
+              "name": "video_link",
+              "type": "string",
+              "description": "Event video",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "tagline",
               "type": "string",
               "description": "Tagline",
@@ -448,16 +455,16 @@
             },
             {
               "paramType": "form",
-              "name": "name",
+              "name": "video_link",
               "type": "string",
-              "description": "Event name",
+              "description": "Event video",
               "required": false
             },
             {
               "paramType": "form",
-              "name": "date",
-              "type": "datetime",
-              "description": "Event date",
+              "name": "name",
+              "type": "string",
+              "description": "Event name",
               "required": false
             },
             {
