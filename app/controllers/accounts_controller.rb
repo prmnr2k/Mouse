@@ -373,6 +373,7 @@ class AccountsController < ApplicationController
       param_list :query, :type_of_space, :string, :optional, "Venue type of space", ["night_club", "concert_hall", "event_space", "theatre", "additional_room", "stadium_arena", "outdoor_space", "other"]
       param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
       param :query, :extended, :boolean, :optional, "Extended info"
+      param :query, :sort_by_popularity, :boolean, :optional, "Sort results by popularity"
       param :query, :limit, :integer, :optional, "Limit"
       param :query, :offset, :integer, :optional, "Offset"
     end
@@ -388,6 +389,7 @@ class AccountsController < ApplicationController
       search_address
       search_capacity
       search_type_of_space
+      sort_results
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
@@ -718,6 +720,14 @@ class AccountsController < ApplicationController
         @accounts = @accounts.joins(
           :venue => :public_venue
         ).where(public_venues: {type_of_space: PublicVenue.type_of_spaces[params[:type_of_space]]})
+      end
+    end
+
+    def sort_results
+      if params[:sort_by_popularity]
+        @accounts = @accounts.select(
+          "accounts.*, COUNT(followers.id) as followers_count"
+        ).left_joins(:followers).group('id').order('followers_count')
       end
     end
 

@@ -72,9 +72,9 @@ class Account < ApplicationRecord
 
 	def self.search(text)
 		return self.where(
-			"user_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%"
+			"accounts.user_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%"
 		).or(
-			Account.where("display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+			Account.where("accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
 		)
 	end
 end
