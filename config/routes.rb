@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   patch 'users/me', action: :update_me, controller: 'users'
 
   #Account routes
+  resources :accounts, only: [:create, :update] do
+    resources :request_messages
+  end
   get 'accounts', action: :get_all, controller: 'accounts'
   get 'accounts/search', action: :search, controller: 'accounts'
   get 'accounts/my', action: :get_my_accounts, controller: 'accounts'
@@ -23,11 +26,9 @@ Rails.application.routes.draw do
   get 'accounts/:id/followers', action: :get_followers, controller: 'accounts'
   get 'accounts/:id/following', action: :get_followed, controller: 'accounts'
   get 'accounts/:id/updates', action: :get_updates, controller: 'accounts'
-  post 'accounts', action: :create, controller: 'accounts'
+  post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
   post 'accounts/:id/images', action: :upload_image, controller: 'accounts'
   post 'accounts/:id/follow', action: :follow, controller: 'accounts'
-  post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
-  patch 'accounts/:id', action: :update, controller: 'accounts'
   delete 'accounts/:id/unfollow', action: :unfollow, controller: 'accounts'
   delete 'accounts/:id', action: :delete, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'

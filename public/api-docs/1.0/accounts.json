@@ -8,422 +8,6 @@
       "path": "/accounts.json",
       "operations": [
         {
-          "summary": "Retrieve list of accounts",
-          "parameters": [
-            {
-              "paramType": "query",
-              "name": "extended",
-              "type": "boolean",
-              "description": "Need extended info",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 200,
-              "responseModel": null,
-              "message": "Ok"
-            }
-          ],
-          "nickname": "Accounts#get_all",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/search.json",
-      "operations": [
-        {
-          "summary": "Search account",
-          "parameters": [
-            {
-              "paramType": "query",
-              "name": "text",
-              "type": "string",
-              "description": "Search query",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "type",
-              "type": "string",
-              "description": "Account type to display",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "venue",
-                  "artist",
-                  "fan"
-                ]
-              }
-            },
-            {
-              "paramType": "query",
-              "name": "price_from",
-              "type": "integer",
-              "description": "Artist/Venue price from",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "price_to",
-              "type": "integer",
-              "description": "Artist/Venue price to",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "address",
-              "type": "string",
-              "description": "Artist/Venue address",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "capacity_from",
-              "type": "integer",
-              "description": "Venue capacity from",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "capacity_to",
-              "type": "integer",
-              "description": "Venue capacity to",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "type_of_space",
-              "type": "string",
-              "description": "Venue type of space",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "night_club",
-                  "concert_hall",
-                  "event_space",
-                  "theatre",
-                  "additional_room",
-                  "stadium_arena",
-                  "outdoor_space",
-                  "other"
-                ]
-              }
-            },
-            {
-              "paramType": "query",
-              "name": "genres",
-              "type": "string",
-              "description": "Array of genres ['rap', 'rock', ....]",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "extended",
-              "type": "boolean",
-              "description": "Extended info",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "sort_by_popularity",
-              "type": "boolean",
-              "description": "Sort results by popularity",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            }
-          ],
-          "nickname": "Accounts#search",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/my.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of my accounts",
-          "parameters": [
-            {
-              "paramType": "query",
-              "name": "extended",
-              "type": "boolean",
-              "description": "Need extended info",
-              "required": false
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "nickname": "Accounts#get_my_accounts",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}.json",
-      "operations": [
-        {
-          "summary": "Retrieve account by id",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "extended",
-              "type": "boolean",
-              "description": "Need extended info",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Accounts#get",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/events.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of account events",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "text",
-              "type": "string",
-              "description": "Text to search",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            }
-          ],
-          "nickname": "Accounts#get_events",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/images.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of images",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Accounts#get_images",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/followers.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of followers",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Accounts#get_followers",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/following.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of following by me",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Accounts#get_followed",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/updates.json",
-      "operations": [
-        {
-          "summary": "Retrieve account updates by id",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 200,
-              "responseModel": null,
-              "message": "Ok"
-            }
-          ],
-          "nickname": "Accounts#get_updates",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/accounts.json",
-      "operations": [
-        {
           "summary": "Creates new account",
           "parameters": [
             {
@@ -840,149 +424,6 @@
             }
           ],
           "nickname": "Accounts#create",
-          "method": "post"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/images.json",
-      "operations": [
-        {
-          "summary": "Upload image to Account",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "image",
-              "type": "file",
-              "description": "Image to upload",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Accounts#upload_image",
-          "method": "post"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/follow.json",
-      "operations": [
-        {
-          "summary": "Subscribe for account",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "My account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "follower_id",
-              "type": "integer",
-              "description": "Following account id",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Accounts#follow",
-          "method": "post"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/follow.json",
-      "operations": [
-        {
-          "summary": "Subscribe for accounts",
-          "parameters": [
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "follow",
-              "type": "string",
-              "description": "Accounts ids, array: [1, 2, 3 ...]",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Accounts#follow_multiple",
           "method": "post"
         }
       ]
@@ -1415,6 +856,565 @@
           ],
           "nickname": "Accounts#update",
           "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/accounts.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of accounts",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Need extended info",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Accounts#get_all",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/search.json",
+      "operations": [
+        {
+          "summary": "Search account",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "text",
+              "type": "string",
+              "description": "Search query",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "type",
+              "type": "string",
+              "description": "Account type to display",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "venue",
+                  "artist",
+                  "fan"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "price_from",
+              "type": "integer",
+              "description": "Artist/Venue price from",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "price_to",
+              "type": "integer",
+              "description": "Artist/Venue price to",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "address",
+              "type": "string",
+              "description": "Artist/Venue address",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "capacity_from",
+              "type": "integer",
+              "description": "Venue capacity from",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "capacity_to",
+              "type": "integer",
+              "description": "Venue capacity to",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "type_of_space",
+              "type": "string",
+              "description": "Venue type of space",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "genres",
+              "type": "string",
+              "description": "Array of genres ['rap', 'rock', ....]",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Extended info",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "sort_by_popularity",
+              "type": "boolean",
+              "description": "Sort results by popularity",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            }
+          ],
+          "nickname": "Accounts#search",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/my.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of my accounts",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Need extended info",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "nickname": "Accounts#get_my_accounts",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve account by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "extended",
+              "type": "boolean",
+              "description": "Need extended info",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/events.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of account events",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "text",
+              "type": "string",
+              "description": "Text to search",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            }
+          ],
+          "nickname": "Accounts#get_events",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/images.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of images",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get_images",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/followers.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of followers",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get_followers",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/following.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of following by me",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Accounts#get_followed",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/updates.json",
+      "operations": [
+        {
+          "summary": "Retrieve account updates by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Accounts#get_updates",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/follow.json",
+      "operations": [
+        {
+          "summary": "Subscribe for accounts",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "follow",
+              "type": "string",
+              "description": "Accounts ids, array: [1, 2, 3 ...]",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#follow_multiple",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/images.json",
+      "operations": [
+        {
+          "summary": "Upload image to Account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image",
+              "type": "file",
+              "description": "Image to upload",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#upload_image",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/follow.json",
+      "operations": [
+        {
+          "summary": "Subscribe for account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "My account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "follower_id",
+              "type": "integer",
+              "description": "Following account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#follow",
+          "method": "post"
         }
       ]
     },

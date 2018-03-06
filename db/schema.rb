@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305214450) do
+ActiveRecord::Schema.define(version: 20180306214255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -248,6 +248,17 @@ ActiveRecord::Schema.define(version: 20180305214450) do
     t.datetime "updated_at", null: false
     t.integer "type_of_space"
     t.integer "price"
+  end
+
+  create_table "request_messages", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "receiver_id"
+    t.integer "time_frame"
+    t.boolean "is_personal", default: false
+    t.integer "estimated_price"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "resized_images", force: :cascade do |t|

@@ -12,6 +12,10 @@
       "description": "Users"
     },
     {
+      "path": "/api-docs/1.0/request_messages.{format}",
+      "description": "Messages"
+    },
+    {
       "path": "/api-docs/1.0/accounts.{format}",
       "description": "Accounts"
     },

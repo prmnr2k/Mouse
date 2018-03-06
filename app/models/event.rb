@@ -15,6 +15,8 @@ class Event < ApplicationRecord
   has_many :artist_events, foreign_key: 'event_id'
   has_many :artists, through: :artist_events, source: :account, class_name: 'Account'
 
+  has_many :request_messages
+
   has_many :genres, foreign_key: 'event_id', class_name: 'EventGenre', dependent: :destroy
   has_many :tickets, dependent: :destroy
   has_many :comments, dependent: :destroy

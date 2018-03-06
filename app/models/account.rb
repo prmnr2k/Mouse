@@ -16,6 +16,7 @@ class Account < ApplicationRecord
 
 	has_many :venue_events, foreign_key: 'venue_id'
 	has_many :artist_events, foreign_key: 'artist_id'
+	has_many :request_messages, foreign_key: 'receiver_id'
 
 	belongs_to :user
 	belongs_to :fan, optional: true
@@ -29,7 +30,8 @@ class Account < ApplicationRecord
 	has_many :events, foreign_key: 'creator_id'
 	has_many :account_updates
 	has_many :account_video_links
-    
+
+
 	def get_attrs
 		attrs = {}
 		attrs[:id] = id

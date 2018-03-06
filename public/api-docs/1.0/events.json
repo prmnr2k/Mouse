@@ -295,8 +295,25 @@
               "paramType": "form",
               "name": "event_month",
               "type": "integer",
-              "description": "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',\n                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']",
-              "required": false
+              "description": "Event month range",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "jan",
+                  "feb",
+                  "mar",
+                  "apr",
+                  "may",
+                  "jun",
+                  "jul",
+                  "aug",
+                  "sep",
+                  "oct",
+                  "nov",
+                  "dec"
+                ]
+              }
             },
             {
               "paramType": "form",
@@ -316,8 +333,16 @@
               "paramType": "form",
               "name": "event_time",
               "type": "integer",
-              "description": "Event time. One of ['morning', 'afternoon', 'evening']",
-              "required": false
+              "description": "Event time",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "morning",
+                  "afternoon",
+                  "evening"
+                ]
+              }
             },
             {
               "paramType": "form",
@@ -534,8 +559,25 @@
               "paramType": "form",
               "name": "event_month",
               "type": "integer",
-              "description": "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',\n                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']",
-              "required": false
+              "description": "Event month range",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "jan",
+                  "feb",
+                  "mar",
+                  "apr",
+                  "may",
+                  "jun",
+                  "jul",
+                  "aug",
+                  "sep",
+                  "oct",
+                  "nov",
+                  "dec"
+                ]
+              }
             },
             {
               "paramType": "form",
@@ -555,8 +597,16 @@
               "paramType": "form",
               "name": "event_time",
               "type": "integer",
-              "description": "Event time. One of ['morning', 'afternoon', 'evening']",
-              "required": false
+              "description": "Event time",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "morning",
+                  "afternoon",
+                  "evening"
+                ]
+              }
             },
             {
               "paramType": "form",
@@ -700,6 +750,42 @@
               "required": true
             },
             {
+              "paramType": "form",
+              "name": "time_frame",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "two_hours",
+                  "two_days",
+                  "one_week"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "is_personal",
+              "type": "boolean",
+              "description": "Is message personal",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "estimated_price",
+              "type": "integer",
+              "description": "Estimated price to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "message",
+              "type": "string",
+              "description": "Additional text",
+              "required": false
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",
@@ -812,6 +898,42 @@
               "type": "integer",
               "description": "Venue account id",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "time_frame",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "two_hours",
+                  "two_days",
+                  "one_week"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "is_personal",
+              "type": "boolean",
+              "description": "Is message personal",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "estimated_price",
+              "type": "integer",
+              "description": "Estimated price to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "message",
+              "type": "string",
+              "description": "Additional text",
+              "required": false
             },
             {
               "paramType": "header",

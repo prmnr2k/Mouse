@@ -68,11 +68,11 @@ class EventsController < ApplicationController
     param :form, :comments_available, :boolean, :optional, "Is comments available"
     param :form, :date_from, :datetime, :optional, "Date from"
     param :form, :date_to, :datetime, :optional, "Date to"
-    param :form, :event_month, :integer, :optional, "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
-                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']"
+    param_list :form, :event_month, :integer, :optional, "Event month range", ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
     param :form, :event_year, :integer, :optional, "Event year range"
     param :form, :event_length, :integer, :optional, "Event length in hours"
-    param :form, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
+    param_list :form, :event_time, :integer, :optional, "Event time", ['morning', 'afternoon', 'evening']
     param :form, :is_crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
     param :form, :city_lat, :float, :optional, "Event city lat"
     param :form, :city_lng, :float, :optional, "Event city lng"
@@ -118,11 +118,11 @@ class EventsController < ApplicationController
     param :form, :comments_available, :boolean, :optional, "Is comments available"
     param :form, :date_from, :datetime, :optional, "Date from"
     param :form, :date_to, :datetime, :optional, "Date to"
-    param :form, :event_month, :integer, :optional, "Event month range. One of ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
-                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']"
+    param_list :form, :event_month, :integer, :optional, "Event month range", ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
+                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
     param :form, :event_year, :integer, :optional, "Event year range"
     param :form, :event_length, :integer, :optional, "Event length in hours"
-    param :form, :event_time, :integer, :optional, "Event time. One of ['morning', 'afternoon', 'evening']"
+    param_list :form, :event_time, :integer, :optional, "Event time", ['morning', 'afternoon', 'evening']
     param :form, :is_crowdfunding_event, :boolean, :optional, "Is crowdfunding event"
     param :form, :city_lat, :float, :optional, "Event city lat"
     param :form, :city_lng, :float, :optional, "Event city lng"
@@ -167,6 +167,10 @@ class EventsController < ApplicationController
     param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :artist_id, :integer, :required, "Artist account id"
+    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
+    param :form, :is_personal, :boolean, :optional, "Is message personal"
+    param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
+    param :form, :message, :string, :optional, "Additional text"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -176,6 +180,8 @@ class EventsController < ApplicationController
     if artist_available?
       @event.artists << @artist_acc
       @event.save
+
+      send_mouse_request(@artist_acc)
       render status: :ok
     else
       render status: :unprocessable_entity
@@ -211,6 +217,10 @@ class EventsController < ApplicationController
     param :path, :id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :venue_id, :integer, :required, "Venue account id"
+    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
+    param :form, :is_personal, :boolean, :optional, "Is message personal"
+    param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
+    param :form, :message, :string, :optional, "Additional text"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -220,6 +230,8 @@ class EventsController < ApplicationController
     if venue_available?
       @event.venues << @venue_acc
       @event.save
+
+      send_mouse_request(@venue_acc)
       render status: :ok
     else
       render status: :unprocessable_entity
@@ -614,6 +626,18 @@ class EventsController < ApplicationController
     @event.venue_id = nil
 
     @event.save!
+  end
+
+  def send_mouse_request(account)
+    request_message = RequestMessage.new(request_message_params)
+    request_message.save
+
+    @event.request_messages << request_message
+    account.request_messages << request_message
+  end
+
+  def request_message_params
+    params.permit(:time_frame, :is_personal, :estimated_price, :message)
   end
 
     def event_params
