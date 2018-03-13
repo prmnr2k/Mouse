@@ -23,7 +23,7 @@ class PublicVenue < ApplicationRecord
     attrs[:audio_description] = audio_description
     attrs[:lighting_description] = lighting_description
     attrs[:stage_description] = stage_description
-    attrs[:genres] = genres
+    attrs[:genres] = genres.pluck(:name)
 
     return attrs
   end
