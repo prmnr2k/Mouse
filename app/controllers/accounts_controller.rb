@@ -520,6 +520,7 @@ class AccountsController < ApplicationController
           @public_venue.venue_id = @venue.id
           render @public_venue.errors and return if not @public_venue.save
         end
+        @venue.save
       end
     end
 

@@ -84,31 +84,38 @@
           "summary": "Update my user info",
           "parameters": [
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "email",
               "type": "string",
               "description": "Email",
               "required": true
             },
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "password",
               "type": "password",
               "description": "Your password",
               "required": true
             },
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "password_confirmation",
               "type": "password",
               "description": "Confirm your password",
               "required": false
             },
             {
-              "paramType": "query",
+              "paramType": "form",
               "name": "old_password",
               "type": "password",
               "description": "Old password",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "register_phone",
+              "type": "string",
+              "description": "Phone number",
               "required": false
             },
             {
