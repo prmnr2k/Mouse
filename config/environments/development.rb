@@ -1,3 +1,5 @@
+require 'vkontakte_api'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -46,6 +48,10 @@ Rails.application.configure do
     :authentication       => "plain",
     :enable_starttls_auto => true
   }
+
+  VkontakteApi.configure do |config|
+    config.api_version = '5.21'
+  end
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

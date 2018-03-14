@@ -1,3 +1,5 @@
+require 'vkontakte_api'
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -87,6 +89,10 @@ Rails.application.configure do
     :authentication       => "plain",
     :enable_starttls_auto => true
   }
+
+  VkontakteApi.configure do |config|
+    config.api_version = '5.21'
+  end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
