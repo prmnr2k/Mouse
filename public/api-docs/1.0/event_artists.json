@@ -1,0 +1,216 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "https://mouse-back.herokuapp.com",
+  "resourcePath": "event_artists",
+  "apis": [
+    {
+      "path": "/events/{event_id}/artists/{id}/accept.json",
+      "operations": [
+        {
+          "summary": "Accept artist for event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "EventArtists#accept",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{event_id}/artists/{id}/decline.json",
+      "operations": [
+        {
+          "summary": "Remove artist from event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "EventArtists#decline",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{event_id}/artists.json",
+      "operations": [
+        {
+          "summary": "Add artist to event",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "artist_id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "time_frame",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "two_hours",
+                  "two_days",
+                  "one_week"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "is_personal",
+              "type": "boolean",
+              "description": "Is message personal",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "estimated_price",
+              "type": "integer",
+              "description": "Estimated price to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "message",
+              "type": "string",
+              "description": "Additional text",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "EventArtists#create",
+          "method": "post"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

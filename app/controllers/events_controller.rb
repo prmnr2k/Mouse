@@ -1,10 +1,7 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :set_artist, :set_venue, :set_active,
-                                   :like, :unlike, :analytics, :click, :view, :delete_venue, :delete_artist,
-                                   :get_updates, :accept_venue, :decline_venue]
+  before_action :set_event, only: [:show, :update, :destroy, :set_active, :like, :unlike, :analytics, :click, :view, :get_updates]
   before_action :authorize_account, only: [:my, :create]
-  before_action :authorize_creator, only: [:update, :destroy, :set_artist, :set_venue, :delete_artist,
-                                           :delete_venue, :set_active, :accept_venue, :decline_venue]
+  before_action :authorize_creator, only: [:update, :destroy, :set_active]
   before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
 
@@ -159,164 +156,6 @@ class EventsController < ApplicationController
   end
   def analytics
     render json: @event, analytics: true, status: :ok
-  end
-
-  # POST /events/1/artist
-  swagger_api :set_artist do
-    summary "Add artist to event"
-    param :path, :id, :integer, :required, "Event id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :artist_id, :integer, :required, "Artist account id"
-    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
-    param :form, :is_personal, :boolean, :optional, "Is message personal"
-    param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
-    param :form, :message, :string, :optional, "Additional text"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :unprocessable_entity
-    response :not_found
-  end
-  def set_artist
-    if artist_available?
-      @event.artists << @artist_acc
-      @event.save
-
-      send_mouse_request(@artist_acc)
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /events/1/artist
-  swagger_api :delete_artist do
-    summary "Remove artist from event"
-    param :path, :id, :integer, :required, "Event id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :artist_id, :integer, :required, "Artist account id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :unprocessable_entity
-    response :not_found
-  end
-  def delete_artist
-    @artist_acc = Account.find(params[:artist_id])
-
-    if @artist_acc and @artist_acc.account_type == 'artist'
-      @event.artists.delete(@artist_acc)
-      # @event.save
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
-  end
-
-  # POST /events/1/venue
-  swagger_api :set_venue do
-    summary "Add venue to event"
-    param :path, :id, :integer, :required, "Event id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :venue_id, :integer, :required, "Venue account id"
-    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
-    param :form, :is_personal, :boolean, :optional, "Is message personal"
-    param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
-    param :form, :message, :string, :optional, "Additional text"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :unprocessable_entity
-    response :not_found
-  end
-  def set_venue
-    if venue_available?
-      @event.venues << @venue_acc
-      @event.save
-
-      send_mouse_request(@venue_acc)
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
-  end
-
-  # POST /events/1/venue/1/accept
-  swagger_api :accept_venue do
-    summary "Accept venue for event"
-    param :path, :id, :integer, :required, "Event id"
-    param :path, :venue_id, :integer, :required, "Venue account id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :unprocessable_entity
-    response :not_found
-  end
-  def accept_venue
-    if @event.venue_id == nil
-      @venue_event = @event.venue_events.find_by(venue_id: params[:venue_id])
-
-      if @venue_event and @venue_event.status == 'active'
-        @venue_event.status = 'accepted'
-        @venue_event.save
-
-        change_event
-        render status: :ok
-      else
-        render status: :not_found
-      end
-    else
-      render status: :unprocessable_entity
-    end
-  end
-
-  # POST /events/1/venue/1/decline
-  swagger_api :decline_venue do
-    summary "Decline venue for event"
-    param :path, :id, :integer, :required, "Event id"
-    param :path, :venue_id, :integer, :required, "Venue account id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :unprocessable_entity
-    response :not_found
-  end
-  def decline_venue
-    if @event.venue_id != nil
-      @venue_event = @event.venue_events.find_by(venue_id: params[:venue_id])
-
-      if @venue_event and @venue_event.status == 'accepted'
-        @venue_event.status = 'active'
-        @venue_event.save
-
-        change_event_back
-        render status: :ok
-      else
-        render status: :not_found
-      end
-    else
-      render status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /events/1/venue
-  swagger_api :delete_venue do
-    summary "Remove venue from event"
-    param :path, :id, :integer, :required, "Event id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :form, :venue_id, :integer, :required, "Venue account id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :unprocessable_entity
-    response :not_found
-  end
-  def delete_venue
-    @venue_acc = Account.find(params[:venue_id])
-
-    if @venue_acc and @venue_acc.account_type == 'venue' and @event.venue_id != nil
-      @event.venues.delete(@venue_acc)
-      # @event.save
-      render status: :ok
-    else
-      render status: :unprocessable_entity
-    end
   end
 
   # POST /events/1/activate
@@ -562,27 +401,6 @@ class EventsController < ApplicationController
       end
     end
 
-    def artist_available?
-      @artist_acc = Account.find(params[:artist_id])
-      if @artist_acc and @artist_acc.account_type == 'artist' and
-            @event.artist_events.where.not(status: 'declined').count < @event.artists_number
-        return true
-      end
-
-      return false
-    end
-
-    def venue_available?
-      @venue_acc = Account.find(params[:venue_id])
-
-      if @venue_acc and @venue_acc.account_type == 'venue' and
-            @event.venue_events.where.not(status: 'declined').count < Rails.configuration.number_of_venues
-        return true
-      end
-
-      return false
-    end
-
     def log_update
       params.each do |param|
         if HistoryHelper::EVENT_FIELDS.include?(param.to_sym)
@@ -602,30 +420,6 @@ class EventsController < ApplicationController
     if (params[:address] or params[:city_lat] or params[:city_lng]) and @event.venue_id != nil
       return :forbidden
     end
-  end
-
-  def change_event
-    @venue_acc = @venue_event.account
-
-    # save to rollback
-    @event.old_address = @event.address
-    @event.old_city_lat = @event.city_lat
-    @event.old_city_lng = @event.city_lng
-
-    @event.address = @venue_acc.venue.address
-    @event.city_lat = @venue_acc.venue.lat
-    @event.city_lng = @venue_acc.venue.lng
-    @event.venue_id = @venue_acc.id
-    @event.save!
-  end
-
-  def change_event_back
-    @event.address = @event.old_address
-    @event.city_lat = @event.old_city_lat
-    @event.city_lng = @event.old_city_lng
-    @event.venue_id = nil
-
-    @event.save!
   end
 
   def send_mouse_request(account)

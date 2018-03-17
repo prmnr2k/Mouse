@@ -12,8 +12,8 @@
       "description": "Users"
     },
     {
-      "path": "/api-docs/1.0/request_messages.{format}",
-      "description": "Messages"
+      "path": "/api-docs/1.0/inbox_messages.{format}",
+      "description": "Inbox messages"
     },
     {
       "path": "/api-docs/1.0/accounts.{format}",
@@ -38,6 +38,14 @@
     {
       "path": "/api-docs/1.0/comments.{format}",
       "description": "Comments"
+    },
+    {
+      "path": "/api-docs/1.0/event_venues.{format}",
+      "description": "Event venues"
+    },
+    {
+      "path": "/api-docs/1.0/event_artists.{format}",
+      "description": "Event artists"
     },
     {
       "path": "/api-docs/1.0/genres.{format}",

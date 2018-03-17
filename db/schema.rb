@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306214255) do
+ActiveRecord::Schema.define(version: 20180317142846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "accept_messages", force: :cascade do |t|
+    t.datetime "preferred_date_from"
+    t.datetime "preferred_date_to"
+    t.integer "price"
+    t.integer "travel_price"
+    t.integer "hotel_price"
+    t.integer "transportation_price"
+    t.integer "band_price"
+    t.integer "other_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "account_updates", force: :cascade do |t|
     t.integer "account_id"
@@ -74,8 +87,8 @@ ActiveRecord::Schema.define(version: 20180306214255) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "price"
-    t.float "lat"
     t.float "lng"
+    t.float "lat"
     t.string "address"
     t.boolean "is_price_private", default: true
     t.string "technical_rider"
@@ -104,8 +117,15 @@ ActiveRecord::Schema.define(version: 20180306214255) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
-    t.datetime "created_at", default: "2018-02-11 16:10:10", null: false
-    t.datetime "updated_at", default: "2018-02-11 16:10:11", null: false
+    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
+  end
+
+  create_table "decline_messages", force: :cascade do |t|
+    t.integer "reason"
+    t.string "additional_text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "event_collaborators", force: :cascade do |t|
@@ -207,22 +227,24 @@ ActiveRecord::Schema.define(version: 20180306214255) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
-  end
-
   create_table "images", force: :cascade do |t|
     t.string "base64"
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "event_id"
+  end
+
+  create_table "inbox_messages", force: :cascade do |t|
+    t.integer "receiver_id"
+    t.integer "event_id"
+    t.integer "message_type"
+    t.integer "request_msg_id"
+    t.integer "accept_msg_id"
+    t.integer "decline_msg_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -261,8 +283,6 @@ ActiveRecord::Schema.define(version: 20180306214255) do
   end
 
   create_table "request_messages", force: :cascade do |t|
-    t.integer "event_id"
-    t.integer "receiver_id"
     t.integer "time_frame"
     t.boolean "is_personal", default: false
     t.integer "estimated_price"

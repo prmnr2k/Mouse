@@ -15,7 +15,12 @@ Rails.application.routes.draw do
 
   #Account routes
   resources :accounts, only: [:create, :update] do
-    resources :request_messages
+    resources :inbox_messages do
+      member do
+        get :my
+        post :change_responce_time
+      end
+    end
   end
   get 'accounts', action: :get_all, controller: 'accounts'
   get 'accounts/search', action: :search, controller: 'accounts'
@@ -54,13 +59,21 @@ Rails.application.routes.draw do
   resources :events do
     resources :tickets, except: :index
     resources :comments
+
+    resources :event_venues, path: "venue", only: [:create] do
+      member do
+        post :accept
+        post :decline
+      end
+    end
+
+    resources :event_artists, path: "artists", only: [:create] do
+      member do
+        post :accept
+        post :decline
+      end
+    end
   end
-  post 'events/:id/artist', action: :set_artist, controller: 'events'
-  delete 'events/:id/artist', action: :delete_artist, controller: 'events'
-  post 'events/:id/venue', action: :set_venue, controller: 'events'
-  post 'events/:id/venue/:venue_id/accept', action: :accept_venue, controller: 'events'
-  post 'events/:id/venue/:venue_id/decline', action: :decline_venue, controller: 'events'
-  delete 'events/:id/venue', action: :delete_venue, controller: 'events'
   post 'events/:id/activate', action: :set_active, controller: 'events'
   post 'events/:id/like', action: :like, controller: 'events'
   post 'events/:id/unlike', action: :unlike, controller: 'events'

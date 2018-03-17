@@ -16,7 +16,7 @@ class Account < ApplicationRecord
 
 	has_many :venue_events, foreign_key: 'venue_id'
 	has_many :artist_events, foreign_key: 'artist_id'
-	has_many :request_messages, foreign_key: 'receiver_id'
+	has_many :inbox_messages, foreign_key: 'receiver_id'
 
 	belongs_to :user
 	belongs_to :fan, optional: true
