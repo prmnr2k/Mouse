@@ -81,7 +81,7 @@ class AuthenticateController < ApplicationController
 		uid = ""
 		begin
 			@vk = VkontakteApi::Client.new(params[:access_token])
-			uid = @vk.users.get[0].uid
+			uid = @vk.users.get[0].id
 		rescue => ex
 			render json: {"error_code": ex.error_code}, status: :unauthorized and return
 		end
