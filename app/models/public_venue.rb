@@ -24,7 +24,8 @@ class PublicVenue < ApplicationRecord
     attrs[:lighting_description] = lighting_description
     attrs[:stage_description] = stage_description
     attrs[:genres] = genres.pluck(:genre)
-
+    attrs[:type_of_space] = type_of_space
+    
     return attrs
   end
 end
