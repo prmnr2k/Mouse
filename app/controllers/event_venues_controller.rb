@@ -105,7 +105,8 @@ class EventVenuesController < ApplicationController
     inbox_message = InboxMessage.new(name: "#{@event.name} request", message_type: "request")
     inbox_message.request_message = request_message
 
-    @event.inbox_messages << inbox_message
+    @event.request_messages << request_message
+    @event.creator.inbox_messages << inbox_message
     account.inbox_messages << inbox_message
   end
 
