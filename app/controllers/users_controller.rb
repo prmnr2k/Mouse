@@ -52,7 +52,7 @@ class UsersController < ApplicationController
   swagger_api :update_me do
     summary "Update my user info"
     param :form, :email, :string, :required, "Email"
-    param :form, :password, :password, :required, "Your password"
+    param :form, :password, :password, :optional, "Your password"
     param :form, :password_confirmation, :password, :optional, "Confirm your password"
     param :form, :old_password, :password, :optional, "Old password"
     param :form, :register_phone, :string, :optional, "Phone number"

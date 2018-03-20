@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180317142846) do
+ActiveRecord::Schema.define(version: 20180320051336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,6 +213,15 @@ ActiveRecord::Schema.define(version: 20180317142846) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "feedback_type"
+    t.string "detail", default: ""
+    t.integer "rate_score"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "followers", force: :cascade do |t|
     t.integer "by_id"
     t.integer "to_id"
@@ -280,6 +289,14 @@ ActiveRecord::Schema.define(version: 20180317142846) do
     t.datetime "updated_at", null: false
     t.integer "type_of_space"
     t.integer "price"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "subject"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "request_messages", force: :cascade do |t|

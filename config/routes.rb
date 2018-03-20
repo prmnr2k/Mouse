@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :questions, only: [:index, :create, :show]
+  resources :feedbacks, only: [:index, :create, :show]
+
   #Auth routes
   post 'auth/login', action: :login, controller: 'authenticate'
   post 'auth/forgot_password', action: :forgot_password, controller: 'authenticate'
@@ -12,6 +15,7 @@ Rails.application.routes.draw do
   post 'users/validate_phone', action: :validate_phone, controller: 'users'
   get 'users/me', action: :get_me, controller: 'users'
   patch 'users/me', action: :update_me, controller: 'users'
+  patch 'users/:id/email', action: :change_email, controller: 'users'
 
   #Account routes
   resources :accounts, only: [:create, :update] do
