@@ -370,7 +370,7 @@ class AccountsController < ApplicationController
       param :query, :address, :string, :optional, "Artist/Venue address"
       param :query, :capacity_from, :integer, :optional, "Venue capacity from"
       param :query, :capacity_to, :integer, :optional, "Venue capacity to"
-      param_list :query, :type_of_space, :string, :optional, "Venue type of space", ["night_club", "concert_hall", "event_space", "theatre", "additional_room", "stadium_arena", "outdoor_space", "other"]
+      param :query, :types_of_space, :string, :optional, "Venue types of space array ['night_club', 'concert_hall', ...]"
       param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
       param :query, :extended, :boolean, :optional, "Extended info"
       param :query, :sort_by_popularity, :boolean, :optional, "Sort results by popularity"
@@ -717,10 +717,15 @@ class AccountsController < ApplicationController
     end
 
     def search_type_of_space
-      if params[:type_of_space] and params[:type] == "venue"
+      if params[:types_of_space] and params[:type] == "venue"
+        types_of_space = []
+        params[:types_of_space].each do |type_of_space|
+          types_of_space.append(PublicVenue.type_of_spaces[type_of_space])
+        end
+
         @accounts = @accounts.joins(
           :venue => :public_venue
-        ).where(public_venues: {type_of_space: PublicVenue.type_of_spaces[params[:type_of_space]]})
+        ).where(public_venues: {type_of_space: types_of_space})
       end
     end
 
