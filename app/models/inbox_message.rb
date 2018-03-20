@@ -3,9 +3,9 @@ class InboxMessage < ApplicationRecord
   belongs_to :account, foreign_key: 'receiver_id'
 
   enum message_type: [:accept, :request, :decline]
-  belongs_to :decline_message, foreign_key: :decline_msg_id, optional: true
-  belongs_to :accept_message, foreign_key: :accept_msg_id, optional: true
-  belongs_to :request_message, foreign_key: :request_msg_id, optional: true
+  has_one :decline_message
+  has_one :accept_message
+  has_one :request_message
 
   def as_json(options={})
     res = super

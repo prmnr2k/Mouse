@@ -1,6 +1,7 @@
 class EventArtistsController < ApplicationController
-  before_action :set_event, only: [:create, :accept, :decline]
-  before_action :authorize_creator, only: [:create, :accept, :decline]
+  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :artist_accept, :artist_decline]
+  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline]
+  before_action :authorize_artist, only: [:artist_accept, :artist_decline]
   swagger_controller :event_artists, "Event artists"
 
   # POST /events/1/artist
@@ -30,8 +31,8 @@ class EventArtistsController < ApplicationController
     end
   end
 
-  # POST /events/1/venue/1/accept
-  swagger_api :accept do
+  # POST /events/1/artist/1/owner_accept
+  swagger_api :owner_accept do
     summary "Accept artist for event"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
@@ -41,7 +42,7 @@ class EventArtistsController < ApplicationController
     response :unprocessable_entity
     response :not_found
   end
-  def accept
+  def owner_accept
     # if @event.venue_id == nil
     #   @venue_event = @event.venue_events.find_by(venue_id: params[:venue_id])
     #
@@ -59,8 +60,8 @@ class EventArtistsController < ApplicationController
     # end
   end
 
-  # POST /events/1/artist
-  swagger_api :decline do
+  # POST /events/1/artist/1/owner_decline
+  swagger_api :owner_decline do
     summary "Remove artist from event"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
@@ -70,18 +71,52 @@ class EventArtistsController < ApplicationController
     response :unprocessable_entity
     response :not_found
   end
-  def decline
+  def owner_decline
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
-    if @artist_event and @artist_event.status != 'owner_accepted'
+    if @artist_event and not ["owner_accepted", "accepted"].include?(@artist_event.status)
       @artist_event.status = 'owner_declined'
-      # change_event_back
       @artist_event.save
 
       render status: :ok
     else
       render status: :not_found
     end
+  end
+
+  # POST /events/1/artist/1/artist_accept
+  swagger_api :artist_accept do
+    summary "Artist accepts request"
+    param :path, :id, :integer, :required, "Artist id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :preferred_date_from, :datetime, :required, "Preferred date from"
+    param :form, :preferred_date_to, :datetime, :required, "Preferred date to"
+    param :form, :price, :integer, :required, "Price"
+    param :form, :travel_price, :integer, :optional, "Travel price"
+    param :form, :hotel_price, :integer, :optional, "Hotel price"
+    param :form, :transportation_price, :integer, :optional, "Transportation price"
+    param :form, :band_price, :integer, :optional, "Band price"
+    param :form, :other_price, :integer, :optional, "Other price"
+    param :header, 'Authorization', :string, :required, "Artist auth key"
+  end
+  def artist_accept
+    @artist_acc = Account.find(params[:id])
+    @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
+
+    if @artist_event and ["pending", "request_send"].include?(@artist_event.status)
+      @artist_event.status = 'accepted'
+      send_approval(@artist_acc)
+      @artist_event.save
+
+      render status: :ok
+    else
+      render status: :not_found
+    end
+  end
+
+  # POST /events/1/artist/1/artist_decline
+  def artist_decline
+
   end
 
   private
@@ -98,6 +133,12 @@ class EventArtistsController < ApplicationController
       render status: :unauthorized if @creator != @account or @creator.user != @user
     end
 
+    def authorize_artist
+      @user = AuthorizeHelper.authorize(request)
+      @account = Account.find(params[:id])
+      render status: :unauthorized and return if @user == nil or @account.user != @user or @account.account_type != 'artist'
+    end
+
     def send_mouse_request(account)
       request_message = RequestMessage.new(request_message_params)
       request_message.save
@@ -105,23 +146,41 @@ class EventArtistsController < ApplicationController
       inbox_message = InboxMessage.new(name: "#{@event.name} request", message_type: "request")
       inbox_message.request_message = request_message
 
-      @event.inbox_messages << inbox_message
+      @event.request_messages << request_message
+      @creator.inbox_messages << inbox_message
+      account.inbox_messages << inbox_message
+    end
+
+    def send_approval(account)
+      accept_message = AcceptMessage.new(accept_message_params)
+      accept_message.save
+
+      inbox_message = InboxMessage.new(name: "#{account.user_name} accepted #{@event.name} invitation", message_type: "accept")
+      inbox_message.accept_message = accept_message
+
+      @event.accept_messages << accept_message
+      @event.creator.inbox_messages << inbox_message
       account.inbox_messages << inbox_message
     end
 
 
-  def artist_available?
-    @artist_acc = Account.find(params[:artist_id])
-    if @artist_acc and @artist_acc.account_type == 'artist' and
-      @event.artist_events.where.not(status: 'declined').count < @event.artists_number
-      return true
-    end
+    def artist_available?
+      @artist_acc = Account.find(params[:artist_id])
+      if @artist_acc and @artist_acc.account_type == 'artist' and
+        @event.artist_events.where.not(status: 'declined').count < @event.artists_number
+        return true
+      end
 
-    return false
-  end
+      return false
+    end
 
     def request_message_params
       params.permit(:time_frame, :is_personal, :estimated_price, :message)
+    end
+
+    def accept_message_params
+      params.permit(:preferred_date_from, :preferred_date_to, :price,
+                    :travel_price, :hotel_price, :transportation_price, :band_price, :other_price)
     end
 
 end

@@ -73,8 +73,10 @@ Rails.application.routes.draw do
 
     resources :event_artists, path: "artists", only: [:create] do
       member do
-        post :accept
-        post :decline
+        post :owner_accept
+        post :owner_decline
+        post :artist_accept
+        post :artist_decline
       end
     end
   end

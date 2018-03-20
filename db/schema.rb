@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320051336) do
+ActiveRecord::Schema.define(version: 20180320112151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20180320051336) do
     t.integer "other_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inbox_message_id"
+    t.integer "event_id"
   end
 
   create_table "account_updates", force: :cascade do |t|
@@ -126,6 +128,8 @@ ActiveRecord::Schema.define(version: 20180320051336) do
     t.string "additional_text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inbox_message_id"
+    t.integer "event_id"
   end
 
   create_table "event_collaborators", force: :cascade do |t|
@@ -246,14 +250,11 @@ ActiveRecord::Schema.define(version: 20180320051336) do
 
   create_table "inbox_messages", force: :cascade do |t|
     t.integer "receiver_id"
-    t.integer "event_id"
     t.integer "message_type"
-    t.integer "request_msg_id"
-    t.integer "accept_msg_id"
-    t.integer "decline_msg_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.integer "sender_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -306,6 +307,8 @@ ActiveRecord::Schema.define(version: 20180320051336) do
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "inbox_message_id"
+    t.integer "event_id"
   end
 
   create_table "resized_images", force: :cascade do |t|

@@ -1,5 +1,5 @@
 class DeclineMessage < ApplicationRecord
   enum reason: [:price, :location, :time, :other]
 
-  has_one :inbox_message, foreign_key: :decline_msg_id
+  belongs_to :inbox_message
 end
