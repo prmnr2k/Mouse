@@ -88,7 +88,7 @@
               "name": "email",
               "type": "string",
               "description": "Email",
-              "required": true
+              "required": false
             },
             {
               "paramType": "form",

@@ -51,7 +51,7 @@ class UsersController < ApplicationController
   # PUT /users/update_me
   swagger_api :update_me do
     summary "Update my user info"
-    param :form, :email, :string, :required, "Email"
+    param :form, :email, :string, :optional, "Email"
     param :form, :password, :password, :optional, "Your password"
     param :form, :password_confirmation, :password, :optional, "Confirm your password"
     param :form, :old_password, :password, :optional, "Old password"
