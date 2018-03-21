@@ -28,8 +28,10 @@ class User < ApplicationRecord
 		self.password = User.encrypt_password(self.password) if self.password
 	end
 
-	def check_old 
-		errors.add(:old_password, 'NOT_MACHED') if User.find(id).password != User.encrypt_password(self.old_password)
+	def check_old
+		if self.old_password != nil
+			errors.add(:old_password, 'NOT_MACHED') if User.find(id).password != User.encrypt_password(self.old_password)
+		end
 	end
 
 	def has_access?(access_name)
