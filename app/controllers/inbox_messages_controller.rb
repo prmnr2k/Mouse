@@ -13,9 +13,7 @@ class InboxMessagesController < ApplicationController
     response :ok
   end
   def index
-    @messages = InboxMessage.where(receiver_id: @account.id)
-
-    render json: @messages.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @account.inbox_messages.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # GET account/1/inbox_messages/1
@@ -29,7 +27,7 @@ class InboxMessagesController < ApplicationController
     response :unauthorized
   end
   def show
-    if @message.receiver_id == params[:account_id]
+    if @message.receiver_id == params[:account_id].to_i or @message.sender_id == params[:account_id].to_i
       render json: @message, extended: true, status: :ok
     else
       render status: :not_found
@@ -48,9 +46,7 @@ class InboxMessagesController < ApplicationController
     response :unauthorized
   end
   def my
-    @messages = InboxMessage.joins(:event).where(:events => {creator_id: params[:account_id]})
-
-    render json: @messages.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @account.sent_messages.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # POST account/1/inbox_messages/1/change_responce_time
@@ -65,7 +61,7 @@ class InboxMessagesController < ApplicationController
     response :unauthorized
   end
   def change_responce_time
-    if @message.event.creator_id == params[:account_id].to_i
+    if @message.sender_id == params[:account_id].to_i and @message.request_message != nil
       @message.request_message.time_frame = params[:time_frame]
       @message.save!
 

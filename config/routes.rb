@@ -20,8 +20,10 @@ Rails.application.routes.draw do
   #Account routes
   resources :accounts, only: [:create, :update] do
     resources :inbox_messages do
-      member do
+      collection do
         get :my
+      end
+      member do
         post :change_responce_time
       end
     end

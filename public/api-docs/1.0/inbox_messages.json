@@ -5,7 +5,7 @@
   "resourcePath": "inbox_messages",
   "apis": [
     {
-      "path": "/accounts/{account_id}/inbox_messages/{id}/my.json",
+      "path": "/accounts/{account_id}/inbox_messages/my.json",
       "operations": [
         {
           "summary": "Retrieve message",

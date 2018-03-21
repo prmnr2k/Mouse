@@ -1,6 +1,6 @@
 class InboxMessage < ApplicationRecord
-  belongs_to :event
-  belongs_to :account, foreign_key: 'receiver_id'
+  belongs_to :receiver, foreign_key: 'receiver_id', class_name: 'Account'
+  belongs_to :sender, foreign_key: 'sender_id', class_name: 'Account'
 
   enum message_type: [:accept, :request, :decline]
   has_one :decline_message
@@ -15,8 +15,6 @@ class InboxMessage < ApplicationRecord
     res.delete('decline_msg_id')
 
     if options[:extended]
-      res[:event] = event
-
       if request_message
         res[:message_info] = request_message
       elsif accept_message

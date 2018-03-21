@@ -106,8 +106,9 @@ class EventVenuesController < ApplicationController
     inbox_message.request_message = request_message
 
     @event.request_messages << request_message
-    @event.creator.inbox_messages << inbox_message
+    @event.creator.sent_messages << inbox_message
     account.inbox_messages << inbox_message
+    inbox_message.save
   end
 
   def request_message_params
