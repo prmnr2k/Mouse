@@ -48,7 +48,15 @@
               "name": "feedback_type",
               "type": "string",
               "description": "Type of feedback",
-              "required": true
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "bug",
+                  "enhancement",
+                  "compliment"
+                ]
+              }
             },
             {
               "paramType": "form",

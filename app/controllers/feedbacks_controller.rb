@@ -30,7 +30,7 @@ class FeedbacksController < ApplicationController
   # POST /feedbacks
   swagger_api :create do
     summary "Send feedback"
-    param :form, :feedback_type, :string, :required, "Type of feedback"
+    param_list :form, :feedback_type, :string, :required, "Type of feedback", ["bug", "enhancement", "compliment"]
     param :form, :detail, :string, :optional, "Message text"
     param :form, :rate_score, :string, :required, "Rate score"
     param :header, 'Authorization', :string, :required, 'Authentication token'
