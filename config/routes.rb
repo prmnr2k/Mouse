@@ -68,8 +68,10 @@ Rails.application.routes.draw do
 
     resources :event_venues, path: "venue", only: [:create] do
       member do
-        post :accept
-        post :decline
+        post :owner_accept
+        post :owner_decline
+        post :venue_accept
+        post :venue_decline
       end
     end
 
