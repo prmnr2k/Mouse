@@ -208,6 +208,62 @@
       ]
     },
     {
+      "path": "/events/{event_id}/artists/{id}/artist_decline.json",
+      "operations": [
+        {
+          "summary": "Artist declines request",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "reason",
+              "type": "string",
+              "description": "Reason",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "price",
+                  "location",
+                  "time",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "additional_text",
+              "type": "string",
+              "description": "Message",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Artist auth key",
+              "required": true
+            }
+          ],
+          "nickname": "EventArtists#artist_decline",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/events/{event_id}/artists.json",
       "operations": [
         {

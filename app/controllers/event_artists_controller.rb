@@ -43,21 +43,17 @@ class EventArtistsController < ApplicationController
     response :not_found
   end
   def owner_accept
-    # if @event.venue_id == nil
-    #   @venue_event = @event.venue_events.find_by(venue_id: params[:venue_id])
-    #
-    #   if @venue_event and @venue_event.status == 'active'
-    #     @venue_event.status = 'accepted'
-    #     @venue_event.save
-    #
-    #     change_event
-    #     render status: :ok
-    #   else
-    #     render status: :not_found
-    #   end
-    # else
-    #   render status: :unprocessable_entity
-    # end
+    @artist_event = @event.artist_events.find_by(artist_id: params[:id])
+
+    if @artist_event and ["accepted"].include?(@artist_event.status)
+      @artist_event.status = 'owner_accepted'
+      # send_message
+      @artist_event.save
+
+      render status: :ok
+    else
+      render status: :not_found
+    end
   end
 
   # POST /events/1/artist/1/owner_decline
@@ -76,6 +72,7 @@ class EventArtistsController < ApplicationController
 
     if @artist_event and not ["owner_accepted", "accepted"].include?(@artist_event.status)
       @artist_event.status = 'owner_declined'
+      # send_message
       @artist_event.save
 
       render status: :ok
@@ -115,8 +112,27 @@ class EventArtistsController < ApplicationController
   end
 
   # POST /events/1/artist/1/artist_decline
+  swagger_api :artist_decline do
+    summary "Artist declines request"
+    param :path, :id, :integer, :required, "Artist id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
+    param :form, :additional_text, :string, :optional, "Message"
+    param :header, 'Authorization', :string, :required, "Artist auth key"
+  end
   def artist_decline
+    @artist_acc = Account.find(params[:id])
+    @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
+    if @artist_event and ["pending", "request_send"].include?(@artist_event.status)
+      @artist_event.status = 'declined'
+      send_decline(@artist_acc)
+      @artist_event.save
+
+      render status: :ok
+    else
+      render status: :not_found
+    end
   end
 
   private
@@ -164,6 +180,18 @@ class EventArtistsController < ApplicationController
       account.sent_messages << inbox_message
     end
 
+    def send_decline(account)
+      decline_message = DeclineMessage.new(decline_message_params)
+      decline_message.save
+
+      inbox_message = InboxMessage.new(name: "#{account.user_name} declined #{@event.name} invitation", message_type: "decline")
+      inbox_message.decline_message = decline_message
+
+      @event.decline_messages << decline_message
+      @event.creator.inbox_messages << inbox_message
+      account.sent_messages << inbox_message
+    end
+
 
     def artist_available?
       @artist_acc = Account.find(params[:artist_id])
@@ -182,6 +210,10 @@ class EventArtistsController < ApplicationController
     def accept_message_params
       params.permit(:preferred_date_from, :preferred_date_to, :price,
                     :travel_price, :hotel_price, :transportation_price, :band_price, :other_price)
+    end
+
+    def decline_message_params
+      params.permit(:reason, :additional_text)
     end
 
 end
