@@ -214,10 +214,11 @@ class AccountsController < ApplicationController
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
-      param :form, :video_links, :string, :optional, "Array of links"
+      param :form, :video_links, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
-      param :form, :address, :string, :optional, "Fan/Artist/Venue address"
+      param :form, :address, :string, :optional, "Fan/Venue address"
+      param :form, :preferred_address, :string, :optional, "Artist preferred address to perform"
       param :form, :lat, :float, :optional, "Fan/Artist/Venue lat"
       param :form, :lng, :float, :optional, "Fan/Artist/Venue lng"
       param :form, :description, :string, :optional, "Venue description"
@@ -243,17 +244,39 @@ class AccountsController < ApplicationController
       param :form, :emails, :string, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
+      param :form, :price, :integer, :optional, "Venue (public only) price"
       param :form, :about, :string, :optional, "About artist"
-      param :form, :price, :integer, :optional, "Artist/Venue (public only) price"
-      param :form, :is_price_private, :boolean, :optional, "Is artist price private"
-      param :form, :technical_rider, :string, :optional, "Artist technical rider"
-      param :form, :stage_rider, :string, :optional, "Artist stage rider"
-      param :form, :backstage_rider, :string, :optional, "Artist backstage rider"
+      param :form, :stage_name, :string, :optional, "Artist stage name"
+      param :form, :manager_name, :string, :optional, "Artist'smanager name"
       param :form, :first_name, :string, :optional, "Artist first name"
       param :form, :last_name, :string, :optional, "Artist last name"
-      param :form, :hospitality, :string, :optional, "Artist hospitality"
-      param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
-      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': '', {...}]"
+      param :form, :audio_links, :string, :optional, "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]"
+      param :form, :artist_albums, :string, :optional, "Array of artist albums objects [{'album_name': '', 'album_artwork': '', 'album_link': ''}, {...}]"
+      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]"
+      param :form, :performance_min_time, :integer, :optional, "Artist min time to perform (hr)"
+      param :form, :performance_max_time, :integer, :optional, "Artist max time to perform (hr)"
+      param :form, :price_from, :integer, :optional, "Artist min price to perform"
+      param :form, :price_to, :integer, :optional, "Artist max time to perform"
+      param :form, :additional_hours_price, :integer, :optional, "Artist price for additional hours"
+      param :form, :is_hide_pricing_from_profile, :boolean, :optional, "Hide artist pricing from profile?"
+      param :form, :is_hide_pricing_from_search, :boolean, :optional, "Hide artist pricing from search?"
+      param :form, :days_to_travel, :integer, :optional, "Artist days to travel"
+      param :form, :is_perform_with_band, :boolean, :optional, "Is artist perform with band?"
+      param :form, :can_perform_without_band, :boolean, :optional, "Can artist perform without band?"
+      param :form, :is_perform_with_backing_vocals,:boolean, :optional, "Is artist perform with backing vocals?"
+      param :form, :can_perform_without_backing_vocals, :boolean, :optional, "Can artist perform without backing vocals?"
+      param :form, :is_permitted_to_stream, :boolean, :optional, "Is artist give permission to stream?"
+      param :form, :is_permitted_to_advertisement,:boolean, :optional, "Is artist give permission to advertisement?"
+      param :form, :has_conflict_contracts, :boolean, :optional, "Has artist conflict contracts to advertisement?"
+      param :form, :conflict_companies_names, :string, :optional, "Names of artist's conflict companies"
+      param :form, :preferred_venue_text,:string, :optional, "Artist other preferred venue types"
+      param :form, :min_time_to_book, :integer, :optional, "Artist min time to book"
+      param :form, :min_time_to_free_cancel, :integer, :optional, "Artist min time to cancel"
+      param :form, :late_cancellation_fee, :integer, :optional, "Artist late cancellation fee"
+      param :form, :refund_policy, :string, :optional, "Artist refund policy"
+      param :form, :artist_riders, :string, :optional, "Artist array of riders objects
+                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file': '', 'description': '', 'is_flexible': ''}, {...}]"
+      param :form, :preferred_venues, :string, :optional, "Array of preferred venue types"
       param :form, :facebook, :string, :optional, "Artist facebook username"
       param :form, :twitter, :string, :optional, "Artist twitter username"
       param :form, :instagram, :string, :optional, "Artist instagram username"
@@ -295,10 +318,11 @@ class AccountsController < ApplicationController
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
-      param :form, :video_links, :string, :optional, "Array of links"
+      param :form, :video_links, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
-      param :form, :address, :string, :optional, "Fan/Artist/Venue address"
+      param :form, :address, :string, :optional, "Fan/Venue address"
+      param :form, :preferred_address, :string, :optional, "Artist preferred address to perform"
       param :form, :lat, :float, :optional, "Fan/Artist/Venue lat"
       param :form, :lng, :float, :optional, "Fan/Artist/Venue lng"
       param :form, :description, :string, :optional, "Venue description"
@@ -311,7 +335,7 @@ class AccountsController < ApplicationController
       param :form, :min_age, :integer, :optional, "Venue min age (public_venue only)"
       param_list :form, :venue_type, :string, :optional, "Venue type", ["public_venue", "private_residence"]
       param_list :form, :type_of_space, :string, :optional, "Venue type of space (public_venue only)", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                                                         "stadium_arena", "outdoor_space", "other"]
+                                                                                                        "stadium_arena", "outdoor_space", "other"]
       param :form, :has_bar, :boolean, :optional, "Has venue bar? (public_venue only)"
       param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "other_location"]
       param :form, :dress_code, :string, :optional, "Venue dress code (public_venue only)"
@@ -324,17 +348,39 @@ class AccountsController < ApplicationController
       param :form, :emails, :string, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
+      param :form, :price, :integer, :optional, "Venue (public only) price"
       param :form, :about, :string, :optional, "About artist"
-      param :form, :price, :integer, :optional, "Artist/Venue (public only) price"
-      param :form, :is_price_private, :boolean, :optional, "Is artist price private"
-      param :form, :technical_rider, :string, :optional, "Artist technical rider"
-      param :form, :stage_rider, :string, :optional, "Artist stage rider"
-      param :form, :backstage_rider, :string, :optional, "Artist backstage rider"
+      param :form, :stage_name, :string, :optional, "Artist stage name"
+      param :form, :manager_name, :string, :optional, "Artist'smanager name"
       param :form, :first_name, :string, :optional, "Artist first name"
       param :form, :last_name, :string, :optional, "Artist last name"
-      param :form, :hospitality, :string, :optional, "Artist hospitality"
-      param :form, :audio_links, :string, :optional, "Array of links to audio of artist"
-      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': '', {...}]"
+      param :form, :audio_links, :string, :optional, "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]"
+      param :form, :artist_albums, :string, :optional, "Array of artist albums objects [{'album_name': '', 'album_artwork': '', 'album_link': ''}, {...}]"
+      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]"
+      param :form, :performance_min_time, :integer, :optional, "Artist min time to perform (hr)"
+      param :form, :performance_max_time, :integer, :optional, "Artist max time to perform (hr)"
+      param :form, :price_from, :integer, :optional, "Artist min price to perform"
+      param :form, :price_to, :integer, :optional, "Artist max time to perform"
+      param :form, :additional_hours_price, :integer, :optional, "Artist price for additional hours"
+      param :form, :is_hide_pricing_from_profile, :boolean, :optional, "Hide artist pricing from profile?"
+      param :form, :is_hide_pricing_from_search, :boolean, :optional, "Hide artist pricing from search?"
+      param :form, :days_to_travel, :integer, :optional, "Artist days to travel"
+      param :form, :is_perform_with_band, :boolean, :optional, "Is artist perform with band?"
+      param :form, :can_perform_without_band, :boolean, :optional, "Can artist perform without band?"
+      param :form, :is_perform_with_backing_vocals,:boolean, :optional, "Is artist perform with backing vocals?"
+      param :form, :can_perform_without_backing_vocals, :boolean, :optional, "Can artist perform without backing vocals?"
+      param :form, :is_permitted_to_stream, :boolean, :optional, "Is artist give permission to stream?"
+      param :form, :is_permitted_to_advertisement,:boolean, :optional, "Is artist give permission to advertisement?"
+      param :form, :has_conflict_contracts, :boolean, :optional, "Has artist conflict contracts to advertisement?"
+      param :form, :conflict_companies_names, :string, :optional, "Names of artist's conflict companies"
+      param :form, :preferred_venue_text,:string, :optional, "Artist other preferred venue types"
+      param :form, :min_time_to_book, :integer, :optional, "Artist min time to book"
+      param :form, :min_time_to_free_cancel, :integer, :optional, "Artist min time to cancel"
+      param :form, :late_cancellation_fee, :integer, :optional, "Artist late cancellation fee"
+      param :form, :refund_policy, :string, :optional, "Artist refund policy"
+      param :form, :artist_riders, :string, :optional, "Artist array of riders objects
+                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file': '', 'description': '', 'is_flexible': ''}, {...}]"
+      param :form, :preferred_venues, :string, :optional, "Array of preferred venue types"
       param :form, :facebook, :string, :optional, "Artist facebook username"
       param :form, :twitter, :string, :optional, "Artist twitter username"
       param :form, :instagram, :string, :optional, "Artist instagram username"
@@ -598,7 +644,9 @@ class AccountsController < ApplicationController
             end
             set_artist_genres
             set_artist_audios
+            set_artist_albums
             set_artist_dates
+            set_artist_preferred_venues
         end
     end
 
@@ -617,9 +665,31 @@ class AccountsController < ApplicationController
       if params[:video_links]
         @account.account_video_links.clear
         params[:video_links].each do |link|
-          obj = AccountVideoLink.new(link: link)
+          obj = AccountVideoLink.new(account_video_params(link))
           obj.save
           @account.account_video_links << obj
+        end
+      end
+    end
+
+    def set_artist_albums
+      if params[:artist_albums]
+        @artist.artist_albums.clear
+        params[:artist_albums].each do |album|
+          obj = ArtistAlbum.new(artist_album_params(album))
+          obj.save
+          @artist.artist_albums << obj
+        end
+      end
+    end
+
+    def set_artist_riders
+      if params[:artist_riders]
+        @artist.artist_riders.clear
+        params[:artist_riders].each do |rider|
+          obj = ArtistRider.new(artist_rider_params(rider))
+          obj.save
+          @artist.artist_riders<< obj
         end
       end
     end
@@ -628,7 +698,7 @@ class AccountsController < ApplicationController
       if params[:audio_links]
         @artist.audio_links.clear
         params[:audio_links].each do |link|
-          obj = AudioLink.new(audio_link: link)
+          obj = AudioLink.new(artist_audio_params(link))
           obj.save
           @artist.audio_links << obj
         end
@@ -642,6 +712,17 @@ class AccountsController < ApplicationController
           obj = ArtistDate.new(artist_dates_params(date_range))
           obj.save
           @artist.available_dates << obj
+        end
+      end
+    end
+
+    def set_artist_preferred_venues
+      if params[:preferred_venues]
+        @artist.artist_preferred_venues.clear
+        params[:preferred_venues].each do |venue_type|
+          obj = ArtistPreferredVenue.new(type_of_venue: venue_type)
+          obj.save
+          @artist.artist_preferred_venues << obj
         end
       end
     end
@@ -776,13 +857,34 @@ class AccountsController < ApplicationController
     end
 
     def artist_params
-        params.permit(:about, :lat, :lng, :address, :price, :is_price_private, :technical_rider,
-                      :stage_rider, :backstage_rider, :first_name, :last_name, :hospitality,
-                      :facebook, :twitter, :instagram, :snapchat, :spotify, :soundcloud, :youtube)
+        params.permit(:about, :lat, :lng, :preferred_address, :first_name, :last_name, :stage_name, :manager_name,
+                      :facebook, :twitter, :instagram, :snapchat, :spotify, :soundcloud, :youtube,
+                      :performance_min_time, :performance_max_time, :price_from, :price_to, :additional_hours_price,
+                      :is_hide_pricing_from_profile, :is_hide_pricing_from_search, :days_to_travel,
+                      :is_perform_with_band, :can_perform_without_band, :is_perform_with_backing_vocals,
+                      :can_perform_without_backing_vocals, :is_permitted_to_stream, :is_permitted_to_advertisement,
+                      :has_conflict_contracts, :conflict_companies_names, :preferred_venue_text,
+                      :min_time_to_book, :min_time_to_free_cancel, :late_cancellation_fee, :refund_policy)
+    end
+
+    def artist_audio_params(link)
+      link.permit(:audio_link, :song_name, :album_name)
+    end
+
+    def artist_album_params(album)
+      album.permit(:album_name, :album_artwork, :album_link)
+    end
+
+    def artist_rider_params(rider)
+      rider.permit(:rider_type, :uploaded_file, :description, :is_flexible)
     end
 
     def artist_dates_params(date)
       date.permit(:begin_date, :end_date)
+    end
+
+    def account_video_params(video)
+      video.permit(:link, :name, :album_name)
     end
 
 end

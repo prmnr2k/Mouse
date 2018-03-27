@@ -49,3 +49,5 @@ gem 'geocoder'
 gem 'mini_magick'
 
 gem 'vkontakte_api'
+
+gem "paperclip"

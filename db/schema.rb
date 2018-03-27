@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180320112151) do
+ActiveRecord::Schema.define(version: 20180323152928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,8 @@ ActiveRecord::Schema.define(version: 20180320112151) do
     t.string "link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "album_name"
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -60,6 +62,15 @@ ActiveRecord::Schema.define(version: 20180320112151) do
     t.string "display_name"
   end
 
+  create_table "artist_albums", force: :cascade do |t|
+    t.integer "artist_id"
+    t.string "album_name"
+    t.string "album_artwork"
+    t.string "album_link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "artist_dates", force: :cascade do |t|
     t.integer "artist_id"
     t.date "begin_date"
@@ -72,7 +83,6 @@ ActiveRecord::Schema.define(version: 20180320112151) do
     t.integer "event_id"
     t.integer "artist_id"
     t.integer "status"
-    t.string "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -84,21 +94,32 @@ ActiveRecord::Schema.define(version: 20180320112151) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "artist_preferred_venues", force: :cascade do |t|
+    t.integer "type_of_venue"
+    t.integer "artist_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "artist_riders", force: :cascade do |t|
+    t.integer "artist_id"
+    t.integer "rider_type"
+    t.string "uploaded_file"
+    t.string "description"
+    t.boolean "is_flexible", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "artists", force: :cascade do |t|
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "price"
     t.float "lng"
     t.float "lat"
-    t.string "address"
-    t.boolean "is_price_private", default: true
-    t.string "technical_rider"
-    t.string "stage_rider"
-    t.string "backstage_rider"
+    t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
-    t.string "hospitality"
     t.string "facebook"
     t.string "twitter"
     t.string "instagram"
@@ -106,6 +127,29 @@ ActiveRecord::Schema.define(version: 20180320112151) do
     t.string "spotify"
     t.string "soundcloud"
     t.string "youtube"
+    t.string "stage_name"
+    t.string "manager_name"
+    t.integer "performance_min_time"
+    t.integer "performance_max_time"
+    t.integer "price_from"
+    t.integer "price_to"
+    t.integer "additional_hours_price"
+    t.boolean "is_hide_pricing_from_profile", default: false
+    t.boolean "is_hide_pricing_from_search", default: false
+    t.integer "days_to_travel"
+    t.boolean "is_perform_with_band", default: false
+    t.boolean "can_perform_without_band", default: false
+    t.boolean "is_perform_with_backing_vocals", default: false
+    t.boolean "can_perform_without_backing_vocals", default: false
+    t.boolean "is_permitted_to_stream", default: false
+    t.boolean "is_permitted_to_advertisement", default: false
+    t.boolean "has_conflict_contracts", default: false
+    t.string "conflict_companies_names"
+    t.string "preferred_venue_text"
+    t.integer "min_time_to_book"
+    t.integer "min_time_to_free_cancel"
+    t.integer "late_cancellation_fee"
+    t.string "refund_policy"
   end
 
   create_table "audio_links", force: :cascade do |t|
@@ -113,6 +157,8 @@ ActiveRecord::Schema.define(version: 20180320112151) do
     t.string "audio_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "song_name"
+    t.string "album_name"
   end
 
   create_table "comments", force: :cascade do |t|

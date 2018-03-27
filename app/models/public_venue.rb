@@ -2,8 +2,7 @@ class PublicVenue < ApplicationRecord
   validates_inclusion_of :min_age, in: 0..150, allow_nil: true
   validates_inclusion_of :num_of_bathrooms, in: 0..1000000, allow_nil: true
 
-  enum type_of_space: [:night_club, :concert_hall, :event_space, :theatre, :additional_room,
-                    :stadium_arena, :outdoor_space, :other]
+  enum type_of_space: TypesOfSpaceHelper.all
   enum located: [:indoors, :outdoors, :other_location]
 
   belongs_to :venue
