@@ -1,8 +1,7 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :set_active, :like, :unlike, :analytics, :click, :view, :get_updates]
+  before_action :set_event, only: [:show, :update, :destroy, :set_active, :analytics, :click, :view, :get_updates]
   before_action :authorize_account, only: [:my, :create]
   before_action :authorize_creator, only: [:update, :destroy, :set_active]
-  before_action :authorize_user, only: [:like, :unlike]
   swagger_controller :events, "Events"
 
   # GET /events
@@ -172,38 +171,6 @@ class EventsController < ApplicationController
     @event.save
 
     render status: :ok
-  end
-
-  # POST /events/1/like
-  swagger_api :like do
-    summary "Like event"
-    param :path, :id, :integer, :required, "Event id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-  end
-  def like
-    obj = Like.new(event_id: @event.id, user_id: @user.id)
-    obj.save
-
-    render status: :ok
-  end
-
-  # POST /events/1/unlike
-  swagger_api :unlike do
-    summary "Unlike event"
-    param :path, :id, :integer, :required, "Event id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :not_found
-  end
-  def unlike
-    obj = Like.find_by(event_id: @event, user_id: @user)
-    if not obj
-      render status: :not_found
-    else
-      obj.destroy
-      render status: :ok
-    end
   end
 
   # GET /events/1/click

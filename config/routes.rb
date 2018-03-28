@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   resources :events do
     resources :tickets, except: :index
     resources :comments
+    resources :likes, only: [:index, :create, :destroy]
 
     resources :event_venues, path: "venue", only: [:create] do
       member do

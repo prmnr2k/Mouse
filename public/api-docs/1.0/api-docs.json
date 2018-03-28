@@ -48,6 +48,10 @@
       "description": "Comments"
     },
     {
+      "path": "/api-docs/1.0/likes.{format}",
+      "description": "Likes"
+    },
+    {
       "path": "/api-docs/1.0/event_venues.{format}",
       "description": "Event venues"
     },
