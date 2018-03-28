@@ -27,7 +27,7 @@ class LikesController < ApplicationController
   end
   def create
     obj = Like.new(event_id: @event.id, user_id: @user.id, account_id: params[:account_id])
-    obj.save
+    obj.save!
 
     render status: :ok
   end

@@ -20,6 +20,10 @@
       "description": "Users"
     },
     {
+      "path": "/api-docs/1.0/feed.{format}",
+      "description": "Feed"
+    },
+    {
       "path": "/api-docs/1.0/inbox_messages.{format}",
       "description": "Inbox messages"
     },

@@ -35,6 +35,10 @@ class Event < ApplicationRecord
   after_validation :geocode
 
   def as_json(options={})
+    if options[:only]
+      return super(options)
+    end
+
     res = super
     res.delete('artist_id')
     res.delete('venue_id')
