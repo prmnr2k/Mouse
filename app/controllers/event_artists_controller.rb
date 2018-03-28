@@ -36,6 +36,7 @@ class EventArtistsController < ApplicationController
     summary "Accept artist for event"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -46,6 +47,7 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
     if @artist_event and ["accepted"].include?(@artist_event.status)
+      read_message
       @artist_event.status = 'owner_accepted'
       # send_message
       @artist_event.save
@@ -61,6 +63,7 @@ class EventArtistsController < ApplicationController
     summary "Remove artist from event"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -71,6 +74,7 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
     if @artist_event and not ["owner_accepted", "accepted"].include?(@artist_event.status)
+      read_message
       @artist_event.status = 'owner_declined'
       # send_message
       @artist_event.save
@@ -94,6 +98,7 @@ class EventArtistsController < ApplicationController
     param :form, :transportation_price, :integer, :optional, "Transportation price"
     param :form, :band_price, :integer, :optional, "Band price"
     param :form, :other_price, :integer, :optional, "Other price"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, "Artist auth key"
   end
   def artist_accept
@@ -101,6 +106,7 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
     if @artist_event and ["pending", "request_send"].include?(@artist_event.status)
+      read_message
       @artist_event.status = 'accepted'
       send_approval(@artist_acc)
       @artist_event.save
@@ -117,6 +123,7 @@ class EventArtistsController < ApplicationController
     param :path, :id, :integer, :required, "Artist id"
     param :path, :event_id, :integer, :required, "Event id"
     param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :form, :additional_text, :string, :optional, "Message"
     param :header, 'Authorization', :string, :required, "Artist auth key"
   end
@@ -125,6 +132,7 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
     if @artist_event and ["pending", "request_send"].include?(@artist_event.status)
+      read_message
       @artist_event.status = 'declined'
       send_decline(@artist_acc)
       @artist_event.save
@@ -192,6 +200,11 @@ class EventArtistsController < ApplicationController
       account.sent_messages << inbox_message
     end
 
+    def read_message
+      message = InboxMessage.find(params[:message_id])
+      message.is_read = true
+      message.save
+    end
 
     def artist_available?
       @artist_acc = Account.find(params[:artist_id])

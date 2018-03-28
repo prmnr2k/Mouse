@@ -37,6 +37,7 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Venue account id"
     param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -47,6 +48,7 @@ class EventVenuesController < ApplicationController
       @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
       if @venue_event and ["accepted"].include?(@venue_event.status)
+        read_message
         @venue_event.status = 'owner_accepted'
         change_event
         # send_message
@@ -67,6 +69,7 @@ class EventVenuesController < ApplicationController
     param :path, :id, :integer, :required, "Venue account id"
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -76,6 +79,7 @@ class EventVenuesController < ApplicationController
     @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
     if @venue_event and @venue_event.status != 'owner_accepted'
+      read_message
       @venue_event.status = 'owner_declined'
       change_event_back
       # send_message
@@ -96,12 +100,14 @@ class EventVenuesController < ApplicationController
     param :form, :preferred_date_to, :datetime, :required, "Preferred date to"
     param :form, :price, :integer, :required, "Price"
     param :form, :other_price, :integer, :optional, "Other price"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, "Venue auth key"
   end
   def venue_accept
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
 
     if @venue_event and ["pending", "request_send"].include?(@venue_event.status)
+      read_message
       @venue_event.status = 'accepted'
       send_approval(@account)
       @venue_event.save
@@ -119,12 +125,14 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
     param :form, :additional_text, :string, :optional, "Message"
+    param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, "Venue auth key"
   end
   def venue_decline
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
 
     if @venue_event and ["pending", "request_send"].include?(@venue_event.status)
+      read_message
       @venue_event.status = 'declined'
       send_decline(@account)
       @venue_event.save
@@ -190,6 +198,12 @@ class EventVenuesController < ApplicationController
     @event.decline_messages << decline_message
     @event.creator.inbox_messages << inbox_message
     account.sent_messages << inbox_message
+  end
+
+  def read_message
+    message = InboxMessage.find(params[:message_id])
+    message.is_read = true
+    message.save
   end
 
   def request_message_params

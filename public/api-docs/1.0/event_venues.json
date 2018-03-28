@@ -32,6 +32,13 @@
               "required": true
             },
             {
+              "paramType": "form",
+              "name": "message_id",
+              "type": "integer",
+              "description": "Inbox message id",
+              "required": true
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",
@@ -86,6 +93,13 @@
               "name": "account_id",
               "type": "integer",
               "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "message_id",
+              "type": "integer",
+              "description": "Inbox message id",
               "required": true
             },
             {
@@ -167,6 +181,13 @@
               "required": false
             },
             {
+              "paramType": "form",
+              "name": "message_id",
+              "type": "integer",
+              "description": "Inbox message id",
+              "required": true
+            },
+            {
               "paramType": "header",
               "name": "Authorization",
               "type": "string",
@@ -221,6 +242,13 @@
               "type": "string",
               "description": "Message",
               "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "message_id",
+              "type": "integer",
+              "description": "Inbox message id",
+              "required": true
             },
             {
               "paramType": "header",

@@ -72,19 +72,27 @@ class InboxMessagesController < ApplicationController
   end
 
   # DELETE account/1/inbox_messages/1
+  swagger_api :destroy do
+    summary "Delete message"
+    param :path, :account_id, :integer, :required, "Account id"
+    param :path, :id, :integer, :required, "Message id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :forbidden
+    response :not_found
+  end
   def destroy
-    @message.destroy
+    if @message.is_read == true and @message.receiver_id == @account.id
+      @message.destroy
+      render status: :ok
+    else
+      render status: :forbidden
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_message
       @message = InboxMessage.find(params[:id])
-    end
-
-    # Only allow a trusted parameter "white list" through.
-    def inbox_params
-      params.permit(:receiver_id, :event_id)
     end
 
     def authorize_account

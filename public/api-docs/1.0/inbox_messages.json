@@ -222,6 +222,51 @@
           "method": "get"
         }
       ]
+    },
+    {
+      "path": "/accounts/{account_id}/inbox_messages/{id}.json",
+      "operations": [
+        {
+          "summary": "Delete message",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Message id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 403,
+              "responseModel": null,
+              "message": "Forbidden"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "InboxMessages#destroy",
+          "method": "delete"
+        }
+      ]
     }
   ],
   "authorizations": null
