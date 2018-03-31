@@ -91,7 +91,7 @@ Rails.application.configure do
   }
 
   VkontakteApi.configure do |config|
-    config.api_version = '5.21'
+    config.api_version = '5.73'
   end
 
   # Do not dump schema after migrations.
