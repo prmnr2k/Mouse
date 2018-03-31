@@ -255,7 +255,7 @@ class EventsController < ApplicationController
     response :ok
   end
   def search
-    @events = Event.search(params[:text])
+    @events = Event.search(params[:text]).where(is_active: true)
     search_status
     search_genre
     search_location
