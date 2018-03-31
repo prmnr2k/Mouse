@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328050217) do
+ActiveRecord::Schema.define(version: 20180331053053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,15 +37,6 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.integer "field"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "account_video_links", force: :cascade do |t|
-    t.integer "account_id"
-    t.string "link"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name"
-    t.string "album_name"
   end
 
   create_table "accounts", force: :cascade do |t|
@@ -109,6 +100,15 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.boolean "is_flexible", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "artist_videos", force: :cascade do |t|
+    t.integer "artist_id"
+    t.string "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "album_name"
   end
 
   create_table "artists", force: :cascade do |t|
@@ -471,6 +471,13 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.integer "day"
     t.time "begin_time"
     t.time "end_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "venue_video_links", force: :cascade do |t|
+    t.integer "venue_id"
+    t.string "video_link"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

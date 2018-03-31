@@ -62,7 +62,14 @@
             },
             {
               "paramType": "form",
-              "name": "video_links",
+              "name": "venue_video_links",
+              "type": "string",
+              "description": "Array of links",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "artist_videos",
               "type": "string",
               "description": "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]",
               "required": false
@@ -647,7 +654,14 @@
             },
             {
               "paramType": "form",
-              "name": "video_links",
+              "name": "venue_video_links",
+              "type": "string",
+              "description": "Array of links",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "artist_videos",
               "type": "string",
               "description": "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]",
               "required": false
