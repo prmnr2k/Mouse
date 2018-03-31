@@ -36,6 +36,9 @@ class EventVenuesController < ApplicationController
     summary "Accept venue for event"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Venue account id"
+    param :form, :datetime_from, :datetime, :required, "Date and time of performance"
+    param :form, :datetime_to, :datetime, :required, "Date and time of performance"
+    param :form, :price, :integer, :required, "Aritst's price to perform"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -44,23 +47,19 @@ class EventVenuesController < ApplicationController
     response :not_found
   end
   def owner_accept
-    if @event.venue_id == nil
       @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
       if @venue_event and ["accepted"].include?(@venue_event.status)
         read_message
         @venue_event.status = 'owner_accepted'
-        change_event
-        # send_message
+        set_agreement
+        send_accept_message(@venue_event.account)
         @venue_event.save
 
         render status: :ok
       else
         render status: :not_found
       end
-    else
-      render status: :unprocessable_entity
-    end
   end
 
   # POST /events/1/venue/1/owner_decline
@@ -69,7 +68,9 @@ class EventVenuesController < ApplicationController
     param :path, :id, :integer, :required, "Venue account id"
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
+    param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
     param :form, :message_id, :integer, :required, "Inbox message id"
+    param :form, :additional_text, :string, :optional, "Message"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -81,8 +82,7 @@ class EventVenuesController < ApplicationController
     if @venue_event and @venue_event.status != 'owner_accepted'
       read_message
       @venue_event.status = 'owner_declined'
-      change_event_back
-      # send_message
+      send_owner_decline(@venue_event.account)
       @venue_event.save
 
       render status: :ok
@@ -200,6 +200,35 @@ class EventVenuesController < ApplicationController
     account.sent_messages << inbox_message
   end
 
+  def send_owner_decline(account)
+    decline_message = DeclineMessage.new(decline_message_params)
+    decline_message.save
+
+    inbox_message = InboxMessage.new(name: "#{@event.name} owner reply", message_type: "decline")
+    inbox_message.decline_message = decline_message
+
+    @event.decline_messages << decline_message
+    account.inbox_messages << inbox_message
+    @event.creator.sent_messages << inbox_message
+  end
+
+  def send_accept_message(account)
+    inbox_message = InboxMessage.new(
+      name: "#{@event.name} owner reply",
+      message_type: "blank",
+      simple_message: "#{@event.name} owner accepted your conteroffer"
+    )
+
+    @event.creator.sent_messages << inbox_message
+    account.inbox_messages << inbox_message
+  end
+
+  def set_agreement
+    agreement = AgreedDateTimeAndPrice.new(agreement_params)
+    agreement.venue_event = @venue_event
+    agreement.save!
+  end
+
   def read_message
     message = InboxMessage.find(params[:message_id])
     message.is_read = true
@@ -217,6 +246,10 @@ class EventVenuesController < ApplicationController
 
   def decline_message_params
     params.permit(:reason, :additional_text)
+  end
+
+  def agreement_params
+    params.permit(:datetime_from, :datetime_to, :price)
   end
 
   def venue_available?

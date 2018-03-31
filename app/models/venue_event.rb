@@ -3,6 +3,7 @@ class VenueEvent < ApplicationRecord
 
   belongs_to :event
   belongs_to :account, foreign_key: :venue_id
+  has_one :agreed_date_time_and_price
 
   validates_uniqueness_of :event_id, scope: [:venue_id]
 
@@ -16,6 +17,10 @@ class VenueEvent < ApplicationRecord
     res = super
     res.delete('id')
     res.delete('event_id')
+
+    if status == 'owner_accepted'
+      res[:agreement] = agreed_date_time_and_price
+    end
 
     return res
   end

@@ -33,6 +33,27 @@
             },
             {
               "paramType": "form",
+              "name": "datetime_from",
+              "type": "datetime",
+              "description": "Date and time of performance",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "datetime_to",
+              "type": "datetime",
+              "description": "Date and time of performance",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "price",
+              "type": "integer",
+              "description": "Aritst's price to perform",
+              "required": true
+            },
+            {
+              "paramType": "form",
               "name": "account_id",
               "type": "integer",
               "description": "Authorized account id",
@@ -90,10 +111,33 @@
             },
             {
               "paramType": "form",
+              "name": "reason",
+              "type": "string",
+              "description": "Reason",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "price",
+                  "location",
+                  "time",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
               "name": "message_id",
               "type": "integer",
               "description": "Inbox message id",
               "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "additional_text",
+              "type": "string",
+              "description": "Message",
+              "required": false
             },
             {
               "paramType": "form",

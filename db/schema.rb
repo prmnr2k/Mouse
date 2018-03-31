@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180331053053) do
+ActiveRecord::Schema.define(version: 20180331063723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(version: 20180331053053) do
     t.datetime "updated_at", null: false
     t.string "user_name"
     t.string "display_name"
+  end
+
+  create_table "agreed_date_time_and_prices", force: :cascade do |t|
+    t.datetime "datetime_from"
+    t.datetime "datetime_to"
+    t.integer "price"
+    t.integer "venue_event_id"
+    t.integer "artist_event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "artist_albums", force: :cascade do |t|
@@ -302,6 +312,7 @@ ActiveRecord::Schema.define(version: 20180331053053) do
     t.string "name"
     t.integer "sender_id"
     t.boolean "is_read", default: false
+    t.string "simple_message"
   end
 
   create_table "likes", force: :cascade do |t|
