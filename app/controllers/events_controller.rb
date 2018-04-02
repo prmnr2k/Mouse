@@ -247,7 +247,6 @@ class EventsController < ApplicationController
     param :query, :distance, :float, :optional, "Radius in km (lat, lng must be present)"
     param :query, :from_date, :datetime, :optional, "Left bound of date (to_date must be presenty)"
     param :query, :to_date, :datetime, :optional, "Right bound of date (from_date must be present)"
-    param :query, :is_active, :boolean, :optional, "Search only active events (do not send it for All option)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
     param :query, :limit, :integer, :optional, "Limit"
@@ -256,7 +255,6 @@ class EventsController < ApplicationController
   end
   def search
     @events = Event.search(params[:text]).where(is_active: true)
-    search_status
     search_genre
     search_location
     search_distance
@@ -321,12 +319,6 @@ class EventsController < ApplicationController
           obj = Account.find(collaborator)
           @event.collaborators << obj
         end
-      end
-    end
-
-    def search_status
-      if params[:is_active]
-        @events = @events.where(is_active: params[:is_active])
       end
     end
 

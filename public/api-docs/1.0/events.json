@@ -61,13 +61,6 @@
             },
             {
               "paramType": "query",
-              "name": "is_active",
-              "type": "boolean",
-              "description": "Search only active events (do not send it for All option)",
-              "required": false
-            },
-            {
-              "paramType": "query",
               "name": "genres",
               "type": "string",
               "description": "Genres list ['pop', 'rock', ...]",
