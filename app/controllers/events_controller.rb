@@ -249,6 +249,7 @@ class EventsController < ApplicationController
     param :query, :to_date, :datetime, :optional, "Right bound of date (from_date must be present)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
+    param :query, :size, :string, :optional, "Array of event's venue type of space ['night_club', 'concert_hall']"
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
     response :ok
@@ -259,6 +260,7 @@ class EventsController < ApplicationController
     search_location
     search_distance
     search_ticket_types
+    search_type_of_space
     search_date
 
     render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), status: :ok
@@ -357,6 +359,19 @@ class EventsController < ApplicationController
           types.append(TicketsType.names[type])
         end
         @events = @events.joins(:tickets => :tickets_type).where(:tickets_types => {name: types})
+      end
+    end
+
+    def search_type_of_space
+      if params[:size]
+        types_of_space = []
+        params[:size].each do |type_of_space|
+          types_of_space.append(PublicVenue.type_of_spaces[type_of_space])
+        end
+
+        @events = @events.joins(
+          :venue => {venue: :public_venue}
+        ).where(public_venues: {type_of_space: types_of_space})
       end
     end
 
