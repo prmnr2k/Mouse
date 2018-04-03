@@ -143,6 +143,65 @@ class EventVenuesController < ApplicationController
     end
   end
 
+  # POST /events/1/venue/1/set_active
+  swagger_api :venue_set_active do
+    summary "Set venue active"
+    param :path, :id, :integer, :required, "Venue id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Event owner id"
+    param :header, 'Authorization', :string, :required, "Event owner auth key"
+    response :not_found
+    response :unprocessable_entity
+    response :unauthorized
+  end
+  def venue_set_active
+    @venue_acc = Account.find(params[:id])
+    @venue_event = @event.venue_events.find_by(vneue_id: @venue_acc.id)
+
+    if @venue_event and @venue_event.status == "owner_accepted"
+      if date_valid?
+        change_event_date
+        change_event_funding
+        change_event_address
+        @venue_event.status = "active"
+        @venue_event.save!
+
+        render status: :ok
+      else
+        render status: :unprocessable_entity
+      end
+    else
+      render status: :not_found
+    end
+  end
+
+  # POST /events/1/artist/1/remove_active
+  swagger_api :venue_remove_active do
+    summary "Remove active venue"
+    param :path, :id, :integer, :required, "Venue id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Event owner id"
+    param :header, 'Authorization', :string, :required, "Event owner auth key"
+    response :not_found
+    response :unauthorized
+  end
+  def venue_remove_active
+    @venue_acc = Account.find(params[:id])
+    @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
+
+    if @venue_event and @venue_event.status == "active"
+      undo_change_event_date
+      undo_change_event_funding
+      undo_change_event_address
+      @venue_event.status = "owner_accepted"
+      @venue_event.save!
+
+      render status: :ok
+    else
+      render status: :not_found
+    end
+  end
+
   private
   def set_event
     @event = Event.find(params[:event_id])
@@ -263,7 +322,49 @@ class EventVenuesController < ApplicationController
     return false
   end
 
-  def change_event
+  def date_valid?
+    unless @artist_event.agreed_date_time_and_price
+      return false
+    end
+
+    if @event.date_from.nil?
+      return true
+    end
+
+    agreed_date = @artist_event.agreed_date_time_and_price
+    if @event.date_from <= agreed_date.datetime_from and @event.date_to >= agreed_date.datetime_to
+      return true
+    end
+    return false
+  end
+
+  def change_event_date
+    @event.old_date_from = @event.date_from
+    @event.old_date_to = @event.date_to
+    @event.date_from = @artist_event.agreed_date_time_and_price.datetime_from
+    @event.date_to = @artist_event.agreed_date_time_and_price.datetime_to
+    @event.save!
+  end
+
+  def undo_change_event_date
+    @event.date_from = @event.old_date_from
+    @event.date_to = @event.old_date_to
+    @event.old_date_from = nil
+    @event.old_date_to = nil
+    @event.save!
+  end
+
+  def change_event_funding
+    @event.funding_goal += @artist_event.agreed_date_time_and_price.price
+    @event.save!
+  end
+
+  def undo_change_event_funding
+    @event.funding_goal -= @artist_event.agreed_date_time_and_price.price
+    @event.save!
+  end
+
+  def change_event_address
     @venue_acc = @venue_event.account
 
     # save to rollback
@@ -278,7 +379,7 @@ class EventVenuesController < ApplicationController
     @event.save!
   end
 
-  def change_event_back
+  def undo_change_event_address
     @event.address = @event.old_address
     @event.city_lat = @event.old_city_lat
     @event.city_lng = @event.old_city_lng

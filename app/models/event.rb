@@ -45,6 +45,8 @@ class Event < ApplicationRecord
     res.delete('old_address')
     res.delete('old_city_lat')
     res.delete('old_city_lng')
+    res.delete('old_date_from')
+    res.delete('old_date_to')
     res[:backers] = tickets.joins(:fan_tickets).pluck(:account_id).uniq.count
     res[:founded] = tickets.joins(:fan_tickets).sum("fan_tickets.price")
 

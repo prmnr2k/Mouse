@@ -18,7 +18,7 @@ class ArtistEvent < ApplicationRecord
     res.delete('id')
     res.delete('event_id')
 
-    if status == 'owner_accepted'
+    if ['owner_accepted', 'active'].include?(status)
       res[:agreement] = agreed_date_time_and_price
     end
 

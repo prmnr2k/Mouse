@@ -267,6 +267,18 @@
               "required": true
             }
           ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
           "nickname": "EventArtists#artist_accept",
           "method": "post"
         }
@@ -330,7 +342,128 @@
               "required": true
             }
           ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
           "nickname": "EventArtists#artist_decline",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{event_id}/artists/{id}/set_active.json",
+      "operations": [
+        {
+          "summary": "Set artist active",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Event owner id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Event owner auth key",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "EventArtists#artist_set_active",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/events/{event_id}/artists/{id}/remove_active.json",
+      "operations": [
+        {
+          "summary": "Remove active artist",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Event owner id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Event owner auth key",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "EventArtists#artist_remove_active",
           "method": "post"
         }
       ]
