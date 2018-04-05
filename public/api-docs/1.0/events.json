@@ -77,7 +77,7 @@
               "paramType": "query",
               "name": "ticket_types",
               "type": "string",
-              "description": "Ticket types ['in_person', 'vip']",
+              "description": "Array of ticket types ['in_person', 'vip']",
               "required": false
             },
             {

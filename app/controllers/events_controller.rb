@@ -249,7 +249,7 @@ class EventsController < ApplicationController
     param :query, :from_date, :datetime, :optional, "Left bound of date (to_date must be presenty)"
     param :query, :to_date, :datetime, :optional, "Right bound of date (from_date must be present)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
-    param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
+    param :query, :ticket_types, :string, :optional, "Array of ticket types ['in_person', 'vip']"
     param :query, :size, :string, :optional, "Array of event's venue type of space ['night_club', 'concert_hall']"
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
