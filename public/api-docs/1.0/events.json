@@ -19,6 +19,13 @@
             },
             {
               "paramType": "query",
+              "name": "is_active",
+              "type": "boolean",
+              "description": "Search only active events",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "location",
               "type": "string",
               "description": "Address",

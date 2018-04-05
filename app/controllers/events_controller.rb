@@ -241,6 +241,7 @@ class EventsController < ApplicationController
   swagger_api :search do
     summary "Search for event"
     param :query, :text, :string, :optional, "Text to search"
+    param :query, :is_active, :boolean, :optional, "Search only active events"
     param :query, :location, :string, :optional, "Address"
     param :query, :lat, :float, :optional, "Latitude (lng and distance must be present)"
     param :query, :lng, :float, :optional, "Longitude (lat and distance must be present)"
@@ -255,7 +256,8 @@ class EventsController < ApplicationController
     response :ok
   end
   def search
-    @events = Event.search(params[:text]).where(is_active: true)
+    @events = Event.search(params[:text])
+    search_active
     search_genre
     search_location
     search_distance
@@ -321,6 +323,12 @@ class EventsController < ApplicationController
           obj = Account.find(collaborator)
           @event.collaborators << obj
         end
+      end
+    end
+
+    def search_active
+      if params[:is_active]
+        @events = @events.where(is_active: params[:is_active])
       end
     end
 
