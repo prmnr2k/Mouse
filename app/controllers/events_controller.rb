@@ -209,17 +209,7 @@ class EventsController < ApplicationController
     response :unauthorized
   end
   def my
-    @events = Event.all
-
-    if @account.account_type == 'fan'
-      @events = @events.where(creator: params[:account_id])
-    elsif @account.account_type == 'artist'
-      @events = @events.joins(:artist_events).where(
-        :artist_events => {artist_id: params[:account_id], status: 'accepted'})
-    elsif @account.account_type == 'venue'
-      @events = @events.where(venue_id: params[:account_id])
-    end
-
+    @events = Event.get_my(@account)
 
     render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
