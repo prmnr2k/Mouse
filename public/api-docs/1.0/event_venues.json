@@ -40,13 +40,6 @@
             },
             {
               "paramType": "form",
-              "name": "price",
-              "type": "integer",
-              "description": "Aritst's price to perform",
-              "required": true
-            },
-            {
-              "paramType": "form",
               "name": "account_id",
               "type": "integer",
               "description": "Authorized account id",

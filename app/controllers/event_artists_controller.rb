@@ -41,7 +41,6 @@ class EventArtistsController < ApplicationController
     param :form, :message_id, :integer, :required, "Inbox message id"
     param :form, :datetime_from, :datetime, :required, "Date and time of performance"
     param :form, :datetime_to, :datetime, :required, "Date and time of performance"
-    param :form, :price, :integer, :required, "Aritst's price to perform"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -293,7 +292,10 @@ class EventArtistsController < ApplicationController
     end
 
     def set_agreement
+      message = InboxMessage.find(params[:message_id])
+
       agreement = AgreedDateTimeAndPrice.new(agreement_params)
+      agreement.price = message.accept_message.price
       agreement.artist_event = @artist_event
       agreement.save!
     end
@@ -370,7 +372,7 @@ class EventArtistsController < ApplicationController
     end
 
     def agreement_params
-      params.permit(:datetime_from, :datetime_to, :price)
+      params.permit(:datetime_from, :datetime_to)
     end
 
 end

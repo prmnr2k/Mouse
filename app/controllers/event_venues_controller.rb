@@ -38,7 +38,6 @@ class EventVenuesController < ApplicationController
     param :path, :id, :integer, :required, "Venue account id"
     param :form, :datetime_from, :datetime, :required, "Date and time of performance"
     param :form, :datetime_to, :datetime, :required, "Date and time of performance"
-    param :form, :price, :integer, :required, "Aritst's price to perform"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -283,7 +282,10 @@ class EventVenuesController < ApplicationController
   end
 
   def set_agreement
+    message = InboxMessage.find(params[:message_id])
+
     agreement = AgreedDateTimeAndPrice.new(agreement_params)
+    agreement.price = message.accept_message.price
     agreement.venue_event = @venue_event
     agreement.save!
   end
