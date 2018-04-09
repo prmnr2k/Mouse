@@ -300,6 +300,13 @@
             },
             {
               "paramType": "form",
+              "name": "vr_capacity",
+              "type": "integer",
+              "description": "Venue vr tickets available",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "about",
               "type": "string",
               "description": "About artist",
@@ -888,6 +895,13 @@
               "name": "price",
               "type": "integer",
               "description": "Venue (public only) price",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "vr_capacity",
+              "type": "integer",
+              "description": "Venue vr tickets available",
               "required": false
             },
             {

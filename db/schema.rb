@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180408123445) do
+ActiveRecord::Schema.define(version: 20180409062150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -498,6 +498,7 @@ ActiveRecord::Schema.define(version: 20180408123445) do
     t.integer "capacity"
     t.integer "venue_type"
     t.boolean "has_vr"
+    t.integer "vr_capacity", default: 200
   end
 
 end

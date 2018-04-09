@@ -246,6 +246,7 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :price, :integer, :optional, "Venue (public only) price"
+      param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
       param :form, :manager_name, :string, :optional, "Artist'smanager name"
@@ -350,6 +351,7 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :price, :integer, :optional, "Venue (public only) price"
+      param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
       param :form, :manager_name, :string, :optional, "Artist'smanager name"
@@ -844,7 +846,7 @@ class AccountsController < ApplicationController
     end
 
     def venue_params
-        params.permit(:description, :capacity, :venue_type, :has_vr, :address, :lat, :lng)
+        params.permit(:description, :capacity, :venue_type, :has_vr, :address, :lat, :lng, :vr_capacity)
     end
 
     def public_venue_params
