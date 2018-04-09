@@ -157,7 +157,7 @@ class TicketsController < ApplicationController
     end
 
     def ticket_params
-      params.permit(:name, :price, :count, :is_promotional, :is_for_personal_use, :event_id)
+      params.permit(:name, :price, :description, :count, :is_promotional, :is_for_personal_use, :event_id)
     end
 
     def authorize_account
