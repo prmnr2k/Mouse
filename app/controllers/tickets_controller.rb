@@ -28,8 +28,8 @@ class TicketsController < ApplicationController
     param :form, :price, :integer, :required, "Ticket price"
     param :form, :count, :integer, :required, "Ticket count"
     param_list :form, :type, :string, :required, "Ticket type", ["in_person", "vr"]
-    param_list :form, :category, :string, :optional, "Ticket category", ["regular", "gold", "gold_vip"]
-    param :form, :is_special, :boolean, :required, "If ticket is special"
+    param :form, :is_promotional, :boolean, :required, "Promotional ticket"
+    param :form, :is_for_personal_use, :boolean, :required, "Ticket for personal use"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -38,7 +38,6 @@ class TicketsController < ApplicationController
   def create
     @ticket = Ticket.new(ticket_params)
     set_type
-    set_category
 
     if @ticket.save
       change_event_tickets
@@ -63,17 +62,16 @@ class TicketsController < ApplicationController
     param :form, :price, :integer, :optional, "Ticket price"
     param :form, :count, :integer, :optional, "Ticket count"
     param_list :form, :type, :string, :optional, "Ticket type", ["in_person", "vr"]
-    param_list :form, :category, :string, :optional, "Ticket category", ["regular", "gold", "gold_vip"]
-    param :form, :is_special, :boolean, :optional, "If ticket is special"
+    param :form, :is_promotional, :boolean, :required, "Promotional ticket"
+    param :form, :is_for_personal_use, :boolean, :required, "Ticket for personal use"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
     response :not_found
   end
   def update
-    if @ticket.update(ticket_params) and allowed
+    if @ticket.update(ticket_params) and allowed?
       set_type
-      set_category
       change_event_tickets
 
       render json: @ticket, status: :ok
@@ -120,20 +118,6 @@ class TicketsController < ApplicationController
       end
     end
 
-    def set_category
-      if params[:category]
-        if @ticket.tickets_category
-          @ticket_category = @ticket.tickets_category
-          @ticket_category.update(name: params[:category])
-        else
-          obj = TicketsCategory.new(name: params[:category])
-          obj.save
-
-          @ticket.tickets_category = obj
-        end
-      end
-    end
-
     def change_event_tickets
       if params[:type] == "in_person" and @event.has_in_person == false
         @event.has_in_person = true
@@ -160,7 +144,7 @@ class TicketsController < ApplicationController
       end
     end
 
-    def allowed
+    def allowed?
       if params[:price]
         bought_tickets = @ticket.fan_tickets.count
 
@@ -173,7 +157,7 @@ class TicketsController < ApplicationController
     end
 
     def ticket_params
-      params.permit(:name, :price, :count, :is_special, :event_id)
+      params.permit(:name, :price, :description, :count, :is_promotional, :is_for_personal_use, :event_id)
     end
 
     def authorize_account

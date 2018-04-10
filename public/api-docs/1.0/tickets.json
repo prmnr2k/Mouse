@@ -68,24 +68,16 @@
             },
             {
               "paramType": "form",
-              "name": "category",
-              "type": "string",
-              "description": "Ticket category",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "regular",
-                  "gold",
-                  "gold_vip"
-                ]
-              }
+              "name": "is_promotional",
+              "type": "boolean",
+              "description": "Promotional ticket",
+              "required": true
             },
             {
               "paramType": "form",
-              "name": "is_special",
+              "name": "is_for_personal_use",
               "type": "boolean",
-              "description": "If ticket is special",
+              "description": "Ticket for personal use",
               "required": true
             },
             {
@@ -241,25 +233,17 @@
             },
             {
               "paramType": "form",
-              "name": "category",
-              "type": "string",
-              "description": "Ticket category",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "regular",
-                  "gold",
-                  "gold_vip"
-                ]
-              }
+              "name": "is_promotional",
+              "type": "boolean",
+              "description": "Promotional ticket",
+              "required": true
             },
             {
               "paramType": "form",
-              "name": "is_special",
+              "name": "is_for_personal_use",
               "type": "boolean",
-              "description": "If ticket is special",
-              "required": false
+              "description": "Ticket for personal use",
+              "required": true
             },
             {
               "paramType": "header",

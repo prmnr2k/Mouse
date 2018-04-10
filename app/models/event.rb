@@ -45,6 +45,8 @@ class Event < ApplicationRecord
     res.delete('old_address')
     res.delete('old_city_lat')
     res.delete('old_city_lng')
+    res.delete('old_date_from')
+    res.delete('old_date_to')
     res[:backers] = tickets.joins(:fan_tickets).pluck(:account_id).uniq.count
     res[:founded] = tickets.joins(:fan_tickets).sum("fan_tickets.price")
 
@@ -52,7 +54,8 @@ class Event < ApplicationRecord
       res[:collaborators] = collaborators
       res[:genres] = genres.pluck(:genre)
       res[:artist] = artist_events
-      res[:venue] = venue_events
+      res[:venue] = venue
+      res[:venues] = venue_events
       res[:tickets] = tickets.as_json(only: [:id, :name, :type])
     elsif options[:analytics]
       # res[:location] = venue.address if venue
@@ -82,19 +85,39 @@ class Event < ApplicationRecord
     @events = Event.all
 
     if text
-      @events = @events.joins(:artist => :account, :venue => :account).where(
+      @events = @events.left_joins(:venue, :artist_events => :account).where(
         "events.name ILIKE :query", query: "%#{sanitize_sql_like(text)}%"
       ).or(
-        Event.joins(:artist => :account, :venue => :account).where("events.tagline ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+        Event.left_joins(:venue, :artist_events => :account).where("events.tagline ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
       ).or(
-        Event.joins(:artist => :account, :venue => :account).where("events.description ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+        Event.left_joins(:venue, :artist_events => :account).where("events.description ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
       ).or(
-        Event.joins(:artist => :account, :venue => :account).where("accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+        Event.left_joins(:venue, :artist_events => :account).where("accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
       ).or(
-        Event.joins(:artist => :account, :venue => :account).where("accounts_venues.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
+        Event.left_joins(:venue, :artist_events => :account).where("accounts_artist_events.display_name ILIKE :query", query: "%#{sanitize_sql_like(text)}%")
       )
     end
 
     return @events
+  end
+
+  def self.get_my(account)
+    events = Event.all
+
+    if account.account_type == 'artist'
+      events = events.left_joins(:artist_events).where(
+        sanitize_sql_for_conditions(["artist_events.artist_id=:id AND artist_events.status=:status",
+                                     id: account.id,
+                                     status: ArtistEvent.statuses['accepted']])
+      ).or(
+         Event.left_joins(:artist_events).where(creator_id: account.id)
+      )
+    elsif account.account_type == 'venue'
+      events = events.where(venue_id: account.id).or(Event.where(creator_id: account.id))
+    elsif account.account_type == 'fan'
+      events = events.where(creator_id: account.id)
+    end
+
+    return events
   end
 end

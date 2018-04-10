@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180328050217) do
+ActiveRecord::Schema.define(version: 20180409062150) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,15 +39,6 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "account_video_links", force: :cascade do |t|
-    t.integer "account_id"
-    t.string "link"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "name"
-    t.string "album_name"
-  end
-
   create_table "accounts", force: :cascade do |t|
     t.integer "image_id"
     t.string "phone"
@@ -60,6 +51,16 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.datetime "updated_at", null: false
     t.string "user_name"
     t.string "display_name"
+  end
+
+  create_table "agreed_date_time_and_prices", force: :cascade do |t|
+    t.datetime "datetime_from"
+    t.datetime "datetime_to"
+    t.integer "price"
+    t.integer "venue_event_id"
+    t.integer "artist_event_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "artist_albums", force: :cascade do |t|
@@ -109,6 +110,15 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.boolean "is_flexible", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "artist_videos", force: :cascade do |t|
+    t.integer "artist_id"
+    t.string "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "album_name"
   end
 
   create_table "artists", force: :cascade do |t|
@@ -209,7 +219,6 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.datetime "funding_to"
     t.integer "funding_goal"
     t.integer "creator_id"
-    t.integer "artist_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_active", default: false
@@ -236,6 +245,8 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.float "old_city_lng"
     t.integer "image_id"
     t.string "video_link"
+    t.datetime "old_date_from"
+    t.datetime "old_date_to"
   end
 
   create_table "fan_genres", force: :cascade do |t|
@@ -312,6 +323,7 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.string "name"
     t.integer "sender_id"
     t.boolean "is_read", default: false
+    t.string "simple_message"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -383,18 +395,12 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.string "description"
     t.integer "price"
     t.integer "count"
-    t.boolean "is_special"
+    t.boolean "is_for_personal_use"
     t.integer "event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "video"
-  end
-
-  create_table "tickets_categories", force: :cascade do |t|
-    t.integer "name"
-    t.integer "ticket_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean "is_promotional", default: false
   end
 
   create_table "tickets_types", force: :cascade do |t|
@@ -485,6 +491,13 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "venue_video_links", force: :cascade do |t|
+    t.integer "venue_id"
+    t.string "video_link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "venues", force: :cascade do |t|
     t.string "address"
     t.float "lat"
@@ -495,6 +508,7 @@ ActiveRecord::Schema.define(version: 20180328050217) do
     t.integer "capacity"
     t.integer "venue_type"
     t.boolean "has_vr"
+    t.integer "vr_capacity", default: 200
   end
 
 end

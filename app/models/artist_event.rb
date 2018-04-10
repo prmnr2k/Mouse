@@ -3,6 +3,7 @@ class ArtistEvent < ApplicationRecord
 
   belongs_to :event
   belongs_to :account, foreign_key: :artist_id
+  has_one :agreed_date_time_and_price
 
   validates_uniqueness_of :event_id, scope: [:artist_id]
 
@@ -16,6 +17,10 @@ class ArtistEvent < ApplicationRecord
     res = super
     res.delete('id')
     res.delete('event_id')
+
+    if ['owner_accepted', 'active'].include?(status)
+      res[:agreement] = agreed_date_time_and_price
+    end
 
     return res
   end

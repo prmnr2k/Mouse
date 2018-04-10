@@ -74,6 +74,8 @@ Rails.application.routes.draw do
         post :owner_decline
         post :venue_accept
         post :venue_decline
+        post :venue_set_active, path: "set_active"
+        post :venue_remove_active, path: "remove_active"
       end
     end
 
@@ -83,6 +85,8 @@ Rails.application.routes.draw do
         post :owner_decline
         post :artist_accept
         post :artist_decline
+        post :artist_set_active, path: "set_active"
+        post :artist_remove_active, path: "remove_active"
       end
     end
   end

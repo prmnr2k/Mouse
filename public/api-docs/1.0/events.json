@@ -19,6 +19,13 @@
             },
             {
               "paramType": "query",
+              "name": "is_active",
+              "type": "boolean",
+              "description": "Search only active events",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "location",
               "type": "string",
               "description": "Address",
@@ -61,13 +68,6 @@
             },
             {
               "paramType": "query",
-              "name": "is_active",
-              "type": "boolean",
-              "description": "Search only active events (do not send it for All option)",
-              "required": false
-            },
-            {
-              "paramType": "query",
               "name": "genres",
               "type": "string",
               "description": "Genres list ['pop', 'rock', ...]",
@@ -77,7 +77,14 @@
               "paramType": "query",
               "name": "ticket_types",
               "type": "string",
-              "description": "Ticket types ['in_person', 'vip']",
+              "description": "Array of ticket types ['in_person', 'vip']",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "size",
+              "type": "string",
+              "description": "Array of event's venue type of space ['night_club', 'concert_hall']",
               "required": false
             },
             {

@@ -214,7 +214,8 @@ class AccountsController < ApplicationController
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
-      param :form, :video_links, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
+      param :form, :venue_video_links, :string, :optional, "Array of links"
+      param :form, :artist_videos, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
       param :form, :address, :string, :optional, "Fan/Venue address"
@@ -245,6 +246,7 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :price, :integer, :optional, "Venue (public only) price"
+      param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
       param :form, :manager_name, :string, :optional, "Artist'smanager name"
@@ -299,7 +301,6 @@ class AccountsController < ApplicationController
             set_fan_params
             set_venue_params
             set_artist_params
-            set_video_links
 
             #AccessHelper.grant_account_access(@account)
             render json: @account, extended: true, my: true, except: :password, status: :created
@@ -318,7 +319,8 @@ class AccountsController < ApplicationController
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
-      param :form, :video_links, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
+      param :form, :venue_video_links, :string, :optional, "Array of links"
+      param :form, :artist_videos, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
       param :form, :address, :string, :optional, "Fan/Venue address"
@@ -349,6 +351,7 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :price, :integer, :optional, "Venue (public only) price"
+      param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
       param :form, :manager_name, :string, :optional, "Artist'smanager name"
@@ -399,7 +402,6 @@ class AccountsController < ApplicationController
         set_fan_params
         set_venue_params
         set_artist_params
-        set_video_links
         if @account.update(account_update_params)
             render json: @account, extended: true, my: true, except: :password, status: :ok
         else
@@ -551,6 +553,7 @@ class AccountsController < ApplicationController
             set_venue_genres
             set_venue_dates
             set_venue_emails
+            set_venue_video_links
             set_venue_office_hours
             set_venue_operating_hours
         end
@@ -625,6 +628,17 @@ class AccountsController < ApplicationController
         end
     end
 
+    def set_venue_video_links
+      if params[:venue_video_links]
+        @venue.venue_video_links.clear
+        params[:venue_video_links].each do |link|
+          obj = VenueVideoLink.new(video_link: link)
+          obj.save
+          @venue.venue_video_links << obj
+        end
+      end
+    end
+
     def set_artist_params
         if @account.account_type == 'artist'
             if @account.artist
@@ -645,6 +659,7 @@ class AccountsController < ApplicationController
             set_artist_genres
             set_artist_audios
             set_artist_albums
+            set_artist_video_links
             set_artist_dates
             set_artist_preferred_venues
         end
@@ -661,13 +676,13 @@ class AccountsController < ApplicationController
         end
     end
 
-    def set_video_links
-      if params[:video_links]
-        @account.account_video_links.clear
-        params[:video_links].each do |link|
-          obj = AccountVideoLink.new(account_video_params(link))
+    def set_artist_video_links
+      if params[:artist_videos]
+        @artist.artist_videos.clear
+        params[:artist_videos].each do |link|
+          obj = ArtistVideo.new(artist_video_params(link))
           obj.save
-          @account.account_video_links << obj
+          @artist.artist_videos << obj
         end
       end
     end
@@ -831,7 +846,7 @@ class AccountsController < ApplicationController
     end
 
     def venue_params
-        params.permit(:description, :capacity, :venue_type, :has_vr, :address, :lat, :lng)
+        params.permit(:description, :capacity, :venue_type, :has_vr, :address, :lat, :lng, :vr_capacity)
     end
 
     def public_venue_params
@@ -883,7 +898,7 @@ class AccountsController < ApplicationController
       date.permit(:begin_date, :end_date)
     end
 
-    def account_video_params(video)
+    def artist_video_params(video)
       video.permit(:link, :name, :album_name)
     end
 

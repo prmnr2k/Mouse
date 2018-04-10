@@ -32,7 +32,6 @@ class Account < ApplicationRecord
 	has_many :events, foreign_key: 'creator_id'
 	has_many :likes
 	has_many :account_updates
-	has_many :account_video_links
 
 
 	def get_attrs
@@ -45,7 +44,6 @@ class Account < ApplicationRecord
 		attrs[:updated_at] = updated_at
 		attrs[:image_id] = image_id
 		attrs[:account_type] = account_type
-		attrs[:video_links] = account_video_links.pluck(:link)
 		attrs[:followers_count] = followers.count
 		attrs[:following_count] = following.count
 		return attrs

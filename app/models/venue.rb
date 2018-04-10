@@ -8,6 +8,7 @@ class Venue < ApplicationRecord
     has_many :office_hours, foreign_key: 'venue_id', class_name: 'VenueOfficeHour'
     has_many :dates, foreign_key: 'venue_id', class_name: 'VenueDate'
     has_many :emails, foreign_key: 'venue_id', class_name: 'VenueEmail'
+    has_many :venue_video_links
 
     has_one :account
     has_one :public_venue
@@ -24,6 +25,7 @@ class Venue < ApplicationRecord
                 res = res.merge(public_venue.get_attrs)
             end
 
+            res[:video_links] = venue_video_links.pluck(:video_link)
             res[:operating_hours] = operating_hours
             res[:office_hours] = office_hours
             res[:dates] = dates

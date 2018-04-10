@@ -8,6 +8,7 @@ class Artist < ApplicationRecord
     has_many :artist_riders
     has_many :artist_preferred_venues
     has_many :available_dates, foreign_key: 'artist_id', class_name: ArtistDate
+    has_many :artist_videos
 
     geocoded_by :preferred_address, latitude: :lat, longitude: :lng
     reverse_geocoded_by :lat, :lng, address: :preferred_address
@@ -18,6 +19,7 @@ class Artist < ApplicationRecord
             res = super.merge(account.get_attrs)
             res[:genres] = genres.pluck(:genre)
             res[:audio_links] = audio_links
+            res[:videos] = artist_videos
             res[:artist_albums] = artist_albums
 
             if is_hide_pricing_from_profile

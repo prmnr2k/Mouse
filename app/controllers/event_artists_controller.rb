@@ -1,6 +1,8 @@
 class EventArtistsController < ApplicationController
-  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :artist_accept, :artist_decline]
-  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline]
+  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :artist_accept, :artist_decline,
+                                   :artist_set_active, :artist_remove_active]
+  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
+                                           :artist_set_active, :artist_remove_active]
   before_action :authorize_artist, only: [:artist_accept, :artist_decline]
   swagger_controller :event_artists, "Event artists"
 
@@ -37,6 +39,8 @@ class EventArtistsController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
     param :form, :message_id, :integer, :required, "Inbox message id"
+    param :form, :datetime_from, :datetime, :required, "Date and time of performance"
+    param :form, :datetime_to, :datetime, :required, "Date and time of performance"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -49,7 +53,8 @@ class EventArtistsController < ApplicationController
     if @artist_event and ["accepted"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'owner_accepted'
-      # send_message
+      set_agreement
+      send_accept_message(@artist_event.account)
       @artist_event.save
 
       render status: :ok
@@ -63,7 +68,9 @@ class EventArtistsController < ApplicationController
     summary "Remove artist from event"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
+    param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
     param :form, :message_id, :integer, :required, "Inbox message id"
+    param :form, :additional_text, :string, :optional, "Message"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -73,10 +80,10 @@ class EventArtistsController < ApplicationController
   def owner_decline
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
-    if @artist_event and not ["owner_accepted", "accepted"].include?(@artist_event.status)
+    if @artist_event and not ["decline"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'owner_declined'
-      # send_message
+      send_owner_decline(@artist_event.account)
       @artist_event.save
 
       render status: :ok
@@ -100,6 +107,8 @@ class EventArtistsController < ApplicationController
     param :form, :other_price, :integer, :optional, "Other price"
     param :form, :message_id, :integer, :required, "Inbox message id"
     param :header, 'Authorization', :string, :required, "Artist auth key"
+    response :not_found
+    response :unauthorized
   end
   def artist_accept
     @artist_acc = Account.find(params[:id])
@@ -126,6 +135,8 @@ class EventArtistsController < ApplicationController
     param :form, :message_id, :integer, :required, "Inbox message id"
     param :form, :additional_text, :string, :optional, "Message"
     param :header, 'Authorization', :string, :required, "Artist auth key"
+    response :not_found
+    response :unauthorized
   end
   def artist_decline
     @artist_acc = Account.find(params[:id])
@@ -136,6 +147,63 @@ class EventArtistsController < ApplicationController
       @artist_event.status = 'declined'
       send_decline(@artist_acc)
       @artist_event.save
+
+      render status: :ok
+    else
+      render status: :not_found
+    end
+  end
+
+  # POST /events/1/artist/1/set_active
+  swagger_api :artist_set_active do
+    summary "Set artist active"
+    param :path, :id, :integer, :required, "Artist id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Event owner id"
+    param :header, 'Authorization', :string, :required, "Event owner auth key"
+    response :not_found
+    response :unprocessable_entity
+    response :unauthorized
+  end
+  def artist_set_active
+    @artist_acc = Account.find(params[:id])
+    @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
+
+    if @artist_event and @artist_event.status == "owner_accepted"
+      if date_valid?
+        change_event_date
+        change_event_funding
+        @artist_event.status = "active"
+        @artist_event.save!
+
+        render status: :ok
+      else
+        render status: :unprocessable_entity
+      end
+    else
+      render status: :not_found
+    end
+  end
+
+  # POST /events/1/artist/1/remove_active
+  swagger_api :artist_remove_active do
+    summary "Remove active artist"
+    param :path, :id, :integer, :required, "Artist id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Event owner id"
+    param :header, 'Authorization', :string, :required, "Event owner auth key"
+    response :not_found
+    response :unauthorized
+  end
+  def artist_remove_active
+    @artist_acc = Account.find(params[:id])
+    @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
+
+    if @artist_event and @artist_event.status == "active"
+        undo_change_event_date
+        undo_change_event_funding
+        @artist_event.status = "owner_accepted"
+        @artist_event.save!
 
       render status: :ok
     else
@@ -200,6 +268,38 @@ class EventArtistsController < ApplicationController
       account.sent_messages << inbox_message
     end
 
+    def send_owner_decline(account)
+      decline_message = DeclineMessage.new(decline_message_params)
+      decline_message.save
+
+      inbox_message = InboxMessage.new(name: "#{@event.name} owner reply", message_type: "decline")
+      inbox_message.decline_message = decline_message
+
+      @event.decline_messages << decline_message
+      account.inbox_messages << inbox_message
+      @event.creator.sent_messages << inbox_message
+    end
+
+    def send_accept_message(account)
+      inbox_message = InboxMessage.new(
+        name: "#{@event.name} owner reply",
+        message_type: "blank",
+        simple_message: "#{@event.name} owner accepted your conteroffer."
+      )
+
+      @event.creator.sent_messages << inbox_message
+      account.inbox_messages << inbox_message
+    end
+
+    def set_agreement
+      message = InboxMessage.find(params[:message_id])
+
+      agreement = AgreedDateTimeAndPrice.new(agreement_params)
+      agreement.price = message.accept_message.price
+      agreement.artist_event = @artist_event
+      agreement.save!
+    end
+
     def read_message
       message = InboxMessage.find(params[:message_id])
       message.is_read = true
@@ -216,6 +316,48 @@ class EventArtistsController < ApplicationController
       return false
     end
 
+    def date_valid?
+      unless @artist_event.agreed_date_time_and_price
+        return false
+      end
+
+      if @event.date_from.nil?
+        return true
+      end
+
+      agreed_date = @artist_event.agreed_date_time_and_price
+      if @event.date_from <= agreed_date.datetime_from and @event.date_to >= agreed_date.datetime_to
+        return true
+      end
+      return false
+    end
+
+    def change_event_date
+      @event.old_date_from = @event.date_from
+      @event.old_date_to = @event.date_to
+      @event.date_from = @artist_event.agreed_date_time_and_price.datetime_from
+      @event.date_to = @artist_event.agreed_date_time_and_price.datetime_to
+      @event.save!
+    end
+
+    def undo_change_event_date
+      @event.date_from = @event.old_date_from
+      @event.date_to = @event.old_date_to
+      @event.old_date_from = nil
+      @event.old_date_to = nil
+      @event.save!
+    end
+
+    def change_event_funding
+      @event.funding_goal += @artist_event.agreed_date_time_and_price.price
+      @event.save!
+    end
+
+    def undo_change_event_funding
+      @event.funding_goal -= @artist_event.agreed_date_time_and_price.price
+      @event.save!
+    end
+
     def request_message_params
       params.permit(:time_frame, :is_personal, :estimated_price, :message)
     end
@@ -227,6 +369,10 @@ class EventArtistsController < ApplicationController
 
     def decline_message_params
       params.permit(:reason, :additional_text)
+    end
+
+    def agreement_params
+      params.permit(:datetime_from, :datetime_to)
     end
 
 end

@@ -209,17 +209,7 @@ class EventsController < ApplicationController
     response :unauthorized
   end
   def my
-    @events = Event.all
-
-    if @account.account_type == 'fan'
-      @events = @events.where(creator: params[:account_id])
-    elsif @account.account_type == 'artist'
-      @events = @events.joins(:artist_events).where(
-        :artist_events => {artist_id: params[:account_id], status: 'accepted'})
-    elsif @account.account_type == 'venue'
-      @events = @events.where(venue_id: params[:account_id])
-    end
-
+    @events = Event.get_my(@account)
 
     render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
@@ -241,26 +231,28 @@ class EventsController < ApplicationController
   swagger_api :search do
     summary "Search for event"
     param :query, :text, :string, :optional, "Text to search"
+    param :query, :is_active, :boolean, :optional, "Search only active events"
     param :query, :location, :string, :optional, "Address"
     param :query, :lat, :float, :optional, "Latitude (lng and distance must be present)"
     param :query, :lng, :float, :optional, "Longitude (lat and distance must be present)"
     param :query, :distance, :float, :optional, "Radius in km (lat, lng must be present)"
     param :query, :from_date, :datetime, :optional, "Left bound of date (to_date must be presenty)"
     param :query, :to_date, :datetime, :optional, "Right bound of date (from_date must be present)"
-    param :query, :is_active, :boolean, :optional, "Search only active events (do not send it for All option)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
-    param :query, :ticket_types, :string, :optional, "Ticket types ['in_person', 'vip']"
+    param :query, :ticket_types, :string, :optional, "Array of ticket types ['in_person', 'vip']"
+    param :query, :size, :string, :optional, "Array of event's venue type of space ['night_club', 'concert_hall']"
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
     response :ok
   end
   def search
     @events = Event.search(params[:text])
-    search_status
+    search_active
     search_genre
     search_location
     search_distance
     search_ticket_types
+    search_type_of_space
     search_date
 
     render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), status: :ok
@@ -324,7 +316,7 @@ class EventsController < ApplicationController
       end
     end
 
-    def search_status
+    def search_active
       if params[:is_active]
         @events = @events.where(is_active: params[:is_active])
       end
@@ -365,6 +357,19 @@ class EventsController < ApplicationController
           types.append(TicketsType.names[type])
         end
         @events = @events.joins(:tickets => :tickets_type).where(:tickets_types => {name: types})
+      end
+    end
+
+    def search_type_of_space
+      if params[:size]
+        types_of_space = []
+        params[:size].each do |type_of_space|
+          types_of_space.append(PublicVenue.type_of_spaces[type_of_space])
+        end
+
+        @events = @events.joins(
+          :venue => {venue: :public_venue}
+        ).where(public_venues: {type_of_space: types_of_space})
       end
     end
 
