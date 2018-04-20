@@ -103,7 +103,7 @@ Rails.application.routes.draw do
   get 'genres/artists', action: :artists, controller: 'genres'
 
   # feed routes
-  get 'feed/action_types', action: :action_types, controller: 'accounts'
+  get 'feed/action_types', action: :action_types, controller: 'feed'
 
 
   # fan tickets routes

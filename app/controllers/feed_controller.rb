@@ -1,6 +1,25 @@
 class FeedController < ApplicationController
-  before_action :authorize_account
+  before_action :authorize_account, except: :action_types
   swagger_controller :feed, "Feed"
+
+  # GET action_types
+  swagger_api :action_types do
+    summary "Action types"
+  end
+  def action_types
+    actions = []
+    HistoryHelper::EVENT_ACTIONS.each do |action|
+      if action == :update
+        HistoryHelper::EVENT_FIELDS.each do |field|
+          actions.push("#{action} #{field}")
+        end
+      else
+        actions.push(action)
+      end
+    end
+
+    render json: actions, status: :ok
+  end
 
   # GET account/1/feeds
   swagger_api :index do
