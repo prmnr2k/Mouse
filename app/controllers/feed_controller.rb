@@ -30,7 +30,7 @@ class FeedController < ApplicationController
   end
 
   # GET feed/actions
-  swagger_api :index do
+  swagger_api :actions do
     summary "Action types"
   end
   def actions
