@@ -241,6 +241,8 @@ class EventsController < ApplicationController
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :query, :ticket_types, :string, :optional, "Array of ticket types ['in_person', 'vip']"
     param :query, :size, :string, :optional, "Array of event's venue type of space ['night_club', 'concert_hall']"
+    param :query, :only_my, :boolean, :optional, "Search only in created by account events"
+    param :query, :account_id, :integer, :optional, "Account id (required if :only_my parameter set True)"
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
     response :ok
@@ -254,6 +256,7 @@ class EventsController < ApplicationController
     search_ticket_types
     search_type_of_space
     search_date
+    search_only_my
 
     render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
@@ -370,6 +373,12 @@ class EventsController < ApplicationController
         @events = @events.joins(
           :venue => {venue: :public_venue}
         ).where(public_venues: {type_of_space: types_of_space})
+      end
+    end
+
+    def search_only_my
+      if params[:only_my]
+        @events = @events.where(creator_id: params[:account_id])
       end
     end
 

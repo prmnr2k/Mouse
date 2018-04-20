@@ -89,6 +89,20 @@
             },
             {
               "paramType": "query",
+              "name": "only_my",
+              "type": "boolean",
+              "description": "Search only in created by account events",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id (required if :only_my parameter set True)",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",
