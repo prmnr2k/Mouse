@@ -5,6 +5,14 @@ class AccountsController < ApplicationController
     before_action :find_follower_account, only: [:follow, :unfollow]
     swagger_controller :accounts, "Accounts"
 
+    # GET account/actions
+    swagger_api :action_types do
+        summary "Action types"
+    end
+    def action_types
+        render json: HistoryHelper::EVENT_ACTIONS
+    end
+
 
     # GET /accounts/<id>
     swagger_api :get do

@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   #Account routes
   resources :accounts, only: [:create, :update] do
-    resources :feed, only: [:index, :actions]
+    resources :feed, only: :index
     resources :inbox_messages do
       collection do
         get :my
@@ -103,7 +103,7 @@ Rails.application.routes.draw do
   get 'genres/artists', action: :artists, controller: 'genres'
 
   # feed routes
-  #get 'feed/actions', action: :actions, controller: 'feed'
+  get 'accounts/action_types', action: :action_types, controller: 'accounts'
 
 
   # fan tickets routes

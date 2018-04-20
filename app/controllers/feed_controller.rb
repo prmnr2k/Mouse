@@ -29,13 +29,6 @@ class FeedController < ApplicationController
     render json: @feed
   end
 
-  # GET feed/actions
-  swagger_api :actions do
-    summary "Action types"
-  end
-  def actions
-    render json: HistoryHelper::EVENT_ACTIONS
-  end
 
   private
   def authorize_account
