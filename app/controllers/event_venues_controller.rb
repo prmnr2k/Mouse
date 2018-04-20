@@ -68,7 +68,7 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
-    param :form, :message_id, :integer, :required, "Inbox message id"
+    param :form, :message_id, :integer, :optional, "Inbox message id"
     param :form, :additional_text, :string, :optional, "Message"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -291,9 +291,11 @@ class EventVenuesController < ApplicationController
   end
 
   def read_message
-    message = InboxMessage.find(params[:message_id])
-    message.is_read = true
-    message.save
+    if params[:message_id]
+      message = InboxMessage.find(params[:message_id])
+      message.is_read = true
+      message.save
+    end
   end
 
   def request_message_params

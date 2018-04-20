@@ -69,7 +69,7 @@ class EventArtistsController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
     param_list :form, :reason, :string, :required, "Reason", ["price", "location", "time", "other"]
-    param :form, :message_id, :integer, :required, "Inbox message id"
+    param :form, :message_id, :integer, :optional, "Inbox message id"
     param :form, :additional_text, :string, :optional, "Message"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -301,9 +301,11 @@ class EventArtistsController < ApplicationController
     end
 
     def read_message
-      message = InboxMessage.find(params[:message_id])
-      message.is_read = true
-      message.save
+      if params[:message_id]
+        message = InboxMessage.find(params[:message_id])
+        message.is_read = true
+        message.save
+      end
     end
 
     def artist_available?
