@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   #Account routes
   resources :accounts, only: [:create, :update] do
-    resources :feed, only: :index, :actions
+    resources :feed, only: [:index, :actions]
     resources :inbox_messages do
       collection do
         get :my
