@@ -1842,7 +1842,7 @@
       ]
     },
     {
-      "path": "/accounts/action_types.json",
+      "path": "/feed/action_types.json",
       "operations": [
         {
           "summary": "Action types",

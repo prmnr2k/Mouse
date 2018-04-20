@@ -5,7 +5,7 @@ class AccountsController < ApplicationController
     before_action :find_follower_account, only: [:follow, :unfollow]
     swagger_controller :accounts, "Accounts"
 
-    # GET account/actions
+    # GET action_types
     swagger_api :action_types do
         summary "Action types"
     end
