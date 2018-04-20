@@ -8,10 +8,7 @@
       "path": "/accounts/{account_id}/feed.json",
       "operations": [
         {
-          "summary": [
-            "Account's feed",
-            "Action types"
-          ],
+          "summary": "Account's feed",
           "parameters": [
             {
               "paramType": "path",
@@ -36,6 +33,16 @@
             }
           ],
           "nickname": "Feed#index",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/feed/actions.json",
+      "operations": [
+        {
+          "summary": "Action types",
+          "nickname": "Feed#actions",
           "method": "get"
         }
       ]
