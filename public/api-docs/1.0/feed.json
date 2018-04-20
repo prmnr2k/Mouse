@@ -8,7 +8,10 @@
       "path": "/accounts/{account_id}/feed.json",
       "operations": [
         {
-          "summary": "Account's feed",
+          "summary": [
+            "Account's feed",
+            "Action types"
+          ],
           "parameters": [
             {
               "paramType": "path",

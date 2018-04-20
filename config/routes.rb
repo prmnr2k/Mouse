@@ -102,6 +102,10 @@ Rails.application.routes.draw do
   get 'genres/all', action: :all, controller: 'genres'
   get 'genres/artists', action: :artists, controller: 'genres'
 
+  # feed routes
+  get 'feed/actions', action: :actions, controller: 'feed'
+
+
   # fan tickets routes
   resources :fan_tickets, except: :update
 end
