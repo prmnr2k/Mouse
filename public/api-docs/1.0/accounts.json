@@ -1840,6 +1840,16 @@
           "method": "delete"
         }
       ]
+    },
+    {
+      "path": "/accounts/action_types.json",
+      "operations": [
+        {
+          "summary": "Action types",
+          "nickname": "Accounts#action_types",
+          "method": "get"
+        }
+      ]
     }
   ],
   "authorizations": null

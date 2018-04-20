@@ -36,16 +36,6 @@
           "method": "get"
         }
       ]
-    },
-    {
-      "path": "/feed/actions.json",
-      "operations": [
-        {
-          "summary": "Action types",
-          "nickname": "Feed#actions",
-          "method": "get"
-        }
-      ]
     }
   ],
   "authorizations": null
