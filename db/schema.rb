@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180421095644) do
+ActiveRecord::Schema.define(version: 20180421102051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -217,7 +217,7 @@ ActiveRecord::Schema.define(version: 20180421095644) do
     t.string "description", limit: 500
     t.datetime "funding_from"
     t.datetime "funding_to"
-    t.integer "funding_goal"
+    t.integer "funding_goal", default: 0
     t.integer "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
