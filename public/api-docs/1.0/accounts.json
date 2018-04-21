@@ -300,6 +300,76 @@
             },
             {
               "paramType": "form",
+              "name": "country",
+              "type": "string",
+              "description": "Venue (public only) country",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "city",
+              "type": "string",
+              "description": "Venue (public only) city",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "state",
+              "type": "string",
+              "description": "Venue (public only) state",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "zipcode",
+              "type": "integer",
+              "description": "Venue (public only) zipcode",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "minimum_notice",
+              "type": "integer",
+              "description": "Venue (public only) minimum notice time",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_flexible",
+              "type": "boolean",
+              "description": "Is venue (public only) time flexible",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_for_daytime",
+              "type": "integer",
+              "description": "Venue (public only) price for daytime",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_for_nighttime",
+              "type": "integer",
+              "description": "Venue (public only) price for nighttime",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_time_from",
+              "type": "time",
+              "description": "Venue (public only) performance time from",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_time_to",
+              "type": "time",
+              "description": "Venue (public only) performance time to",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "vr_capacity",
               "type": "integer",
               "description": "Venue vr tickets available",
@@ -895,6 +965,76 @@
               "name": "price",
               "type": "integer",
               "description": "Venue (public only) price",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "country",
+              "type": "string",
+              "description": "Venue (public only) country",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "city",
+              "type": "string",
+              "description": "Venue (public only) city",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "state",
+              "type": "string",
+              "description": "Venue (public only) state",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "zipcode",
+              "type": "integer",
+              "description": "Venue (public only) zipcode",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "minimum_notice",
+              "type": "integer",
+              "description": "Venue (public only) minimum notice time",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_flexible",
+              "type": "boolean",
+              "description": "Is venue (public only) time flexible",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_for_daytime",
+              "type": "integer",
+              "description": "Venue (public only) price for daytime",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_for_nighttime",
+              "type": "integer",
+              "description": "Venue (public only) price for nighttime",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_time_from",
+              "type": "time",
+              "description": "Venue (public only) performance time from",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_time_to",
+              "type": "time",
+              "description": "Venue (public only) performance time to",
               "required": false
             },
             {

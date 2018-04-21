@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180409062150) do
+ActiveRecord::Schema.define(version: 20180421095644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 20180409062150) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lat"
     t.float "lng"
+    t.float "lat"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
@@ -175,8 +175,8 @@ ActiveRecord::Schema.define(version: 20180409062150) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
-    t.datetime "created_at", default: "2018-02-11 16:10:10", null: false
-    t.datetime "updated_at", default: "2018-02-11 16:10:11", null: false
+    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
   end
 
   create_table "decline_messages", force: :cascade do |t|
@@ -297,16 +297,6 @@ ActiveRecord::Schema.define(version: 20180409062150) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
-  end
-
   create_table "images", force: :cascade do |t|
     t.string "base64"
     t.integer "account_id"
@@ -360,6 +350,16 @@ ActiveRecord::Schema.define(version: 20180409062150) do
     t.datetime "updated_at", null: false
     t.integer "type_of_space"
     t.integer "price"
+    t.string "country"
+    t.string "city"
+    t.string "state"
+    t.integer "zipcode"
+    t.integer "minimum_notice"
+    t.boolean "is_flexible"
+    t.integer "price_for_daytime"
+    t.integer "price_for_nighttime"
+    t.time "performance_time_from"
+    t.time "performance_time_to"
   end
 
   create_table "questions", force: :cascade do |t|

@@ -240,6 +240,16 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :price, :integer, :optional, "Venue (public only) price"
+      param :form, :country, :string, :optional, "Venue (public only) country"
+      param :form, :city, :string, :optional, "Venue (public only) city"
+      param :form, :state, :string, :optional, "Venue (public only) state"
+      param :form, :zipcode, :integer, :optional, "Venue (public only) zipcode"
+      param :form, :minimum_notice, :integer, :optional, "Venue (public only) minimum notice time"
+      param :form, :is_flexible, :boolean, :optional, "Is venue (public only) time flexible"
+      param :form, :price_for_daytime, :integer, :optional, "Venue (public only) price for daytime"
+      param :form, :price_for_nighttime, :integer, :optional, "Venue (public only) price for nighttime"
+      param :form, :performance_time_from, :time, :optional, "Venue (public only) performance time from"
+      param :form, :performance_time_to, :time, :optional, "Venue (public only) performance time to"
       param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
@@ -345,6 +355,16 @@ class AccountsController < ApplicationController
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :price, :integer, :optional, "Venue (public only) price"
+      param :form, :country, :string, :optional, "Venue (public only) country"
+      param :form, :city, :string, :optional, "Venue (public only) city"
+      param :form, :state, :string, :optional, "Venue (public only) state"
+      param :form, :zipcode, :integer, :optional, "Venue (public only) zipcode"
+      param :form, :minimum_notice, :integer, :optional, "Venue (public only) minimum notice time"
+      param :form, :is_flexible, :boolean, :optional, "Is venue (public only) time flexible"
+      param :form, :price_for_daytime, :integer, :optional, "Venue (public only) price for daytime"
+      param :form, :price_for_nighttime, :integer, :optional, "Venue (public only) price for nighttime"
+      param :form, :performance_time_from, :time, :optional, "Venue (public only) performance time from"
+      param :form, :performance_time_to, :time, :optional, "Venue (public only) performance time to"
       param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
@@ -847,7 +867,9 @@ class AccountsController < ApplicationController
     def public_venue_params
       params.permit(:fax, :bank_name, :account_bank_number, :account_bank_routing_number,
                     :num_of_bathrooms, :min_age, :has_bar, :located, :dress_code, :audio_description,
-                    :lighting_description, :stage_description, :type_of_space, :price)
+                    :lighting_description, :stage_description, :type_of_space, :price, :country, :city,
+                    :state, :zipcode, :minimum_notice, :is_flexible, :price_for_daytime, :price_for_nighttime,
+                    :performance_time_from, :performance_time_to)
     end
     
     def venue_dates_params(date)
