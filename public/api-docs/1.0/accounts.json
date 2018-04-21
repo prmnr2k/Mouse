@@ -208,6 +208,13 @@
             },
             {
               "paramType": "form",
+              "name": "other_genre_description",
+              "type": "string",
+              "description": "Venue other genre description (for public venue if genre other)",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "has_bar",
               "type": "boolean",
               "description": "Has venue bar? (public_venue only)",
@@ -224,7 +231,7 @@
                 "values": [
                   "indoors",
                   "outdoors",
-                  "other_location"
+                  "both"
                 ]
               }
             },
@@ -877,6 +884,13 @@
             },
             {
               "paramType": "form",
+              "name": "other_genre_description",
+              "type": "string",
+              "description": "Venue other genre description (for public venue if genre other)",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "has_bar",
               "type": "boolean",
               "description": "Has venue bar? (public_venue only)",
@@ -893,7 +907,7 @@
                 "values": [
                   "indoors",
                   "outdoors",
-                  "other_location"
+                  "both"
                 ]
               }
             },

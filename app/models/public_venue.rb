@@ -3,7 +3,7 @@ class PublicVenue < ApplicationRecord
   validates_inclusion_of :num_of_bathrooms, in: 0..1000000, allow_nil: true
 
   enum type_of_space: TypesOfSpaceHelper.all
-  enum located: [:indoors, :outdoors, :other_location]
+  enum located: [:indoors, :outdoors, :both]
 
   belongs_to :venue
   has_many :genres, foreign_key: 'venue_id', class_name: 'VenueGenre'
@@ -24,6 +24,17 @@ class PublicVenue < ApplicationRecord
     attrs[:stage_description] = stage_description
     attrs[:genres] = genres.pluck(:genre)
     attrs[:type_of_space] = type_of_space
+    attrs[:country] = country
+    attrs[:city] = city
+    attrs[:state] = state
+    attrs[:zipcode] = zipcode
+    attrs[:minimum_notice] = minimum_notice
+    attrs[:is_flexible] = is_flexible
+    attrs[:price_for_daytime] = price_for_daytime
+    attrs[:price_for_nighttime] = price_for_nighttime
+    attrs[:performance_time_from] = performance_time_from
+    attrs[:performance_time_to] = performance_time_to
+    attrs[:other_genre_description] = other_genre_description
     
     return attrs
   end

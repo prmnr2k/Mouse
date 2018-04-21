@@ -227,8 +227,9 @@ class AccountsController < ApplicationController
       param_list :form, :venue_type, :string, :optional, "Venue type", ["public_venue", "private_residence"]
       param_list :form, :type_of_space, :string, :optional, "Venue type of space (public_venue only)", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
                                                                                      "stadium_arena", "outdoor_space", "other"]
+      param :form, :other_genre_description, :string, :optional, "Venue other genre description (for public venue if genre other)"
       param :form, :has_bar, :boolean, :optional, "Has venue bar? (public_venue only)"
-      param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "other_location"]
+      param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "both"]
       param :form, :dress_code, :string, :optional, "Venue dress code (public_venue only)"
       param :form, :has_vr, :boolean, :optional, "Has venue vr?"
       param :form, :audio_description, :string, :optional, "Venue audio description (public_venue only)"
@@ -342,8 +343,9 @@ class AccountsController < ApplicationController
       param_list :form, :venue_type, :string, :optional, "Venue type", ["public_venue", "private_residence"]
       param_list :form, :type_of_space, :string, :optional, "Venue type of space (public_venue only)", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
                                                                                                         "stadium_arena", "outdoor_space", "other"]
+      param :form, :other_genre_description, :string, :optional, "Venue other genre description (for public venue if genre other)"
       param :form, :has_bar, :boolean, :optional, "Has venue bar? (public_venue only)"
-      param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "other_location"]
+      param_list :form, :located, :string, :optional, "Venue located (public_venue only)", ["indoors", "outdoors", "both"]
       param :form, :dress_code, :string, :optional, "Venue dress code (public_venue only)"
       param :form, :has_vr, :boolean, :optional, "Has venue vr?"
       param :form, :audio_description, :string, :optional, "Venue audio description (public_venue only)"
@@ -868,7 +870,7 @@ class AccountsController < ApplicationController
                     :num_of_bathrooms, :min_age, :has_bar, :located, :dress_code, :audio_description,
                     :lighting_description, :stage_description, :type_of_space, :price, :country, :city,
                     :state, :zipcode, :minimum_notice, :is_flexible, :price_for_daytime, :price_for_nighttime,
-                    :performance_time_from, :performance_time_to)
+                    :performance_time_from, :performance_time_to, :other_genre_description)
     end
     
     def venue_dates_params(date)
