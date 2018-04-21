@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180421102051) do
+ActiveRecord::Schema.define(version: 20180421145959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -230,7 +230,7 @@ ActiveRecord::Schema.define(version: 20180421102051) do
     t.boolean "comments_available", default: false
     t.datetime "date_from"
     t.datetime "date_to"
-    t.integer "event_month"
+    t.integer "event_season"
     t.integer "event_year"
     t.integer "event_length"
     t.integer "event_time"
@@ -360,6 +360,7 @@ ActiveRecord::Schema.define(version: 20180421102051) do
     t.integer "price_for_nighttime"
     t.time "performance_time_from"
     t.time "performance_time_to"
+    t.string "other_genre_description"
   end
 
   create_table "questions", force: :cascade do |t|

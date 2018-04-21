@@ -64,8 +64,7 @@ class EventsController < ApplicationController
     param :form, :comments_available, :boolean, :optional, "Is comments available"
     param :form, :date_from, :datetime, :optional, "Date from"
     param :form, :date_to, :datetime, :optional, "Date to"
-    param_list :form, :event_month, :integer, :optional, "Event month range", ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
-                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    param_list :form, :event_season, :integer, :optional, "Event month range", ['spring', 'summer', 'autumn', 'winter']
     param :form, :event_year, :integer, :optional, "Event year range"
     param :form, :event_length, :integer, :optional, "Event length in hours"
     param_list :form, :event_time, :integer, :optional, "Event time", ['morning', 'afternoon', 'evening']
@@ -114,8 +113,7 @@ class EventsController < ApplicationController
     param :form, :comments_available, :boolean, :optional, "Is comments available"
     param :form, :date_from, :datetime, :optional, "Date from"
     param :form, :date_to, :datetime, :optional, "Date to"
-    param_list :form, :event_month, :integer, :optional, "Event month range", ['jan', 'feb', 'mar', 'apr', 'may', 'jun',
-                                                      'jul', 'aug', 'sep', 'oct', 'nov', 'dec']
+    param_list :form, :event_season, :integer, :optional, "Event month range", ['spring', 'summer', 'autumn', 'winter']
     param :form, :event_year, :integer, :optional, "Event year range"
     param :form, :event_length, :integer, :optional, "Event length in hours"
     param_list :form, :event_time, :integer, :optional, "Event time", ['morning', 'afternoon', 'evening']
@@ -418,7 +416,7 @@ class EventsController < ApplicationController
     def event_params
       params.permit(:name, :tagline, :description, :funding_from, :funding_to,
                     :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
-                    :event_month, :event_year, :event_length, :event_time, :is_crowdfunding_event,
+                    :event_season, :event_year, :event_length, :event_time, :is_crowdfunding_event,
                     :city_lat, :city_lng, :address, :artists_number, :video_link)
     end
 

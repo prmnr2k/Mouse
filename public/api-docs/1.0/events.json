@@ -314,25 +314,17 @@
             },
             {
               "paramType": "form",
-              "name": "event_month",
+              "name": "event_season",
               "type": "integer",
               "description": "Event month range",
               "required": false,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "jan",
-                  "feb",
-                  "mar",
-                  "apr",
-                  "may",
-                  "jun",
-                  "jul",
-                  "aug",
-                  "sep",
-                  "oct",
-                  "nov",
-                  "dec"
+                  "spring",
+                  "summer",
+                  "autumn",
+                  "winter"
                 ]
               }
             },
@@ -578,25 +570,17 @@
             },
             {
               "paramType": "form",
-              "name": "event_month",
+              "name": "event_season",
               "type": "integer",
               "description": "Event month range",
               "required": false,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "jan",
-                  "feb",
-                  "mar",
-                  "apr",
-                  "may",
-                  "jun",
-                  "jul",
-                  "aug",
-                  "sep",
-                  "oct",
-                  "nov",
-                  "dec"
+                  "spring",
+                  "summer",
+                  "autumn",
+                  "winter"
                 ]
               }
             },

@@ -3,7 +3,7 @@ class Event < ApplicationRecord
 
   belongs_to :creator, class_name: 'Account'
 
-  enum event_month: [:jan, :feb, :mar, :apr, :may, :jun, :jul, :aug, :sep, :oct, :nov, :dec]
+  enum event_season: [:spring, :summer, :autumn, :winter]
   enum event_time: [:morning, :afternoon, :evening]
 
   has_many :event_collaborators, foreign_key: 'event_id'
