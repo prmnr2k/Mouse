@@ -91,23 +91,17 @@ class AccountsController < ApplicationController
     swagger_api :upload_image do
       summary "Upload image to Account"
       param :path, :id, :integer, :required, "Account id"
-      param :form, :image, :file, :required, "Image to upload"
+      param :form, :image, :file, :optional, "Image to upload"
+      param :form, :image_base64, :string, :optional, "Image base64 string"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
       response :not_found
     end
     def upload_image
-        image = Image.new(base64: Base64.encode64(File.read(params[:image].path)))
-        image.account = @account
-        if image.save
-            @account.images << image
-            @account.image = image
-            render json: @account, status: :ok
-            
-        else
-            render json: image.errors, status: :unprocessable_entity
-        end
+        set_image
+        set_base64_image
+        render json: @account, status: :ok
     end
 
 
@@ -489,7 +483,7 @@ class AccountsController < ApplicationController
         if params[:image]
             #@account.image.delete if @account.image != nil
             image = Image.new(base64: Base64.encode64(File.read(params[:image].path)))
-            #image.save
+            image.save
             @account.image = image
             @account.images << image
         end
@@ -499,7 +493,7 @@ class AccountsController < ApplicationController
         if params[:image_base64]
             #@account.image.delete if @account.image != nil
             image = Image.new(base64: params[:image_base64])
-            #image.save
+            image.save
             @account.image = image
             @account.images << image
         end

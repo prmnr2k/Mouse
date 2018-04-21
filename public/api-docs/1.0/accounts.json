@@ -1659,7 +1659,14 @@
               "name": "image",
               "type": "file",
               "description": "Image to upload",
-              "required": true
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
             },
             {
               "paramType": "header",
