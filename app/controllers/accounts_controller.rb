@@ -444,7 +444,6 @@ class AccountsController < ApplicationController
       set_extended
 
       @accounts = Account.all
-      search_account
       search_text
       search_type
       search_price
