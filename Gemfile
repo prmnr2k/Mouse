@@ -51,3 +51,5 @@ gem 'mini_magick'
 gem 'vkontakte_api'
 
 gem "paperclip"
+
+gem 'twilio-ruby' 

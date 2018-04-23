@@ -46,6 +46,49 @@ class AuthenticateController < ApplicationController
 		end 
 	end
 
+	# POST /auth/request_code
+	swagger_api :request_code do
+		summary "Request sms code"
+		param :form, :phone, :string, :required, "Phone	"
+		response :unauthorized
+	end
+	def request_code
+		account_sid = 'ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+		auth_token = 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'
+
+		@client = Twilio::REST::Client.new account_sid, auth_token
+
+		max_min = 15
+		max_att = 3
+
+		@validation = PhoneValidation.find_by(phone: params[:phone])
+		if @validation 
+			cur_time = (Time.zone.now - @validation.updated_at) / 1.minutes
+			if cur_time < max_min and @validation.attempts > max_att
+				render json: {error: [:TOO_MANY_ATTEMPTS]}, status: :bad_request and return
+			else
+				if cur_time < max_min
+					@validation.attempts += 1
+				else
+					@validation.attempts = 0
+				end
+				@validation.code = SecureRandom.hex(2)
+			end
+		else
+			@validation = PhoneValidation.new(phone: params[:phone], code: SecureRandom.hex(2), attempts: 0)
+		end	
+
+		@validation.save
+
+		@client.api.account.messages.create(
+			from: '+14159341234',
+			to: params[:phone],
+			body: "Mouse code: #{@validation.code}"
+		)
+
+		render status: :ok
+	end
+
 	# POST /auth/login
 	swagger_api :login do
 		summary "Authorize by username and password"

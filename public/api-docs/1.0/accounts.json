@@ -1810,6 +1810,13 @@
             },
             {
               "paramType": "form",
+              "name": "description",
+              "type": "string",
+              "description": "Description",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "image",
               "type": "file",
               "description": "Image to upload",

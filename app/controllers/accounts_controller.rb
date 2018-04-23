@@ -29,7 +29,6 @@ class AccountsController < ApplicationController
         render json: @to_find.account_updates
     end
 
-
     # GET /accounts/
     swagger_api :get_all do
       summary "Retrieve list of accounts"
@@ -91,6 +90,7 @@ class AccountsController < ApplicationController
     swagger_api :upload_image do
       summary "Upload image to Account"
       param :path, :id, :integer, :required, "Account id"
+      param :form, :description, :string, :optional, "Description"
       param :form, :image, :file, :optional, "Image to upload"
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -504,7 +504,7 @@ class AccountsController < ApplicationController
     def set_image
         if params[:image]
             #@account.image.delete if @account.image != nil
-            image = Image.new(base64: Base64.encode64(File.read(params[:image].path)))
+            image = Image.new(description: params[:description], base64: Base64.encode64(File.read(params[:image].path)))
             image.save
             @account.image = image
             @account.images << image
@@ -514,7 +514,7 @@ class AccountsController < ApplicationController
     def set_base64_image
         if params[:image_base64]
             #@account.image.delete if @account.image != nil
-            image = Image.new(base64: params[:image_base64])
+            image = Image.new(description: params[:description], base64: params[:image_base64])
             image.save
             @account.image = image
             @account.images << image
