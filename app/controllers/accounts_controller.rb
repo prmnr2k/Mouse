@@ -513,7 +513,7 @@ class AccountsController < ApplicationController
 
     def set_base64_image
         if params[:image_base64]
-            #@account.image.delete if @account.image != nil
+            #@account.image.delete if @account.image != nil  
             image = Image.new(description: params[:description], base64: params[:image_base64])
             image.save
             @account.image = image
