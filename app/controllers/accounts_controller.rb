@@ -82,7 +82,7 @@ class AccountsController < ApplicationController
     def get_images
         render json: {
             total_count: @to_find.images.count,
-            images: @to_find.images.limit(params[:limit]).offset(params[:offset]).pluck(:id, :description)
+            images: @to_find.images.limit(params[:limit]).offset(params[:offset]).pluck(:id, :description).map{|o| {id: o[0], description: o[1]}}
         }
     end
 
