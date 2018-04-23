@@ -118,6 +118,20 @@
             },
             {
               "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "Fan/Artist first name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Fan/Artist last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "description",
               "type": "string",
               "description": "Venue description",
@@ -401,20 +415,6 @@
               "name": "manager_name",
               "type": "string",
               "description": "Artist'smanager name",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "first_name",
-              "type": "string",
-              "description": "Artist first name",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "last_name",
-              "type": "string",
-              "description": "Artist last name",
               "required": false
             },
             {
@@ -794,6 +794,20 @@
             },
             {
               "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "Fan/Artist first name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Fan/Artist last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "description",
               "type": "string",
               "description": "Venue description",
@@ -1077,20 +1091,6 @@
               "name": "manager_name",
               "type": "string",
               "description": "Artist'smanager name",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "first_name",
-              "type": "string",
-              "description": "Artist first name",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "last_name",
-              "type": "string",
-              "description": "Artist last name",
               "required": false
             },
             {
