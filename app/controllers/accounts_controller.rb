@@ -858,7 +858,7 @@ class AccountsController < ApplicationController
     end
 
     def fan_params
-        params.permit(:bio, :address, :lat, :lng)
+        params.permit(:bio, :address, :lat, :lng, :first_name, :last_name)
     end
 
     def venue_params
