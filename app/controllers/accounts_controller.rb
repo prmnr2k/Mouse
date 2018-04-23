@@ -853,7 +853,7 @@ class AccountsController < ApplicationController
         params.permit(:user_name, :display_name, :phone, :account_type)
     end
 
-    def account_update_params
+    def account_update_params 
         params.permit(:user_name, :display_name, :phone)
     end
 
