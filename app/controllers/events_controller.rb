@@ -324,8 +324,13 @@ class EventsController < ApplicationController
     end
 
     def search_date
-       if params[:from_date] and params[:to_date]
-         @events = @events.where(date: DateTime.parse(params[:from_date])..DateTime.parse(params[:to_date]))
+       if params[:from_date]
+         @events = @events.where("events.date_from >= :date",
+                                 {:date => DateTime.parse(params[:from_date])})
+       end
+       if params[:to_date]
+         @events = @events.where("events.date_to <= :date",
+                                 {:date => DateTime.parse(params[:to_date])})
        end
     end
 
