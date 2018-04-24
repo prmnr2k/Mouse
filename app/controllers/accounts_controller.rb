@@ -316,7 +316,7 @@ class AccountsController < ApplicationController
             set_artist_params
 
             #AccessHelper.grant_account_access(@account)
-            render json: @account, extended: true, my: true, except: :password, status: :created
+            render json: @account, extended: true, my: true, authorized: true, except: :password, status: :created
         else
             render json: @account.errors, status: :unprocessable_entity
         end
@@ -431,7 +431,7 @@ class AccountsController < ApplicationController
         set_venue_params
         set_artist_params
         if @account.update(account_update_params)
-            render json: @account, extended: true, my: true, except: :password, status: :ok
+            render json: @account, extended: true, my: true, authorized: true, except: :password, status: :ok
         else
             render json: @account.errors, status: :unprocessable_entity
         end
