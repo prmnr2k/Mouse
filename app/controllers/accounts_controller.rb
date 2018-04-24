@@ -814,10 +814,20 @@ class AccountsController < ApplicationController
     end
 
     def search_price
-      if params[:price_from] and params[:price_to] and params[:type] == 'artist'
-        @accounts = @accounts.joins(:artist).where(price: params[:price_from]..params[:price_to])
-      elsif params[:price_from] and params[:price_to] and params[:type] == 'venue'
-        @accounts = @accounts.joins(:venue => :public_venue).where(price: params[:price_from]..params[:price_to])
+      if params[:type] == 'artist'
+        if params[:price_from]
+          @accounts = @accounts.joins(:artist).where("artists.price_from >= :price", {:price => params[:price_from]})
+        end
+        if params[:price_to]
+          @accounts = @accounts.joins(:artist).where("artists.price_to <= :price", {:price => params[:price_to]})
+        end
+      elsif params[:type] == 'venue'
+        if params[:price_from]
+          @accounts = @accounts.joins(:venue => :public_venue).where("public_venues.price >= :price", {:price => params[:price_from]})
+        end
+        if params[:price_to]
+          @accounts = @accounts.joins(:venue => :public_venue).where("public_venues.price <= :price", {:price => params[:price_to]})
+        end
       end
     end
 
