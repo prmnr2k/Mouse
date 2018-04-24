@@ -453,6 +453,13 @@
             },
             {
               "paramType": "form",
+              "name": "artist_email",
+              "type": "string",
+              "description": "Artist's email",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "audio_links",
               "type": "string",
               "description": "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]",
@@ -1158,7 +1165,14 @@
               "paramType": "form",
               "name": "manager_name",
               "type": "string",
-              "description": "Artist'smanager name",
+              "description": "Artist's manager name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "artist_email",
+              "type": "string",
+              "description": "Artist's email",
               "required": false
             },
             {

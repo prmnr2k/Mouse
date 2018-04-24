@@ -265,6 +265,7 @@ class AccountsController < ApplicationController
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
       param :form, :manager_name, :string, :optional, "Artist'smanager name"
+      param :form, :artist_email, :string, :optional, "Artist's email"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]"
       param :form, :artist_albums, :string, :optional, "Array of artist albums objects [{'album_name': '', 'album_artwork': '', 'album_link': ''}, {...}]"
       param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]"
@@ -384,7 +385,8 @@ class AccountsController < ApplicationController
       param :form, :vr_capacity, :integer, :optional, "Venue vr tickets available"
       param :form, :about, :string, :optional, "About artist"
       param :form, :stage_name, :string, :optional, "Artist stage name"
-      param :form, :manager_name, :string, :optional, "Artist'smanager name"
+      param :form, :manager_name, :string, :optional, "Artist's manager name"
+      param :form, :artist_email, :string, :optional, "Artist's email"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]"
       param :form, :artist_albums, :string, :optional, "Array of artist albums objects [{'album_name': '', 'album_artwork': '', 'album_link': ''}, {...}]"
       param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]"
@@ -942,7 +944,7 @@ class AccountsController < ApplicationController
                       :is_perform_with_band, :can_perform_without_band, :is_perform_with_backing_vocals,
                       :can_perform_without_backing_vocals, :is_permitted_to_stream, :is_permitted_to_advertisement,
                       :has_conflict_contracts, :conflict_companies_names, :preferred_venue_text,
-                      :min_time_to_book, :min_time_to_free_cancel, :late_cancellation_fee, :refund_policy)
+                      :min_time_to_book, :min_time_to_free_cancel, :late_cancellation_fee, :refund_policy, :artist_email)
     end
 
     def artist_audio_params(link)

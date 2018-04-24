@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424123313) do
+ActiveRecord::Schema.define(version: 20180424144618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 20180424123313) do
     t.integer "min_time_to_free_cancel"
     t.integer "late_cancellation_fee"
     t.string "refund_policy"
+    t.string "artist_email"
   end
 
   create_table "audio_links", force: :cascade do |t|
