@@ -31,7 +31,7 @@ class Artist < ApplicationRecord
             if options[:my]
                 res[:available_dates] = available_dates
                 res[:artist_riders] = artist_riders
-                res[:artist_preferred_venues] = artist_preferred_venues
+                res[:preferred_venues] = artist_preferred_venues
             end
 
             return res
