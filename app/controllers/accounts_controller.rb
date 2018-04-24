@@ -90,9 +90,12 @@ class AccountsController < ApplicationController
     swagger_api :upload_image do
       summary "Upload image to Account"
       param :path, :id, :integer, :required, "Account id"
-      param :form, :description, :string, :optional, "Description"
       param :form, :image, :file, :optional, "Image to upload"
       param :form, :image_base64, :string, :optional, "Image base64 string"
+      param :form, :image_description, :string, :optional, "Image description"
+      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+                                                                        "stadium_arena", "outdoor_space", "other"]
+      param :form, :image_type_description, :string, :optional, "Image other type description"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity
       response :unauthorized
@@ -206,6 +209,10 @@ class AccountsController < ApplicationController
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
       param :form, :image_base64, :string, :optional, "Image base64 string"
+      param :form, :image_description, :string, :optional, "Image description"
+      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+                                                                        "stadium_arena", "outdoor_space", "other"]
+      param :form, :image_type_description, :string, :optional, "Image other type description"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :venue_video_links, :string, :optional, "Array of links"
@@ -322,6 +329,10 @@ class AccountsController < ApplicationController
       param :form, :display_name, :string, :optional, "Account's name to display"
       param :form, :phone, :string, :optional, "Account's phone"
       param :form, :image_base64, :string, :optional, "Image base64 string"
+      param :form, :image_description, :string, :optional, "Image description"
+      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+                                                                        "stadium_arena", "outdoor_space", "other"]
+      param :form, :image_type_description, :string, :optional, "Image other type description"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
       param :form, :venue_video_links, :string, :optional, "Array of links"
@@ -504,20 +515,36 @@ class AccountsController < ApplicationController
     def set_image
         if params[:image]
             #@account.image.delete if @account.image != nil
-            image = Image.new(description: params[:description], base64: Base64.encode64(File.read(params[:image].path)))
+            image = Image.new(description: params[:image_description], base64: Base64.encode64(File.read(params[:image].path)))
             image.save
             @account.image = image
             @account.images << image
+
+            set_image_type(image)
         end
     end
 
     def set_base64_image
         if params[:image_base64]
             #@account.image.delete if @account.image != nil  
-            image = Image.new(description: params[:description], base64: params[:image_base64])
+            image = Image.new(description: params[:image_description], base64: params[:image_base64])
             image.save
             @account.image = image
             @account.images << image
+
+            set_image_type(image)
+        end
+    end
+
+    def set_image_type(image)
+        if params[:image_type]
+            obj = ImageType.new(image_type: params[:image_type])
+            if params[:image_type_description]
+              obj.description = params[:image_type_description]
+            end
+            obj.save
+
+            image.image_type = obj
         end
     end
 

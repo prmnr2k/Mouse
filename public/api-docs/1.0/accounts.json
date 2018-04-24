@@ -40,6 +40,40 @@
             },
             {
               "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "account_type",
               "type": "string",
               "description": "Account type",
@@ -712,6 +746,40 @@
               "name": "image_base64",
               "type": "string",
               "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
               "required": false
             },
             {
@@ -1810,13 +1878,6 @@
             },
             {
               "paramType": "form",
-              "name": "description",
-              "type": "string",
-              "description": "Description",
-              "required": false
-            },
-            {
-              "paramType": "form",
               "name": "image",
               "type": "file",
               "description": "Image to upload",
@@ -1827,6 +1888,40 @@
               "name": "image_base64",
               "type": "string",
               "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
               "required": false
             },
             {
