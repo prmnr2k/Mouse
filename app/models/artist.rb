@@ -22,7 +22,7 @@ class Artist < ApplicationRecord
             res[:videos] = artist_videos
             res[:artist_albums] = artist_albums
 
-            if is_hide_pricing_from_profile
+            if is_hide_pricing_from_profile and not options[:authorized]
                 res.delete('price_from')
                 res.delete('price_to')
                 res.delete('additional_hours_price')

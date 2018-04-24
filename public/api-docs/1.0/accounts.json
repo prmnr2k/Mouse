@@ -1613,6 +1613,13 @@
               "type": "boolean",
               "description": "Need extended info",
               "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": false
             }
           ],
           "responseMessages": [

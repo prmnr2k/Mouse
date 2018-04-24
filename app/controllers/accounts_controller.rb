@@ -11,12 +11,13 @@ class AccountsController < ApplicationController
       summary "Retrieve account by id"
       param :path, :id, :integer, :required, "Account id"
       param :query, :extended, :boolean, :optional, "Need extended info"
+      param :header, 'Authorization', :string, :optional, 'Authentication token'
       response :not_found
     end
     def get
         @extended = true
         set_extended
-        render json: @to_find, extended: @extended, status: :ok
+        render json: @to_find, extended: @extended, authorized: authorized?, status: :ok
     end
 
     # GET /account/1/updates
@@ -499,6 +500,13 @@ class AccountsController < ApplicationController
 
     def find_image
         @image = Image.find(params[:image_id])
+    end
+
+    def authorized?
+      if request.headers['Authorization']
+        user = AuthorizeHelper.authorize(request)
+        return user == @to_find.user
+      end
     end
 
     def authorize_user
