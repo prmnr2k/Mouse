@@ -33,6 +33,22 @@ class FanTicketsController < ApplicationController
     render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, status: :ok
   end
 
+  # GET /fan_tickets/by_event
+  swagger_api :by_event do
+    summary "Bought tickets by event"
+    param :query, :account_id, :integer, :required, "Fan account id"
+    param :query, :event_id, :integer, :required, "Event id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def by_event
+    render json: {
+      event: Event.find(params[:event_id]),
+      tickets: FanTicket.joins(:ticket).where(account_id: params[:account_id], tickets: {event_id: params[:event_id]})
+    }, fan_ticket: true, with_tickets: true, status: :ok
+  end
+
   # GET /fan_tickets/1
   swagger_api :show do
     summary "Fan ticket info"

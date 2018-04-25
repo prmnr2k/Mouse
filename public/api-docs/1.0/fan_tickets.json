@@ -5,6 +5,51 @@
   "resourcePath": "fan_tickets",
   "apis": [
     {
+      "path": "/fan_tickets/by_event.json",
+      "operations": [
+        {
+          "summary": "Bought tickets by event",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Fan account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "FanTickets#by_event",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/fan_tickets.json",
       "operations": [
         {

@@ -107,5 +107,9 @@ Rails.application.routes.draw do
 
 
   # fan tickets routes
-  resources :fan_tickets, except: :update
+  resources :fan_tickets, except: :update do
+    collection do
+      get :by_event
+    end
+  end
 end
