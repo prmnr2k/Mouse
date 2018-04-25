@@ -630,7 +630,7 @@
               "paramType": "form",
               "name": "artist_riders",
               "type": "string",
-              "description": "Artist array of riders objects\n                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file': '', 'description': '', 'is_flexible': ''}, {...}]",
+              "description": "Artist array of riders objects\n                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file_base64': '', 'description': '', 'is_flexible': ''}, {...}]",
               "required": false
             },
             {
@@ -1347,7 +1347,7 @@
               "paramType": "form",
               "name": "artist_riders",
               "type": "string",
-              "description": "Artist array of riders objects\n                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file': '', 'description': '', 'is_flexible': ''}, {...}]",
+              "description": "Artist array of riders objects\n                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file_base64': '', 'description': '', 'is_flexible': ''}, {...}]",
               "required": false
             },
             {

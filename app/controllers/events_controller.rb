@@ -256,7 +256,7 @@ class EventsController < ApplicationController
     search_date
     search_only_my
 
-    render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), search: true, status: :ok
   end
 
   private
