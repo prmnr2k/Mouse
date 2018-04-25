@@ -47,6 +47,15 @@ class Event < ApplicationRecord
     res.delete('old_city_lng')
     res.delete('old_date_from')
     res.delete('old_date_to')
+
+
+    if options[:fan_ticket]
+      res[:in_person_tickets] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).exists?
+      res[:vr_tickets] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).exists?
+
+      return res
+    end
+
     res[:backers] = tickets.joins(:fan_tickets).pluck(:account_id).uniq.count
     res[:founded] = tickets.joins(:fan_tickets).sum("fan_tickets.price")
 

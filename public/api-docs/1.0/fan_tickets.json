@@ -19,6 +19,20 @@
             },
             {
               "paramType": "query",
+              "name": "time",
+              "type": "string",
+              "description": "Tickets time frame",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "current",
+                  "past"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
               "name": "limit",
               "type": "integer",
               "description": "Limit",

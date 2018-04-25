@@ -9,6 +9,7 @@ class FanTicketsController < ApplicationController
   swagger_api :index do
     summary "Retrieve list of fan tickets"
     param :query, :account_id, :integer, :required, "Fan account id"
+    param_list :query, :time, :string, :required, "Tickets time frame", ['current', 'past']
     param :query, :limit, :integer, :optional, "Limit"
     param :query, :offset, :integer, :optional, "Offset"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -16,8 +17,20 @@ class FanTicketsController < ApplicationController
     response :not_found
   end
   def index
-    @fan_tickets = FanTicket.all
-    render json: @fan_tickets.limit(params[:limit]).offset(params[:offset]), status: :ok
+    if params[:time] == 'current'
+      @events = Event.joins(:tickets => :fan_tickets).where(
+        fan_tickets: {account_id: params[:account_id]}
+      ).where(
+        "(events.date_from >= :date OR events.date_from IS NULL)", {:date => DateTime.now}
+      ).group("events.id")
+    else
+      @events = Event.joins(:tickets => :fan_tickets).where(
+        fan_tickets: {account_id: params[:account_id]}
+      ).where(
+        "(events.date_from < :date", {:date => DateTime.now}
+      ).group("events.id")
+    end
+    render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, status: :ok
   end
 
   # GET /fan_tickets/1
