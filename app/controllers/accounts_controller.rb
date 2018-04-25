@@ -291,7 +291,7 @@ class AccountsController < ApplicationController
       param :form, :late_cancellation_fee, :integer, :optional, "Artist late cancellation fee"
       param :form, :refund_policy, :string, :optional, "Artist refund policy"
       param :form, :artist_riders, :string, :optional, "Artist array of riders objects
-                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file': '', 'description': '', 'is_flexible': ''}, {...}]"
+                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file_base64': '', 'description': '', 'is_flexible': ''}, {...}]"
       param :form, :preferred_venues, :string, :optional, "Array of preferred venue types"
       param :form, :facebook, :string, :optional, "Artist facebook username"
       param :form, :twitter, :string, :optional, "Artist twitter username"
@@ -412,7 +412,7 @@ class AccountsController < ApplicationController
       param :form, :late_cancellation_fee, :integer, :optional, "Artist late cancellation fee"
       param :form, :refund_policy, :string, :optional, "Artist refund policy"
       param :form, :artist_riders, :string, :optional, "Artist array of riders objects
-                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file': '', 'description': '', 'is_flexible': ''}, {...}]"
+                                [{'rider_type': 'stage|backstage|hospitality|technical', 'uploaded_file_base64': '', 'description': '', 'is_flexible': ''}, {...}]"
       param :form, :preferred_venues, :string, :optional, "Array of preferred venue types"
       param :form, :facebook, :string, :optional, "Artist facebook username"
       param :form, :twitter, :string, :optional, "Artist twitter username"
@@ -715,6 +715,7 @@ class AccountsController < ApplicationController
             set_artist_video_links
             set_artist_dates
             set_artist_preferred_venues
+            set_artist_riders
         end
     end
 
@@ -756,6 +757,7 @@ class AccountsController < ApplicationController
         @artist.artist_riders.clear
         params[:artist_riders].each do |rider|
           obj = ArtistRider.new(artist_rider_params(rider))
+          obj.uploaded_file = Base64.encode64(File.read(params[:uploaded_file_base64].path))
           obj.save
           @artist.artist_riders<< obj
         end
@@ -956,7 +958,7 @@ class AccountsController < ApplicationController
     end
 
     def artist_rider_params(rider)
-      rider.permit(:rider_type, :uploaded_file, :description, :is_flexible)
+      rider.permit(:rider_type, :description, :is_flexible)
     end
 
     def artist_dates_params(date)
