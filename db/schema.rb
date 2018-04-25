@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180424144618) do
+ActiveRecord::Schema.define(version: 20180425165951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 20180424144618) do
     t.boolean "is_flexible", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uploaded_file_base64"
   end
 
   create_table "artist_videos", force: :cascade do |t|
@@ -125,8 +126,8 @@ ActiveRecord::Schema.define(version: 20180424144618) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lng"
     t.float "lat"
+    t.float "lng"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
@@ -176,8 +177,8 @@ ActiveRecord::Schema.define(version: 20180424144618) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
-    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
-    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "created_at", default: "2018-02-11 16:10:10", null: false
+    t.datetime "updated_at", default: "2018-02-11 16:10:11", null: false
   end
 
   create_table "decline_messages", force: :cascade do |t|
@@ -298,6 +299,16 @@ ActiveRecord::Schema.define(version: 20180424144618) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "history_actions", force: :cascade do |t|
+    t.integer "action"
+    t.integer "object_type"
+    t.integer "field"
+    t.integer "object_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "image_types", force: :cascade do |t|

@@ -36,6 +36,10 @@
       "description": "Images"
     },
     {
+      "path": "/api-docs/1.0/artist_riders.{format}",
+      "description": "Artist Riders"
+    },
+    {
       "path": "/api-docs/1.0/phone_validations.{format}",
       "description": "Phone validation"
     },

@@ -54,6 +54,8 @@ Rails.application.routes.draw do
 
   delete 'images/:id', action: :delete_image, controller: 'images'
 
+  # artist riders routes
+  get 'artist_riders/:id', action: :show, controller: 'artist_riders'
 
   # phone validations routes
   get 'phone_validations/codes', action: :get_codes, controller: 'phone_validations'
