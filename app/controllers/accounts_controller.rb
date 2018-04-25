@@ -757,7 +757,6 @@ class AccountsController < ApplicationController
         @artist.artist_riders.clear
         params[:artist_riders].each do |rider|
           obj = ArtistRider.new(artist_rider_params(rider))
-          obj.uploaded_file = Base64.encode64(File.read(params[:uploaded_file_base64].path))
           obj.save
           @artist.artist_riders<< obj
         end
@@ -958,7 +957,7 @@ class AccountsController < ApplicationController
     end
 
     def artist_rider_params(rider)
-      rider.permit(:rider_type, :description, :is_flexible)
+      rider.permit(:rider_type, :description, :is_flexible, :uploaded_file_base64)
     end
 
     def artist_dates_params(date)
