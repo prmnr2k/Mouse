@@ -238,7 +238,7 @@ class EventsController < ApplicationController
     param :query, :to_date, :datetime, :optional, "Right bound of date (from_date must be present)"
     param :query, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :query, :ticket_types, :string, :optional, "Array of ticket types ['in_person', 'vip']"
-    param :query, :size, :string, :optional, "Array of event's venue type of space ['night_club', 'concert_hall']"
+    param :query, :size, :string, :optional, "Event's venue type of space ['night_club', 'concert_hall']"
     param :query, :only_my, :boolean, :optional, "Search only in created by account events"
     param :query, :account_id, :integer, :optional, "Account id (required if :only_my parameter set True)"
     param :query, :limit, :integer, :optional, "Limit"
@@ -368,14 +368,9 @@ class EventsController < ApplicationController
 
     def search_type_of_space
       if params[:size]
-        types_of_space = []
-        params[:size].each do |type_of_space|
-          types_of_space.append(PublicVenue.type_of_spaces[type_of_space])
-        end
-
         @events = @events.joins(
           :venue => {venue: :public_venue}
-        ).where(public_venues: {type_of_space: types_of_space})
+        ).where(public_venues: {type_of_space: params[:size]})
       end
     end
 
