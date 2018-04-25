@@ -110,6 +110,7 @@ Rails.application.routes.draw do
   resources :fan_tickets, except: :update do
     collection do
       get :by_event
+      get :search
     end
   end
 end
