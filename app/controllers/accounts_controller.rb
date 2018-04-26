@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
     def get
         @extended = true
         set_extended
-        render json: @to_find, extended: @extended, status: :ok
+        render json: @to_find, extended: @extended, my: authorized?, status: :ok
     end
 
     # GET /account/1/updates
@@ -522,7 +522,7 @@ class AccountsController < ApplicationController
     def authorized?
       if request.headers['Authorization']
         user = AuthorizeHelper.authorize(request)
-        return user == @to_find.user
+        return user != nil and user == @to_find.user
       end
     end
 
