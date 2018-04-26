@@ -519,10 +519,10 @@ class AccountsController < ApplicationController
         @image = Image.find(params[:image_id])
     end
 
-    def authorized? 
+    def authorized?
       if request.headers['Authorization']
         user = AuthorizeHelper.authorize(request)
-        return user != nil and user == @to_find.user
+        return (user != nil and user == @to_find.user)
       end
     end
 
