@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
     def get
         @extended = true
         set_extended
-        render json: @to_find, extended: @extended, my: authorized?, status: :ok
+        render json: @to_find, extended: @extended, status: :ok
     end
 
     # GET /account/1/updates
