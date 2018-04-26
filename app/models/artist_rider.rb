@@ -9,6 +9,7 @@ class ArtistRider < ApplicationRecord
   def as_json(options={})
     res = super
 
+    res[:artist_id] = artist.account_id
     if not options[:file_info]
         res.delete('uploaded_file_base64')
     end
