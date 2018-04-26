@@ -1,6 +1,8 @@
 class EventVenuesController < ApplicationController
-  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :venue_accept, :venue_decline]
-  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline]
+  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :venue_accept, :venue_decline,
+                                   :send_request, :venue_remove_active, :venue_set_active]
+  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
+                                           :send_request, :venue_remove_active, :venue_set_active]
   before_action :authorize_venue, only: [:venue_accept, :venue_decline]
   swagger_controller :event_venues, "Event venues"
 
@@ -10,6 +12,29 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :venue_id, :integer, :required, "Venue account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def create
+    if venue_available?
+      @event.venues << @venue_acc
+      @event.save
+
+      render status: :ok
+    else
+      render status: :unprocessable_entity
+    end
+  end
+
+
+  # POST /events/1/venue/1/send_request
+  swagger_api :send_request do
+    summary "Send request to the venue"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :path, :id, :integer, :required, "Venue account id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
     param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
     param :form, :is_personal, :boolean, :optional, "Is message personal"
     param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
@@ -19,13 +44,21 @@ class EventVenuesController < ApplicationController
     response :unprocessable_entity
     response :not_found
   end
-  def create
-    if venue_available?
-      @event.venues << @venue_acc
-      send_mouse_request(@venue_acc)
-      @event.save
+  def send_request
+    @venue_event = @event.venue_events.find_by(artist_id: params[:id])
 
-      render status: :ok
+    if @venue_event and ["ready"].include?(@venue_event.status)
+      venue_acc = Account.find(params[:id])
+
+      if venue_acc
+        @venue_event.status = 'request_send'
+        send_mouse_request(venue_acc)
+        @venue_event.save
+
+        render status: :ok
+      else
+        render status: :not_found
+      end
     else
       render status: :unprocessable_entity
     end
@@ -105,7 +138,7 @@ class EventVenuesController < ApplicationController
   def venue_accept
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
 
-    if @venue_event and ["pending", "request_send"].include?(@venue_event.status)
+    if @venue_event and ["request_send"].include?(@venue_event.status)
       read_message
       @venue_event.status = 'accepted'
       send_approval(@account)
@@ -130,7 +163,7 @@ class EventVenuesController < ApplicationController
   def venue_decline
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
 
-    if @venue_event and ["pending", "request_send"].include?(@venue_event.status)
+    if @venue_event and ["request_send"].include?(@venue_event.status)
       read_message
       @venue_event.status = 'declined'
       send_decline(@account)

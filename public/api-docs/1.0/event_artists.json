@@ -5,6 +5,99 @@
   "resourcePath": "event_artists",
   "apis": [
     {
+      "path": "/events/{event_id}/artists/{id}/send_request.json",
+      "operations": [
+        {
+          "summary": "Send request to the artist",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "time_frame",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "two_hours",
+                  "two_days",
+                  "one_week"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "is_personal",
+              "type": "boolean",
+              "description": "Is message personal",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "estimated_price",
+              "type": "integer",
+              "description": "Estimated price to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "message",
+              "type": "string",
+              "description": "Additional text",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "EventArtists#send_request",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/events/{event_id}/artists/{id}/owner_accept.json",
       "operations": [
         {
@@ -487,42 +580,6 @@
               "type": "integer",
               "description": "Artist account id",
               "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "time_frame",
-              "type": "integer",
-              "description": "Time frame to answer",
-              "required": true,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "two_hours",
-                  "two_days",
-                  "one_week"
-                ]
-              }
-            },
-            {
-              "paramType": "form",
-              "name": "is_personal",
-              "type": "boolean",
-              "description": "Is message personal",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "estimated_price",
-              "type": "integer",
-              "description": "Estimated price to perform",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "message",
-              "type": "string",
-              "description": "Additional text",
-              "required": false
             },
             {
               "paramType": "header",

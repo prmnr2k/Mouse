@@ -39,8 +39,10 @@ Rails.application.routes.draw do
   get 'accounts/:id/following', action: :get_followed, controller: 'accounts'
   get 'accounts/:id/updates', action: :get_updates, controller: 'accounts'
   post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
+  post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
   post 'accounts/:id/images', action: :upload_image, controller: 'accounts'
   post 'accounts/:id/follow', action: :follow, controller: 'accounts'
+  post 'accounts/:id/verify', action: :verify, controller: 'accounts'
   delete 'accounts/:id/unfollow', action: :unfollow, controller: 'accounts'
   delete 'accounts/:id', action: :delete, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'
@@ -70,6 +72,7 @@ Rails.application.routes.draw do
 
     resources :event_venues, path: "venue", only: [:create] do
       member do
+        post :send_request
         post :owner_accept
         post :owner_decline
         post :venue_accept
@@ -81,6 +84,7 @@ Rails.application.routes.draw do
 
     resources :event_artists, path: "artists", only: [:create] do
       member do
+        post :send_request
         post :owner_accept
         post :owner_decline
         post :artist_accept

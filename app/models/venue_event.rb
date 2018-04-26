@@ -10,7 +10,13 @@ class VenueEvent < ApplicationRecord
   after_initialize :set_defaults
 
   def set_defaults
-    self.status = "pending" if self.new_record?
+    if self.new_record?
+      if event.creator.is_verified
+        self.status = "ready"
+      else
+        self.status = "pending"
+      end
+    end
   end
 
   def as_json(options={})

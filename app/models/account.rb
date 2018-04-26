@@ -43,6 +43,7 @@ class Account < ApplicationRecord
 		attrs[:created_at] = created_at
 		attrs[:updated_at] = updated_at
 		attrs[:image_id] = image_id
+		attrs[:is_verified] = is_verified
 		attrs[:account_type] = account_type
 		attrs[:followers_count] = followers.count
 		attrs[:following_count] = following.count

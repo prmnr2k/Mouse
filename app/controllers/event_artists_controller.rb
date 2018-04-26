@@ -1,8 +1,8 @@
 class EventArtistsController < ApplicationController
   before_action :set_event, only: [:create, :owner_accept, :owner_decline, :artist_accept, :artist_decline,
-                                   :artist_set_active, :artist_remove_active]
+                                   :artist_set_active, :artist_remove_active, :send_request]
   before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
-                                           :artist_set_active, :artist_remove_active]
+                                           :artist_set_active, :artist_remove_active, :send_request]
   before_action :authorize_artist, only: [:artist_accept, :artist_decline]
   swagger_controller :event_artists, "Event artists"
 
@@ -12,6 +12,28 @@ class EventArtistsController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :artist_id, :integer, :required, "Artist account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def create
+    if artist_available?
+      @event.artists << @artist_acc
+      @event.save
+
+      render status: :ok
+    else
+      render status: :unprocessable_entity
+    end
+  end
+
+  # POST /events/1/artist/1/send_request
+  swagger_api :send_request do
+    summary "Send request to the artist"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :path, :id, :integer, :required, "Artist account id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
     param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
     param :form, :is_personal, :boolean, :optional, "Is message personal"
     param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
@@ -21,13 +43,21 @@ class EventArtistsController < ApplicationController
     response :unprocessable_entity
     response :not_found
   end
-  def create
-    if artist_available?
-      @event.artists << @artist_acc
-      send_mouse_request(@artist_acc)
-      @event.save
+  def send_request
+    @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
-      render status: :ok
+    if @artist_event and ["ready"].include?(@artist_event.status)
+      artist_acc = Account.find(params[:id])
+
+      if artist_acc
+        @artist_event.status = 'request_send'
+        send_mouse_request(artist_acc)
+        @artist_event.save
+
+        render status: :ok
+      else
+        render status: :not_found
+      end
     else
       render status: :unprocessable_entity
     end
@@ -114,7 +144,7 @@ class EventArtistsController < ApplicationController
     @artist_acc = Account.find(params[:id])
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
-    if @artist_event and ["pending", "request_send"].include?(@artist_event.status)
+    if @artist_event and ["request_send"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'accepted'
       send_approval(@artist_acc)
@@ -142,7 +172,7 @@ class EventArtistsController < ApplicationController
     @artist_acc = Account.find(params[:id])
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
-    if @artist_event and ["pending", "request_send"].include?(@artist_event.status)
+    if @artist_event and ["request_send"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'declined'
       send_decline(@artist_acc)

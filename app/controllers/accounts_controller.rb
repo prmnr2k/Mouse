@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
     before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple, :delete]  
-    before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates]
+    before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates, :verify]
     before_action :find_follower_account, only: [:follow, :unfollow]
     swagger_controller :accounts, "Accounts"
 
@@ -472,6 +472,21 @@ class AccountsController < ApplicationController
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
 
+    # POST accounts/1/verify
+    swagger_api :verify do
+      summary "Verify account"
+      param :path, :id, :integer, :required, "Account id"
+      response :unprocessable_entity
+      response :not_found
+    end
+    def verify
+      @to_find.is_verified = true
+      update_events
+      @to_find.save!
+
+      render status: :ok
+    end
+
     swagger_api :delete do
       summary "Delete account"
       param :path, :id, :integer, :required, "Account id"
@@ -887,6 +902,20 @@ class AccountsController < ApplicationController
         @accounts = @accounts.joins(
           :venue => :public_venue
         ).where(public_venues: {type_of_space: types_of_space})
+      end
+    end
+
+    def update_events
+      Event.where(creator_id: @to_find.id).each do |event|
+        event.artist_events.where(status: 'pending').each do |relation|
+          relation.status = 'ready'
+          relation.save
+        end
+
+        event.venue_events.where(status: 'pending').each do |relation|
+          relation.status = 'ready'
+          relation.save
+        end
       end
     end
 
