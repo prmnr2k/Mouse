@@ -111,6 +111,7 @@ ActiveRecord::Schema.define(version: 20180426133016) do
     t.boolean "is_flexible", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uploaded_file_base64"
   end
 
   create_table "artist_videos", force: :cascade do |t|
