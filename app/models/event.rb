@@ -48,17 +48,13 @@ class Event < ApplicationRecord
     res.delete('old_date_from')
     res.delete('old_date_to')
 
-    in_person_tickets_count = tickets.joins(:tickets_type).where(tickets_types: {name: 'in_person'}).sum('tickets.count')
-    vr_tickets_count = tickets.joins(:tickets_type).where(tickets_types: {name: 'vr'}).sum('tickets.count')
     in_person_sold = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).count
     vr_sold = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).count
 
     if options[:fan_ticket]
       res[:in_person_tickets] = in_person_sold > 0
       res[:vr_tickets] = vr_sold > 0
-      res[:in_person_left] = in_person_tickets_count - in_person_sold
-      res[:vr_left] = vr_tickets_count - vr_sold
-      res[:tickets_count] = tickets.joins(:fan_tickets).count
+      res[:tickets_count] = tickets.joins(:fan_tickets).where(fan_tickets: {account_id: options[:account_id]}).count
 
       return res
     end

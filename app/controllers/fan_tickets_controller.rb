@@ -30,7 +30,7 @@ class FanTicketsController < ApplicationController
         "events.date_from < :date", {:date => DateTime.now}
       ).group("events.id")
     end
-    render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, status: :ok
+    render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, account_id: params[:account_id], status: :ok
   end
 
   # GET /fan_tickets/by_event
@@ -46,7 +46,7 @@ class FanTicketsController < ApplicationController
     render json: {
       event: Event.find(params[:event_id]),
       tickets: FanTicket.joins(:ticket).where(account_id: params[:account_id], tickets: {event_id: params[:event_id]})
-    }, fan_ticket: true, with_tickets: true, status: :ok
+    }, fan_ticket: true, account_id: params[:account_id], with_tickets: true, status: :ok
   end
 
   # GET /fan_tickets/1
@@ -113,7 +113,7 @@ class FanTicketsController < ApplicationController
     search_date
 
     @events = @events.group("events.id")
-    render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, status: :ok
+    render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, account_id: params[:account_id], status: :ok
   end
 
   # DELETE /fan_tickets/1
