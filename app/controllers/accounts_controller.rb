@@ -522,7 +522,7 @@ class AccountsController < ApplicationController
     def authorized?
       if request.headers['Authorization']
         user = AuthorizeHelper.authorize(request)
-        return user == @to_find.user
+        return (user != nil and user == @to_find.user)
       end
     end
 
