@@ -188,7 +188,7 @@ class EventVenuesController < ApplicationController
   end
   def venue_set_active
     @venue_acc = Account.find(params[:id])
-    @venue_event = @event.venue_events.find_by(vneue_id: @venue_acc.id)
+    @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
 
     if @venue_event and @venue_event.status == "owner_accepted"
       if date_valid?
@@ -360,7 +360,7 @@ class EventVenuesController < ApplicationController
   end
 
   def date_valid?
-    unless @artist_event.agreed_date_time_and_price
+    unless @venue_event.agreed_date_time_and_price
       return false
     end
 
@@ -368,7 +368,7 @@ class EventVenuesController < ApplicationController
       return true
     end
 
-    agreed_date = @artist_event.agreed_date_time_and_price
+    agreed_date = @venue_event.agreed_date_time_and_price
     if @event.date_from <= agreed_date.datetime_from and @event.date_to >= agreed_date.datetime_to
       return true
     end
@@ -378,8 +378,8 @@ class EventVenuesController < ApplicationController
   def change_event_date
     @event.old_date_from = @event.date_from
     @event.old_date_to = @event.date_to
-    @event.date_from = @artist_event.agreed_date_time_and_price.datetime_from
-    @event.date_to = @artist_event.agreed_date_time_and_price.datetime_to
+    @event.date_from = @venue_event.agreed_date_time_and_price.datetime_from
+    @event.date_to = @venue_event.agreed_date_time_and_price.datetime_to
     @event.save!
   end
 
@@ -392,12 +392,12 @@ class EventVenuesController < ApplicationController
   end
 
   def change_event_funding
-    @event.funding_goal += @artist_event.agreed_date_time_and_price.price
+    @event.funding_goal += @venue_event.agreed_date_time_and_price.price
     @event.save!
   end
 
   def undo_change_event_funding
-    @event.funding_goal -= @artist_event.agreed_date_time_and_price.price
+    @event.funding_goal -= @venue_event.agreed_date_time_and_price.price
     @event.save!
   end
 
