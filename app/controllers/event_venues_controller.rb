@@ -45,7 +45,7 @@ class EventVenuesController < ApplicationController
     response :not_found
   end
   def send_request
-    @venue_event = @event.venue_events.find_by(artist_id: params[:id])
+    @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
     if @venue_event and ["ready"].include?(@venue_event.status)
       venue_acc = Account.find(params[:id])
