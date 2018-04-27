@@ -28,6 +28,13 @@ class VenueEvent < ApplicationRecord
       res[:agreement] = agreed_date_time_and_price
     end
 
+    if status == 'accepted'
+      message = account.sent_messages.joins(:accept_message).where(accept_messages: {event: event}).first
+      if message
+        res['message_id'] = message.id
+      end
+    end
+
     return res
   end
 end
