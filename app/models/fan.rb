@@ -15,7 +15,10 @@ class Fan < ApplicationRecord
             res[:genres] = genres.pluck(:genre)
             return res
         else
-            return account.get_attrs
+            attrs = account.get_attrs
+            attrs[:first_name] = first_name
+            attrs[:last_name] = last_name
+            return attrs
         end
     end
 end
