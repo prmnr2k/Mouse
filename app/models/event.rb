@@ -52,6 +52,7 @@ class Event < ApplicationRecord
     if options[:fan_ticket]
       res[:in_person_tickets] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).exists?
       res[:vr_tickets] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).exists?
+      res[:tickets_count] = tickets.joins(:fan_tickets, :tickets_type).count
 
       return res
     end
