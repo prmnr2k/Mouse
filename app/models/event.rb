@@ -48,11 +48,14 @@ class Event < ApplicationRecord
     res.delete('old_date_from')
     res.delete('old_date_to')
 
+    in_person_sold = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).count
+    vr_sold = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).count
+
 
     if options[:fan_ticket]
       res[:in_person_tickets] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).exists?
       res[:vr_tickets] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).exists?
-      res[:tickets_count] = tickets.joins(:fan_tickets, :tickets_type).count
+      res[:tickets_count] = tickets.joins(:fan_tickets).count
 
       return res
     end
@@ -72,8 +75,8 @@ class Event < ApplicationRecord
       res[:comments] = comments.count
       res[:likes] = likes.count
       res[:purchased_tickets] = tickets.joins(:fan_tickets).count
-      res[:in_person_tickets_sold] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'in_person'}).count
-      res[:vr_tickets_sold] = tickets.joins(:fan_tickets, :tickets_type).where(tickets_types: {name: 'vr'}).count
+      res[:in_person_tickets_sold] = in_person_sold
+      res[:vr_tickets_sold] = vr_sold
     elsif options[:search]
       res[:artists] = artist_events.joins(:account => :artist).where(artist_events: {status: 'active'}).pluck("artists.stage_name")
     else
