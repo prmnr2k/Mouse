@@ -116,22 +116,7 @@ class Event < ApplicationRecord
   end
 
   def self.get_my(account)
-    events = Event.all
-
-    if account.account_type == 'artist'
-      events = events.left_joins(:artist_events).where(
-        sanitize_sql_for_conditions(["artist_events.artist_id=:id AND artist_events.status=:status",
-                                     id: account.id,
-                                     status: ArtistEvent.statuses['accepted']])
-      ).or(
-         Event.left_joins(:artist_events).where(creator_id: account.id)
-      )
-    elsif account.account_type == 'venue'
-      events = events.where(venue_id: account.id).or(Event.where(creator_id: account.id))
-    elsif account.account_type == 'fan'
-      events = events.where(creator_id: account.id)
-    end
-
+    events = Event.where(creator_id: account.id)
     return events
   end
 end
