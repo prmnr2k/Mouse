@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-  "basePath": "https://mouse-back.herokuapp.com",
+  "basePath": "http://localhost:3000",
   "resourcePath": "accounts",
   "apis": [
     {
@@ -1837,6 +1837,58 @@
             }
           ],
           "nickname": "Accounts#get_updates",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{id}/upcoming_shows.json",
+      "operations": [
+        {
+          "summary": "Get upcoming shows",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#upcoming_shows",
           "method": "get"
         }
       ]

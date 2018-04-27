@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get 'accounts/:id/followers', action: :get_followers, controller: 'accounts'
   get 'accounts/:id/following', action: :get_followed, controller: 'accounts'
   get 'accounts/:id/updates', action: :get_updates, controller: 'accounts'
+  get 'accounts/:id/upcoming_shows', action: :upcoming_shows, controller: 'accounts'
   post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
   post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
   post 'accounts/:id/images', action: :upload_image, controller: 'accounts'

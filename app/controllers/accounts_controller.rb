@@ -1,6 +1,7 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :follow_multiple, :delete]  
+    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow,
+                                             :follow_multiple, :delete, :upcoming_shows]
     before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates, :verify]
     before_action :find_follower_account, only: [:follow, :unfollow]
     swagger_controller :accounts, "Accounts"
@@ -85,6 +86,36 @@ class AccountsController < ApplicationController
             total_count: @to_find.images.count,
             images: @to_find.images.limit(params[:limit]).offset(params[:offset])
         }, image_only: true, status: :ok
+    end
+
+    # GET /accounts/<id>/upcoming_shows
+    swagger_api :upcoming_shows do
+      summary "Get upcoming shows"
+      param :path, :id, :integer, :required, "Account id"
+      param :query, :limit, :integer, :optional, "Limit"
+      param :query, :offset, :integer, :optional, "Offset"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :not_found
+      response :unprocessable_entity
+    end
+    def upcoming_shows
+      events = Event.all
+
+      if @account.account_type == 'artist'
+        events = events.joins(:artist_events)
+                   .where(artist_events: {artist_id: @account.id})
+                   .where(artist_events: {status: ArtistEvent.statuses['active']})
+
+        render json: events.limit(params[:limit]).offset(params[:offset]), status: :ok
+      elsif @account.account_type == 'venue'
+        events = events.joins(:venue_events)
+                   .where(venue_events: {venue_id: @account.id})
+                   .where(venue_events: {status: VenueEvent.statuses['active']})
+
+        render json: events.limit(params[:limit]).offset(params[:offset]), status: :ok
+      else
+        render status: :unprocessable_entity
+      end
     end
 
     #POST /accounts/images/<account_id>
