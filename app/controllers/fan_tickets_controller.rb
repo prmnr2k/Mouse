@@ -73,14 +73,18 @@ class FanTicketsController < ApplicationController
     response :forbidden
   end
   def create
-    @fan_ticket = FanTicket.new(fan_ticket_params)
-    @fan_ticket.price = @ticket.price
-    @fan_ticket.code = generate_auth_code
+    if @ticket.event.is_active?
+      @fan_ticket = FanTicket.new(fan_ticket_params)
+      @fan_ticket.price = @ticket.price
+      @fan_ticket.code = generate_auth_code
 
-    if @fan_ticket.save
-      render json: @fan_ticket, status: :created
+      if @fan_ticket.save
+        render json: @fan_ticket, status: :created
+      else
+        render json: @fan_ticket.errors, status: :unprocessable_entity
+      end
     else
-      render json: @fan_ticket.errors, status: :unprocessable_entity
+      render status: :forbidden
     end
   end
 
