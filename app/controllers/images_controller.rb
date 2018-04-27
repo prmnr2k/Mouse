@@ -36,7 +36,7 @@ class ImagesController < ApplicationController
     if not @image
       render status: :not_found and return
     end
-    blob = Base64.decode64(@image.base64)
+    blob = Base64.decode64(@image.base64.gsub(/^data:image\/[a-z]+;base64,/, ''))
     image = MiniMagick::Image.read(blob)
     hashed = {
       url: "https://mouse-back.herokuapp.com/images/#{params[:id]}/full",
@@ -99,7 +99,7 @@ class ImagesController < ApplicationController
     end
 
     def resize
-      blob = Base64.decode64(@image.base64)
+      blob = Base64.decode64(@image.base64.gsub(/^data:image\/[a-z]+;base64,/, ''))
 
       res_w = params[:width].to_i
       res_h = params[:height].to_i
