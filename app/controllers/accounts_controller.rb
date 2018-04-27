@@ -105,13 +105,14 @@ class AccountsController < ApplicationController
         events = events.joins(:artist_events)
                    .where(artist_events: {artist_id: @account.id})
                    .where(artist_events: {status: ArtistEvent.statuses['active']})
+                   .where("events.date_from >= :date", {:date => DateTime.now})
 
         render json: events.limit(params[:limit]).offset(params[:offset]), status: :ok
       elsif @account.account_type == 'venue'
         events = events.joins(:venue_events)
                    .where(venue_events: {venue_id: @account.id})
                    .where(venue_events: {status: VenueEvent.statuses['active']})
-
+                   .where("events.date_from >= :date", {:date => DateTime.now})
         render json: events.limit(params[:limit]).offset(params[:offset]), status: :ok
       else
         render status: :unprocessable_entity
