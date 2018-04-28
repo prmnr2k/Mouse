@@ -156,6 +156,63 @@
       ]
     },
     {
+      "path": "/fan_tickets/many.json",
+      "operations": [
+        {
+          "summary": "Buy tickets",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Fan account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "ticket_id",
+              "type": "integer",
+              "description": "Ticket id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "count",
+              "type": "integer",
+              "description": "Count of tickets",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 403,
+              "responseModel": null,
+              "message": "Forbidden"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "FanTickets#create_many",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/fan_tickets.json",
       "operations": [
         {
