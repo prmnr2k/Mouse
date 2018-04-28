@@ -1,9 +1,9 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow,
+    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :is_followed,
                                              :follow_multiple, :delete, :upcoming_shows]
     before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates, :verify]
-    before_action :find_follower_account, only: [:follow, :unfollow]
+    before_action :find_follower_account, only: [:follow, :unfollow, :is_followed]
     swagger_controller :accounts, "Accounts"
 
 
@@ -138,6 +138,21 @@ class AccountsController < ApplicationController
         set_image
         set_base64_image
         render json: @account, status: :ok
+    end
+
+    #GET /accounts/is_followed/<follower_id>
+    swagger_api :is_followed do
+      summary "Is followed"
+      param :path, :id, :integer, :required, "My account id"
+      param :query, :follower_id, :integer, :required, "Account id to check"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :not_found
+      response :unauthorized
+    end
+    def is_followed
+        follower = Follower.find_by(by_id: @account.id, to_id: @to_find.id)
+        render json: {status: (follower != nil)}
     end
 
 

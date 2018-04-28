@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   get 'accounts/:id', action: :get, controller: 'accounts'
   get 'accounts/:id/events', action: :get_events, controller: 'accounts'
   get 'accounts/:id/images', action: :get_images, controller: 'accounts'
+  get 'accounts/:id/is_followed', action: :is_followed, controller: 'accounts'
   get 'accounts/:id/followers', action: :get_followers, controller: 'accounts'
   get 'accounts/:id/following', action: :get_followed, controller: 'accounts'
   get 'accounts/:id/updates', action: :get_updates, controller: 'accounts'

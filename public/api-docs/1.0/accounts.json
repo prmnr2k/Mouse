@@ -1736,6 +1736,56 @@
       ]
     },
     {
+      "path": "/accounts/{id}/is_followed.json",
+      "operations": [
+        {
+          "summary": "Is followed",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "My account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "follower_id",
+              "type": "integer",
+              "description": "Account id to check",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Accounts#is_followed",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/accounts/{id}/followers.json",
       "operations": [
         {
