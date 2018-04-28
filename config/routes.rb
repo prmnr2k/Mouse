@@ -119,6 +119,7 @@ Rails.application.routes.draw do
     collection do
       get :by_event
       get :search
+      post :create_many, path: "many"
     end
   end
 end
