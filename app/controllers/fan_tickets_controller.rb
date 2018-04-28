@@ -1,7 +1,7 @@
 class FanTicketsController < ApplicationController
   before_action :authorize_account
-  before_action :set_ticket, only: [:create]
-  before_action :check_ticket, only: [:create]
+  before_action :set_ticket, only: [:create, :create_many]
+  before_action :check_ticket, only: [:create, :create_many]
   before_action :set_fan_ticket, only: [:show, :destroy]
   swagger_controller :fan_ticket, "FanTickets"
 
@@ -83,6 +83,45 @@ class FanTicketsController < ApplicationController
       else
         render json: @fan_ticket.errors, status: :unprocessable_entity
       end
+    else
+      render status: :forbidden
+    end
+  end
+
+   # POST /fan_tickets
+  swagger_api :create_many do
+    summary "Buy tickets"
+    param :form, :account_id, :integer, :required, "Fan account id"
+    param :form, :ticket_id, :integer, :required, "Ticket id"
+    param :form, :count, :integer, :required, "Count of tickets"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :forbidden
+  end
+  def create_many
+    code = generate_auth_code
+    count = params[:count] != nil ? [100, params[:count]].min : 1
+    if @ticket.event.is_active?
+      cnt = 0
+      res = []
+      while cnt < count do
+        @fan_ticket = FanTicket.new(fan_ticket_params)
+        @fan_ticket.price = @ticket.price
+        @fan_ticket.code = code
+
+        cnt += 1
+        if @fan_ticket.save
+          res << @fan_ticket
+        else
+          render json: @fan_ticket.errors, status: :unprocessable_entity
+          res.each do |ticket|
+            ticket.destroy
+          end
+          return
+        end
+      end
+      render json: res
     else
       render status: :forbidden
     end

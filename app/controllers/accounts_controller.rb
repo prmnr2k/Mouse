@@ -354,6 +354,7 @@ class AccountsController < ApplicationController
     def create
         @account = Account.new(account_params)
         @account.user = @user
+        @account.is_verified = true
 
         if @account.save
             set_image
