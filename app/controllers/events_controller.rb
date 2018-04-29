@@ -308,6 +308,7 @@ class EventsController < ApplicationController
           obj = EventGenre.new(genre: genre)
           obj.save
           @event.genres << obj
+          @event.save
         end
       end
     end
@@ -318,6 +319,7 @@ class EventsController < ApplicationController
         params[:collaborators].each do |collaborator|
           obj = Account.find(collaborator)
           @event.collaborators << obj
+          @event.save
         end
       end
     end
