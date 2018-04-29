@@ -101,7 +101,7 @@ class FanTicketsController < ApplicationController
   end
   def create_many
     code = generate_auth_code
-    count = params[:count] != nil ? [100, params[:count]].min : 1
+    count = params[:count] != nil ? [100, params[:count].to_i].min : 1
     if @ticket.event.is_active?
       cnt = 0
       res = []
