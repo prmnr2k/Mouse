@@ -292,8 +292,10 @@ class EventsController < ApplicationController
     def set_base64_image
       if params[:image_base64]
         image = Image.new(base64: params[:image_base64])
+        image.save
         @event.image = image
         @event.images << image
+        @event.save
       end
     end
 
