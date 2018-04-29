@@ -56,6 +56,7 @@ class EventsController < ApplicationController
     param :form, :image, :file, :optional, "Image"
     param :form, :video_link, :string, :optional, "Event video"
     param :form, :tagline, :string, :optional, "Tagline"
+    param :form, :hashtag, :string, :optional, "Hashtag"
     param :form, :description, :string, :optional, "Short description"
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
     param :form, :funding_to, :datetime, :optional, "Finding duration to"
@@ -414,7 +415,7 @@ class EventsController < ApplicationController
   end
 
     def event_params
-      params.permit(:name, :tagline, :description, :funding_from, :funding_to,
+      params.permit(:name, :tagline, :hashtag, :description, :funding_from, :funding_to,
                     :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
                     :event_season, :event_year, :event_length, :event_time, :is_crowdfunding_event,
                     :city_lat, :city_lng, :address, :artists_number, :video_link)
