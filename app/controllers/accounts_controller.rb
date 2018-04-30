@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
-    before_action :authorize_account, only: [:get_events, :update,  :upload_image, :follow, :unfollow, :is_followed,
-                                             :follow_multiple, :delete, :upcoming_shows]
+    before_action :authorize_account, only: [:update,  :upload_image, :follow, :unfollow, :is_followed,
+                                             :follow_multiple, :delete]
     before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates, :verify]
     before_action :find_follower_account, only: [:follow, :unfollow, :is_followed]
     swagger_controller :accounts, "Accounts"

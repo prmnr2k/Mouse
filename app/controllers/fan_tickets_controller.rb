@@ -1,5 +1,5 @@
 class FanTicketsController < ApplicationController
-  before_action :authorize_account
+  before_action :authorize_account, only: [:create, :create_many, :destroy]
   before_action :set_ticket, only: [:create, :create_many]
   before_action :check_ticket, only: [:create, :create_many]
   before_action :set_fan_ticket, only: [:show, :destroy]
