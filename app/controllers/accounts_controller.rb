@@ -2,7 +2,7 @@ class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
     before_action :authorize_account, only: [:update,  :upload_image, :follow, :unfollow, :is_followed,
                                              :follow_multiple, :delete]
-    before_action :find_account, only: [:get, :get_images, :get_followers, :get_followed, :get_updates, :verify]
+    before_action :find_account, only: [:get, :get_images, :upcoming_shows, :get_events, :get_followers, :get_followed, :get_updates, :verify]
     before_action :find_follower_account, only: [:follow, :unfollow, :is_followed]
     swagger_controller :accounts, "Accounts"
 
@@ -56,7 +56,7 @@ class AccountsController < ApplicationController
       param :query, :offset, :integer, :optional, "Offset"
     end
     def get_events
-       @events = @account.events
+       @events = @to_find.events
        @events = @events.simple_search(params[:text])
        render json: @events.order(:id).limit(params[:limit]).offset(params[:offset])
     end
@@ -101,16 +101,16 @@ class AccountsController < ApplicationController
     def upcoming_shows
       events = Event.all
 
-      if @account.account_type == 'artist'
+      if @to_find.account_type == 'artist'
         events = events.joins(:artist_events)
-                   .where(artist_events: {artist_id: @account.id})
+                   .where(artist_events: {artist_id: @to_find.id})
                    .where(artist_events: {status: ArtistEvent.statuses['active']})
                    .where("events.date_from >= :date", {:date => DateTime.now})
 
         render json: events.limit(params[:limit]).offset(params[:offset]), status: :ok
-      elsif @account.account_type == 'venue'
+      elsif @to_find.account_type == 'venue'
         events = events.joins(:venue_events)
-                   .where(venue_events: {venue_id: @account.id})
+                   .where(venue_events: {venue_id: @to_find.id})
                    .where(venue_events: {status: VenueEvent.statuses['active']})
                    .where("events.date_from >= :date", {:date => DateTime.now})
         render json: events.limit(params[:limit]).offset(params[:offset]), status: :ok
