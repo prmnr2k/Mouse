@@ -639,11 +639,13 @@ class AccountsController < ApplicationController
     def set_fan_genres
         if params[:genres]
             @fan.genres.clear
+            @fan.save
             params[:genres].each do |genre|
                 obj = FanGenre.new(genre: genre)
                 obj.save
                 @fan.genres << obj
             end
+            @fan.save
         end
     end
 
@@ -692,66 +694,78 @@ class AccountsController < ApplicationController
     def set_venue_genres
       if params[:genres] and @venue.venue_type == 'public_venue'
         @venue.public_venue.genres.clear
+        @venue.public_venue.save
         params[:genres].each do |genre|
           obj = VenueGenre.new(genre: genre)
           obj.save
           @venue.public_venue.genres << obj
         end
+        @venue.public_venue.save
       end
     end
 
     def set_venue_dates
         if params[:dates]
             @venue.dates.clear
+            @venue.save
             params[:dates].each do |date|
                 obj = VenueDate.new(venue_dates_params(date))
                 obj.save
                 @venue.dates << obj
             end
+            @venue.save
         end
     end
 
     def set_venue_emails
         if params[:emails]
             @venue.emails.clear
+            @venue.save
             params[:emails].each do |email|
                 obj = VenueEmail.new(venue_email_params(email))
                 obj.save
                 @venue.emails << obj
             end
+            @venue.save
         end
     end
 
     def set_venue_office_hours
         if params[:office_hours]
             @venue.office_hours.clear
+            @venue.save
             params[:office_hours].each do |hour|
                 obj = VenueOfficeHour.new(venue_office_hours_params(hour))
                 obj.save
                 @venue.office_hours << obj
             end
+            @venue.save
         end
     end
 
     def set_venue_operating_hours
         if params[:operating_hours]
             @venue.operating_hours.clear
+            @venue.save
             params[:operating_hours].each do |hour|
                 obj = VenueOperatingHour.new(venue_operating_hours_params(hour))
                 obj.save
                 @venue.operating_hours << obj
             end
+            @venue.save
         end
     end
 
     def set_venue_video_links
       if params[:venue_video_links]
         @venue.venue_video_links.clear
+        @venue.save
         params[:venue_video_links].each do |link|
           obj = VenueVideoLink.new(video_link: link)
           obj.save
           @venue.venue_video_links << obj
         end
+        @venue.save
       end
     end
 
@@ -785,77 +799,91 @@ class AccountsController < ApplicationController
     def set_artist_genres
         if params[:genres]
             @artist.genres.clear
+            @artist.save
             params[:genres].each do |genre|
                 obj = ArtistGenre.new(genre: genre)
                 obj.save
                 @artist.genres << obj
             end
+            @artist.save
         end
     end
 
     def set_artist_video_links
       if params[:artist_videos]
         @artist.artist_videos.clear
+        @artist.save
         params[:artist_videos].each do |link|
           obj = ArtistVideo.new(artist_video_params(link))
           obj.save
           @artist.artist_videos << obj
         end
+        @artist.save
       end
     end
 
     def set_artist_albums
       if params[:artist_albums]
         @artist.artist_albums.clear
+        @artist.save
         params[:artist_albums].each do |album|
           obj = ArtistAlbum.new(artist_album_params(album))
           obj.save
           @artist.artist_albums << obj
         end
+        @artist.save
       end
     end
 
     def set_artist_riders
       if params[:artist_riders]
         @artist.artist_riders.clear
+        @artist.save
         params[:artist_riders].each do |rider|
           obj = ArtistRider.new(artist_rider_params(rider))
           obj.save
           @artist.artist_riders<< obj
         end
+        @artist.save
       end
     end
 
     def set_artist_audios
       if params[:audio_links]
         @artist.audio_links.clear
+        @artist.save
         params[:audio_links].each do |link|
           obj = AudioLink.new(artist_audio_params(link))
           obj.save
           @artist.audio_links << obj
         end
+        @artist.save
       end
     end
 
     def set_artist_dates
       if params[:available_dates]
         @artist.available_dates.clear
+        @artist.save
         params[:available_dates].each do |date_range|
           obj = ArtistDate.new(artist_dates_params(date_range))
           obj.save
           @artist.available_dates << obj
         end
+        @artist.save
       end
     end
 
     def set_artist_preferred_venues
       if params[:preferred_venues]
         @artist.artist_preferred_venues.clear
+        @artist.save
         params[:preferred_venues].each do |venue_type|
           obj = ArtistPreferredVenue.new(type_of_venue: venue_type)
           obj.save
           @artist.artist_preferred_venues << obj
         end
+        @artist.save
       end
     end
 
