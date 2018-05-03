@@ -360,9 +360,9 @@ class AccountsController < ApplicationController
             set_image
             set_base64_image
 
-            set_fan_params
-            set_venue_params
-            set_artist_params
+            return if not set_fan_params
+            return if not set_venue_params
+            return if not set_artist_params
 
             #AccessHelper.grant_account_access(@account)
             render json: @account, extended: true, my: true, except: :password, status: :created
@@ -477,9 +477,9 @@ class AccountsController < ApplicationController
         set_image
         set_base64_image
 
-        set_fan_params
-        set_venue_params
-        set_artist_params
+        return if not set_fan_params
+        return if not set_venue_params
+        return if not set_artist_params
         if @account.update(account_update_params)
             render json: @account, extended: true, my: true, except: :password, status: :ok
         else
@@ -628,12 +628,13 @@ class AccountsController < ApplicationController
                 @fan.update(fan_params)
             else
                 @fan = Fan.new(fan_params)
-                render @fan.errors and return if not @fan.save
+                render json: @fan.errors and return false if not @fan.save
                 @account.fan_id = @fan.id
                 @account.save
             end
             set_fan_genres
         end
+        return true
     end
 
     def set_fan_genres
@@ -661,12 +662,12 @@ class AccountsController < ApplicationController
                 end
             else
                 @venue = Venue.new(venue_params)
-                render @venue.errors and return if not @venue.save
+                render json: @venue.errors and return false if not @venue.save
                 @account.venue_id = @venue.id
-                @account.save!
+                render json: @account.errors and return false if not @account.save!
             end
             
-            set_public_venue
+            return false if not set_public_venue
             set_venue_genres
             set_venue_dates
             set_venue_emails
@@ -674,6 +675,7 @@ class AccountsController < ApplicationController
             set_venue_office_hours
             set_venue_operating_hours
         end
+        return true
     end
 
     def set_public_venue
@@ -684,10 +686,11 @@ class AccountsController < ApplicationController
         else
           @public_venue = PublicVenue.new(public_venue_params)
           @public_venue.venue_id = @venue.id
-          render @public_venue.errors and return if not @public_venue.save
+          render json: @public_venue.errors and return false if not @public_venue.save
         end
         @venue.public_venue = @public_venue
       end
+      return true
     end
 
     def set_venue_genres
@@ -775,9 +778,9 @@ class AccountsController < ApplicationController
                 end
             else
                 @artist = Artist.new(artist_params)
-                render @artist.errors and return if not @artist.save
+                render json: @artist.errors and return false if not @artist.save 
                 @account.artist_id = @artist.id
-                @account.save
+                render json: @account.errors and return false if not @account.save
             end
             set_artist_genres
             set_artist_audios
@@ -787,6 +790,7 @@ class AccountsController < ApplicationController
             set_artist_preferred_venues
             set_artist_riders
         end
+        return true
     end
 
     def set_artist_genres
