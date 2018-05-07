@@ -81,6 +81,10 @@ class EventVenuesController < ApplicationController
   def owner_accept
       @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
+      if @event.venue_events.where(status: 'owner_accepted').count >= Rails.configuration.number_of_venues
+        render status: :unprocessable_entity and return
+      end
+
       if @venue_event and ["accepted"].include?(@venue_event.status)
         read_message
         @venue_event.status = 'owner_accepted'
@@ -351,8 +355,8 @@ class EventVenuesController < ApplicationController
   def venue_available?
     @venue_acc = Account.find(params[:venue_id])
 
-    if @venue_acc and @venue_acc.account_type == 'venue' and
-      @event.venue_events.where.not(status: 'declined').count < Rails.configuration.number_of_venues
+    if @venue_acc and @venue_acc.account_type == 'venue'
+      #and @event.venue_events.where.not(status: 'declined').count < Rails.configuration.number_of_venues
       return true
     end
 
