@@ -517,6 +517,7 @@ class AccountsController < ApplicationController
       search_capacity
       search_type_of_space
       sort_results
+      @accounts = @accounts.group("accounts.id")
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
