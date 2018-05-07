@@ -1,6 +1,7 @@
 class EventVenuesController < ApplicationController
   before_action :set_event, only: [:create, :owner_accept, :owner_decline, :venue_accept, :venue_decline,
                                    :send_request, :venue_remove_active, :venue_set_active]
+  before_action :set_message, only: [:owner_accept, :owner_decline, :venue_accept, :venue_decline]
   before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
                                            :send_request, :venue_remove_active, :venue_set_active]
   before_action :authorize_venue, only: [:venue_accept, :venue_decline]
@@ -85,6 +86,10 @@ class EventVenuesController < ApplicationController
         render status: :unprocessable_entity and return
       end
 
+      if @message.is_read
+        render status: :unprocessable_entity and return
+      end
+
       if @venue_event and ["accepted"].include?(@venue_event.status)
         read_message
         @venue_event.status = 'owner_accepted'
@@ -115,6 +120,10 @@ class EventVenuesController < ApplicationController
   def owner_decline
     @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
+
     if @venue_event and @venue_event.status != 'owner_accepted'
       read_message
       @venue_event.status = 'owner_declined'
@@ -142,6 +151,10 @@ class EventVenuesController < ApplicationController
   def venue_accept
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
 
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
+
     if @venue_event and ["request_send"].include?(@venue_event.status)
       read_message
       @venue_event.status = 'accepted'
@@ -166,6 +179,10 @@ class EventVenuesController < ApplicationController
   end
   def venue_decline
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
+
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
 
     if @venue_event and ["request_send"].include?(@venue_event.status)
       read_message
@@ -241,6 +258,10 @@ class EventVenuesController < ApplicationController
   private
   def set_event
     @event = Event.find(params[:event_id])
+  end
+
+  def set_message
+    @message = InboxMessage.find(params[:message_id])
   end
 
   def authorize_creator
@@ -319,20 +340,15 @@ class EventVenuesController < ApplicationController
   end
 
   def set_agreement
-    message = InboxMessage.find(params[:message_id])
-
     agreement = AgreedDateTimeAndPrice.new(agreement_params)
-    agreement.price = message.accept_message.price
+    agreement.price = @message.accept_message.price
     agreement.venue_event = @venue_event
     agreement.save!
   end
 
   def read_message
-    if params[:message_id]
-      message = InboxMessage.find(params[:message_id])
-      message.is_read = true
-      message.save
-    end
+    @message.is_read = true
+    @message.save
   end
 
   def request_message_params

@@ -1,6 +1,7 @@
 class EventArtistsController < ApplicationController
   before_action :set_event, only: [:create, :owner_accept, :owner_decline, :artist_accept, :artist_decline,
                                    :artist_set_active, :artist_remove_active, :send_request]
+  before_action :set_message, only: [:owner_accept, :owner_decline, :artist_accept, :artist_decline]
   before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
                                            :artist_set_active, :artist_remove_active, :send_request]
   before_action :authorize_artist, only: [:artist_accept, :artist_decline]
@@ -84,6 +85,10 @@ class EventArtistsController < ApplicationController
       render status: :unprocessable_entity and return
     end
 
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
+
     if @artist_event and ["accepted"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'owner_accepted'
@@ -113,6 +118,10 @@ class EventArtistsController < ApplicationController
   end
   def owner_decline
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
+
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
 
     if @artist_event and not ["decline"].include?(@artist_event.status)
       read_message
@@ -148,6 +157,10 @@ class EventArtistsController < ApplicationController
     @artist_acc = Account.find(params[:id])
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
+
     if @artist_event and ["request_send"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'accepted'
@@ -175,6 +188,10 @@ class EventArtistsController < ApplicationController
   def artist_decline
     @artist_acc = Account.find(params[:id])
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
+
+    if @message.is_read
+      render status: :unprocessable_entity and return
+    end
 
     if @artist_event and ["request_send"].include?(@artist_event.status)
       read_message
@@ -248,6 +265,10 @@ class EventArtistsController < ApplicationController
   private
     def set_event
       @event = Event.find(params[:event_id])
+    end
+
+    def set_message
+      @message = InboxMessage.find(params[:message_id])
     end
 
     def authorize_creator
@@ -326,20 +347,15 @@ class EventArtistsController < ApplicationController
     end
 
     def set_agreement
-      message = InboxMessage.find(params[:message_id])
-
       agreement = AgreedDateTimeAndPrice.new(agreement_params)
-      agreement.price = message.accept_message.price
+      agreement.price = @message.accept_message.price
       agreement.artist_event = @artist_event
       agreement.save!
     end
 
     def read_message
-      if params[:message_id]
-        message = InboxMessage.find(params[:message_id])
-        message.is_read = true
-        message.save
-      end
+      @message.is_read = true
+      @message.save
     end
 
     def artist_available?
