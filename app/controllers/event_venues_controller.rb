@@ -35,7 +35,7 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Venue account id"
     param :form, :account_id, :integer, :required, "Authorized account id"
-    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["two_hours", "two_days", "one_week"]
+    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["one_hour", "one_day", "one_week", "one_month"]
     param :form, :is_personal, :boolean, :optional, "Is message personal"
     param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
     param :form, :message, :string, :optional, "Additional text"

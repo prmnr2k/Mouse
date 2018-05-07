@@ -933,7 +933,7 @@ class AccountsController < ApplicationController
           @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
         elsif params[:type] == 'venue'
           genres = collect_genres(VenueGenre)
-          @accounts = @accounts.joins(:venue => :genres).where(:venue_genres => {genre: genres})
+          @accounts = @accounts.joins(:venue => {:public_venue => :genres}).where(:venue_genres => {genre: genres})
         elsif params[:type] == 'fan'
           genres = collect_genres(FanGenre)
           @accounts = @accounts.joins(:fan => :genres).where(:fan_genres => {genre: genres})

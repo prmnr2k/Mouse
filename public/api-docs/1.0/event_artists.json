@@ -40,9 +40,10 @@
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "two_hours",
-                  "two_days",
-                  "one_week"
+                  "one_hour",
+                  "one_day",
+                  "one_week",
+                  "one_month"
                 ]
               }
             },
