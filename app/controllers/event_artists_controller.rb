@@ -80,6 +80,10 @@ class EventArtistsController < ApplicationController
   def owner_accept
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
+    if @event.artist_events.where(status: 'owner_accepted').count >= @event.artists_number
+      render status: :unprocessable_entity and return
+    end
+
     if @artist_event and ["accepted"].include?(@artist_event.status)
       read_message
       @artist_event.status = 'owner_accepted'
@@ -340,8 +344,8 @@ class EventArtistsController < ApplicationController
 
     def artist_available?
       @artist_acc = Account.find(params[:artist_id])
-      if @artist_acc and @artist_acc.account_type == 'artist' and
-        @event.artist_events.where.not(status: 'declined').count < @event.artists_number
+      if @artist_acc and @artist_acc.account_type == 'artist' 
+        #and @event.artist_events.where.not(status: 'declined').count < @event.artists_number
         return true
       end
 
