@@ -43,6 +43,7 @@ class AccountsController < ApplicationController
         @accounts = Account.all
         @extended = false
         set_extended
+        order_accounts
         render json: @accounts.order(:id).limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
     end
 
@@ -70,7 +71,7 @@ class AccountsController < ApplicationController
     def get_my_accounts   
        @extended = false
        set_extended
-       render json: @user.accounts, extended: @extended, status: :ok
+       render json: @user.accounts.order('accounts.user_name'), extended: @extended, status: :ok
     end
 
     # GET /accounts/images/<id>
@@ -517,6 +518,7 @@ class AccountsController < ApplicationController
       search_capacity
       search_type_of_space
       sort_results
+      order_accounts
       @accounts = @accounts.group("accounts.id")
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
@@ -993,6 +995,10 @@ class AccountsController < ApplicationController
           "accounts.*, COUNT(followers.id) as followers_count"
         ).left_joins(:followers).group('id').order('followers_count')
       end
+    end
+
+    def order_accounts
+      @accounts = @accounts.order('accounts.display_name, accounts.user_name')
     end
 
     def account_params
