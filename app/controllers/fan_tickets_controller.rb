@@ -26,10 +26,10 @@ class FanTicketsController < ApplicationController
     else
       @events = Event.joins(:tickets => :fan_tickets).where(
         fan_tickets: {account_id: params[:account_id]}
-      ).group("events.id")  
-      #.where(
-      #  "events.date_from < :date", {:date => DateTime.now}
-      #)
+      ).where(
+        "events.date_from < :date", {:date => DateTime.now}
+      ).group("events.id")
+
     end
     render json: @events.limit(params[:limit]).offset(params[:offset]), fan_ticket: true, account_id: params[:account_id], status: :ok
   end
