@@ -99,6 +99,7 @@ Rails.application.routes.draw do
     end
   end
   post 'events/:id/activate', action: :set_active, controller: 'events'
+  post 'events/:id/deactivate', action: :set_inactive, controller: 'events'
   post 'events/:id/like', action: :like, controller: 'events'
   post 'events/:id/unlike', action: :unlike, controller: 'events'
   get 'events/:id/click', action: :click, controller: 'events'

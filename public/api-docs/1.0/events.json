@@ -780,6 +780,51 @@
       ]
     },
     {
+      "path": "/events/{id}/deactivate.json",
+      "operations": [
+        {
+          "summary": "Set event inactive",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Events#set_inactive",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/events/{id}/click.json",
       "operations": [
         {

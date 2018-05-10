@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :set_active, :analytics, :click, :view, :get_updates]
+  before_action :set_event, only: [:show, :update, :destroy, :set_active, :set_inactive, :analytics,
+                                   :click, :view, :get_updates]
   before_action :authorize_account, only: [:my, :create]
-  before_action :authorize_creator, only: [:update, :destroy, :set_active]
+  before_action :authorize_creator, only: [:update, :destroy, :set_active, :set_inactive]
   swagger_controller :events, "Events"
 
   # GET /events
@@ -167,6 +168,22 @@ class EventsController < ApplicationController
   end
   def set_active
     @event.is_active = true
+    @event.save
+
+    render status: :ok
+  end
+
+  # POST /events/1/deactivate
+  swagger_api :set_inactive do
+    summary "Set event inactive"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def set_inactive
+    @event.is_active = false
     @event.save
 
     render status: :ok
