@@ -83,7 +83,13 @@ class AccountsController < ApplicationController
       response :not_found
     end
     def get_images
-        images = @to_find.images.where("base64 is not null and base64 != ''")
+        images = @to_find.images.where(
+          "base64 is not null and base64 != ''"
+        )
+        if @to_find.image_id != nil
+          images = images.where("id != :id", {id: @to_find.image_id})
+        end
+
         render json: {
             total_count: images.count,
             images: images.limit(params[:limit]).offset(params[:offset])
