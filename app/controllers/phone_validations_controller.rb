@@ -21,11 +21,30 @@ class PhoneValidationsController < ApplicationController
     response :unprocessable_entity
   end
   def create
-    @phone_validation = PhoneValidation.find_by(phone: params[:phone])
-    @phone_validation = PhoneValidation.new(phone_validation_params)  if not @phone_validation
+    @phone_validation = PhoneValidation.new(phone_validation_params)
 
     @phone_validation.code = '0000'
     @phone_validation.is_validated = false
+    if @phone_validation.save
+      render json: @phone_validation, except: :code, status: :created
+    else
+      render json: @phone_validation.errors, status: :unprocessable_entity
+    end
+  end
+
+  # POST /phone_validations/resend
+  swagger_api :resend do
+    summary "Request code for validation"
+    param :form, :phone, :string, :required, "Phone number"
+    response :unprocessable_entity
+  end
+  def resend
+    @phone_validation = PhoneValidation.find_by(phone: params[:phone])
+    if @phone_validation.is_validated
+      render status: :unprocessable_entity
+    end
+
+    @phone_validation.code = '0000'
     if @phone_validation.save
       render json: @phone_validation, except: :code, status: :created
     else

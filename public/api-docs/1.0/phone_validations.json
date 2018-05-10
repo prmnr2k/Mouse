@@ -15,6 +15,32 @@
       ]
     },
     {
+      "path": "/phone_validations/resend.json",
+      "operations": [
+        {
+          "summary": "Request code for validation",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "phone",
+              "type": "string",
+              "description": "Phone number",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "PhoneValidations#resend",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/phone_validations.json",
       "operations": [
         {
