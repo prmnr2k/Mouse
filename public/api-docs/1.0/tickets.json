@@ -75,6 +75,13 @@
             },
             {
               "paramType": "form",
+              "name": "promotional_description",
+              "type": "string",
+              "description": "Promotional ticket description",
+              "required": true
+            },
+            {
+              "paramType": "form",
               "name": "is_for_personal_use",
               "type": "boolean",
               "description": "Ticket for personal use",
@@ -236,6 +243,13 @@
               "name": "is_promotional",
               "type": "boolean",
               "description": "Promotional ticket",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "promotional_description",
+              "type": "string",
+              "description": "Promotional ticket description",
               "required": true
             },
             {
