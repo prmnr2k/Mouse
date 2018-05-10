@@ -91,13 +91,21 @@ class EventVenuesController < ApplicationController
       end
 
       if @venue_event and ["accepted"].include?(@venue_event.status)
-        read_message
-        @venue_event.status = 'owner_accepted'
-        set_agreement
-        send_accept_message(@venue_event.account)
-        @venue_event.save
+        if date_valid?
+          read_message
+          @venue_event.status = 'owner_accepted'
 
-        render status: :ok
+          set_agreement
+          change_event_date
+          change_event_funding
+          change_event_address
+          send_accept_message(@venue_event.account)
+          @venue_event.save
+
+          render status: :ok
+        else
+          render status: :unprocessable_entity
+        end
       else
         render status: :not_found
       end
@@ -126,6 +134,13 @@ class EventVenuesController < ApplicationController
 
     if @venue_event and @venue_event.status != 'owner_accepted'
       read_message
+
+      if @venue_event.status == 'owner_accepted'
+        undo_change_event_date
+        undo_change_event_funding
+        undo_change_event_address
+      end
+
       @venue_event.status = 'owner_declined'
       send_owner_decline(@venue_event.account)
       @venue_event.save
@@ -212,17 +227,10 @@ class EventVenuesController < ApplicationController
     @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
 
     if @venue_event and @venue_event.status == "owner_accepted"
-      if date_valid?
-        change_event_date
-        change_event_funding
-        change_event_address
-        @venue_event.status = "active"
-        @venue_event.save!
+      @venue_event.status = "active"
+      @venue_event.save!
 
-        render status: :ok
-      else
-        render status: :unprocessable_entity
-      end
+      render status: :ok
     else
       render status: :not_found
     end
@@ -243,9 +251,6 @@ class EventVenuesController < ApplicationController
     @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
 
     if @venue_event and @venue_event.status == "active"
-      undo_change_event_date
-      undo_change_event_funding
-      undo_change_event_address
       @venue_event.status = "owner_accepted"
       @venue_event.save!
 

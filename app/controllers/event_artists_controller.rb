@@ -90,13 +90,20 @@ class EventArtistsController < ApplicationController
     end
 
     if @artist_event and ["accepted"].include?(@artist_event.status)
-      read_message
-      @artist_event.status = 'owner_accepted'
-      set_agreement
-      send_accept_message(@artist_event.account)
-      @artist_event.save
+      if date_valid?
+        read_message
+        @artist_event.status = 'owner_accepted'
 
-      render status: :ok
+        set_agreement
+        change_event_date
+        change_event_funding
+        send_accept_message(@artist_event.account)
+        @artist_event.save
+
+        render status: :ok
+      else
+        render status: :unprocessable_entity
+      end
     else
       render status: :not_found
     end
@@ -125,6 +132,12 @@ class EventArtistsController < ApplicationController
 
     if @artist_event and not ["decline"].include?(@artist_event.status)
       read_message
+
+      if @artist_event.status == 'owner_accepted'
+        undo_change_event_date
+        undo_change_event_funding
+      end
+
       @artist_event.status = 'owner_declined'
       send_owner_decline(@artist_event.account)
       @artist_event.save
@@ -221,16 +234,10 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
     if @artist_event and @artist_event.status == "owner_accepted"
-      if date_valid?
-        change_event_date
-        change_event_funding
-        @artist_event.status = "active"
-        @artist_event.save!
+      @artist_event.status = "active"
+      @artist_event.save!
 
-        render status: :ok
-      else
-        render status: :unprocessable_entity
-      end
+      render status: :ok
     else
       render status: :not_found
     end
@@ -251,8 +258,6 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
     if @artist_event and @artist_event.status == "active"
-        undo_change_event_date
-        undo_change_event_funding
         @artist_event.status = "owner_accepted"
         @artist_event.save!
 
