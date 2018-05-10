@@ -918,10 +918,16 @@ class AccountsController < ApplicationController
         end
       elsif params[:type] == 'venue'
         if params[:price_from]
-          @accounts = @accounts.joins(:venue => :public_venue).where("public_venues.price >= :price", {:price => params[:price_from]})
+          @accounts = @accounts.joins(:venue => :public_venue).where(
+            "(public_venues.price_for_daytime >= :price OR public_venues.price_for_nighttime >= :price)",
+            {:price => params[:price_from]}
+          )
         end
         if params[:price_to]
-          @accounts = @accounts.joins(:venue => :public_venue).where("public_venues.price <= :price", {:price => params[:price_to]})
+          @accounts = @accounts.joins(:venue => :public_venue).where(
+            "public_venues.price_for_daytime <= :price OR public_venues.price_for_nighttime <= :price",
+            {:price => params[:price_to]}
+          )
         end
       end
     end
