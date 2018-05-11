@@ -75,7 +75,7 @@ Rails.application.routes.draw do
     resources :comments
     resources :likes, only: [:index, :create, :destroy]
 
-    resources :event_venues, path: "venue", only: [:create] do
+    resources :event_venues, path: "venue", only: [:create, :destroy] do
       member do
         post :send_request
         post :owner_accept
@@ -87,7 +87,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :event_artists, path: "artists", only: [:create] do
+    resources :event_artists, path: "artists", only: [:create, :destroy] do
       member do
         post :send_request
         post :owner_accept

@@ -1,7 +1,7 @@
 class DeclineMessage < ApplicationRecord
   enum reason: [:price, :location, :time, :other]
 
-  belongs_to :inbox_message
+  belongs_to :inbox_message, dependent: :destroy
   belongs_to :event
 
   def as_json(options={})

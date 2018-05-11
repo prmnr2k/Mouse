@@ -1,8 +1,8 @@
 class EventVenuesController < ApplicationController
-  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :venue_accept, :venue_decline,
+  before_action :set_event, only: [:create, :destroy, :owner_accept, :owner_decline, :venue_accept, :venue_decline,
                                    :send_request, :venue_remove_active, :venue_set_active]
   before_action :set_message, only: [:owner_accept, :owner_decline, :venue_accept, :venue_decline]
-  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
+  before_action :authorize_creator, only: [:create, :destroy, :owner_accept, :owner_decline,
                                            :send_request, :venue_remove_active, :venue_set_active]
   before_action :authorize_venue, only: [:venue_accept, :venue_decline]
   swagger_controller :event_venues, "Event venues"
@@ -255,6 +255,45 @@ class EventVenuesController < ApplicationController
       @venue_event.save!
 
       render status: :ok
+    else
+      render status: :not_found
+    end
+  end
+
+  # DELETE /events/1/artist/1
+  swagger_api :destroy do
+    summary "Remove venue from event"
+    param :path, :id, :integer, :required, "Venue id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Event owner id"
+    param :header, 'Authorization', :string, :required, "Event owner auth key"
+    response :not_found
+    response :forbidden
+    response :unauthorized
+  end
+  def destroy
+    @venue_acc = Account.find(params[:id])
+    @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
+
+    if @venue_event
+      if ['ready', 'pending'].include?(@venue_event.status)
+        @venue_event.destroy
+        render status: :ok
+      elsif @venue_event.status == 'request_send'
+        message = InboxMessage.joins(:request_message).find_by(
+          request_messages: {event_id: @venue_event.event.id},
+          sender_id: @venue_event.event.creator_id)
+        if message
+          message.destroy
+        end
+
+        @venue_event.status = 'ready'
+        @venue_event.save
+
+        render status: :ok
+      else
+        render status: :forbidden
+      end
     else
       render status: :not_found
     end

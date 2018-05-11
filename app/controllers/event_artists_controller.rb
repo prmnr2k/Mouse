@@ -1,8 +1,8 @@
 class EventArtistsController < ApplicationController
-  before_action :set_event, only: [:create, :owner_accept, :owner_decline, :artist_accept, :artist_decline,
+  before_action :set_event, only: [:create, :destroy, :owner_accept, :owner_decline, :artist_accept, :artist_decline,
                                    :artist_set_active, :artist_remove_active, :send_request]
   before_action :set_message, only: [:owner_accept, :owner_decline, :artist_accept, :artist_decline]
-  before_action :authorize_creator, only: [:create, :owner_accept, :owner_decline,
+  before_action :authorize_creator, only: [:create, :destroy, :owner_accept, :owner_decline,
                                            :artist_set_active, :artist_remove_active, :send_request]
   before_action :authorize_artist, only: [:artist_accept, :artist_decline]
   swagger_controller :event_artists, "Event artists"
@@ -262,6 +262,45 @@ class EventArtistsController < ApplicationController
         @artist_event.save!
 
       render status: :ok
+    else
+      render status: :not_found
+    end
+  end
+
+  # DELETE /events/1/artist/1
+  swagger_api :destroy do
+    summary "Remove artist from event"
+    param :path, :id, :integer, :required, "Artist id"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Event owner id"
+    param :header, 'Authorization', :string, :required, "Event owner auth key"
+    response :not_found
+    response :forbidden
+    response :unauthorized
+  end
+  def destroy
+    @artist_acc = Account.find(params[:id])
+    @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
+
+    if @artist_event
+      if ['ready', 'pending'].include?(@artist_event.status)
+        @artist_event.destroy
+        render status: :ok
+      elsif @artist_event.status == 'request_send'
+        message = InboxMessage.joins(:request_message).find_by(
+          request_messages: {event_id: @artist_event.event.id},
+          sender_id: @artist_event.event.creator_id)
+        if message
+             message.destroy
+        end
+
+        @artist_event.status = 'ready'
+        @artist_event.save
+
+        render status: :ok
+      else
+        render status: :forbidden
+      end
     else
       render status: :not_found
     end
