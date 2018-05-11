@@ -23,6 +23,8 @@ class VenueEvent < ApplicationRecord
     res = super
     res.delete('id')
     res.delete('event_id')
+    res.delete('rental_from')
+    res.delete('rental_to')
 
     if ['owner_accepted', 'active'].include?(status)
       res[:agreement] = agreed_date_time_and_price
@@ -32,6 +34,12 @@ class VenueEvent < ApplicationRecord
       message = account.sent_messages.joins(:accept_message).where(accept_messages: {event: event}).first
       if message
         res['message_id'] = message.id
+      end
+    elsif status == 'declined'
+      message = account.sent_messages.joins(:decline_message).where(decline_messages: {event: event}).first
+      if message
+        res['reason'] = message.decline_message.reason
+        res['reason_text'] = message.decline_message.additional_text
       end
     end
 

@@ -33,6 +33,12 @@ class ArtistEvent < ApplicationRecord
       if message
         res['message_id'] = message.id
       end
+    elsif status == 'declined'
+      message = account.sent_messages.joins(:decline_message).where(decline_messages: {event: event}).first
+      if message
+        res['reason'] = message.decline_message.reason
+        res['reason_text'] = message.decline_message.additional_text
+      end
     end
 
     return res
