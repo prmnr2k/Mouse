@@ -65,9 +65,9 @@ class Event < ApplicationRecord
     if options[:extended]
       res[:collaborators] = collaborators
       res[:genres] = genres.pluck(:genre)
-      res[:artist] = artist_events
+      res[:artist] = artist_events.order(updated_at: :DESC)
       res[:venue] = venue
-      res[:venues] = venue_events
+      res[:venues] = venue_events.order(updated_at: :DESC)
       res[:tickets] = tickets
     elsif options[:analytics]
       # res[:location] = venue.address if venue

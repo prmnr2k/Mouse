@@ -15,7 +15,7 @@ class EventsController < ApplicationController
   def index
     @events = Event.where(is_active: true)
 
-    render json: @events.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @events.limit(params[:limit]).offset(params[:offset]).order(:date_from, :funding_from), status: :ok
   end
 
   # GET /events/1
@@ -274,7 +274,7 @@ class EventsController < ApplicationController
     search_date
     search_only_my
 
-    render json: @events.distinct.limit(params[:limit]).offset(params[:offset]), search: true, status: :ok
+    render json: @events.distinct.limit(params[:limit]).offset(params[:offset]).order("events.date_from, events.funding_from"), search: true, status: :ok
   end
 
   private
