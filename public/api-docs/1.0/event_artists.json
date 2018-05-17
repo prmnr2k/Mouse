@@ -447,6 +447,86 @@
       ]
     },
     {
+      "path": "/events/{event_id}/artists/{id}/resend_message.json",
+      "operations": [
+        {
+          "summary": "Resend message",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "event_id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "message_id",
+              "type": "integer",
+              "description": "Inbox message id",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "time_frame",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "one_hour",
+                  "one_day",
+                  "one_week",
+                  "one_month"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Authorized account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "EventArtists#resend_message",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/events/{event_id}/artists/{id}/set_active.json",
       "operations": [
         {

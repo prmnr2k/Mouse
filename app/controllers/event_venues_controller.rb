@@ -1,9 +1,9 @@
 class EventVenuesController < ApplicationController
   before_action :set_event, only: [:create, :destroy, :owner_accept, :owner_decline, :venue_accept, :venue_decline,
-                                   :send_request, :venue_remove_active, :venue_set_active]
+                                   :send_request, :venue_remove_active, :venue_set_active, :resend_message]
   before_action :set_message, only: [:owner_accept, :owner_decline, :venue_accept, :venue_decline]
   before_action :authorize_creator, only: [:create, :destroy, :owner_accept, :owner_decline,
-                                           :send_request, :venue_remove_active, :venue_set_active]
+                                           :send_request, :venue_remove_active, :venue_set_active, :resend_message]
   before_action :authorize_venue, only: [:venue_accept, :venue_decline]
   swagger_controller :event_venues, "Event venues"
 
@@ -210,6 +210,42 @@ class EventVenuesController < ApplicationController
       render status: :ok
     else
       render status: :not_found
+    end
+  end
+
+  # POST /events/1/venue/1/resend_message
+  swagger_api :resend_message do
+    summary "Resend message"
+    param :path, :event_id, :integer, :required, "Event id"
+    param :path, :id, :integer, :required, "Venue account id"
+    param :form, :message_id, :integer, :optional, "Inbox message id"
+    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["one_hour", "one_day", "one_week", "one_month"]
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :unprocessable_entity
+    response :not_found
+  end
+  def resend_message
+    message = InboxMessage.joins(:request_message).where(
+      sender_id: params[:account_id],
+      receiver_id: params[:id],
+      request_messages: {event_id: params[:event_id]}
+    ).order("inbox_messages.created_at DESC").first
+
+    if message
+      new_message = message.dup
+      new_message.is_read = false
+      new_message.request_message = message.request_message.dup
+      new_message.request_message.time_frame = params[:time_frame]
+
+      if new_message.save!
+        render status: :ok
+      else
+        render json: @account.errors, status: :unprocessable_entity
+      end
+    else
+      render status: :unprocessable_entity
     end
   end
 
