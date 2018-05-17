@@ -128,12 +128,14 @@ class EventVenuesController < ApplicationController
   def owner_decline
     @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
-    if @message.is_read
+    if params[:message_id] and @message.is_read
       render status: :unprocessable_entity and return
     end
 
     if @venue_event and @venue_event.status != 'owner_accepted'
-      read_message
+      if params[:message_id]
+        read_message
+      end
 
       if @venue_event.status == 'owner_accepted'
         undo_change_event_date
@@ -305,7 +307,9 @@ class EventVenuesController < ApplicationController
   end
 
   def set_message
-    @message = InboxMessage.find(params[:message_id])
+    if params[:message_id]
+      @message = InboxMessage.find(params[:message_id])
+    end
   end
 
   def authorize_creator
