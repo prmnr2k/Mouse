@@ -54,13 +54,12 @@
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "night_club",
-                  "concert_hall",
-                  "event_space",
-                  "theatre",
-                  "additional_room",
-                  "stadium_arena",
-                  "outdoor_space",
+                  "outside_venue",
+                  "stage",
+                  "seating",
+                  "bar",
+                  "audience",
+                  "dressing_room",
                   "other"
                 ]
               }
@@ -771,13 +770,12 @@
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "night_club",
-                  "concert_hall",
-                  "event_space",
-                  "theatre",
-                  "additional_room",
-                  "stadium_arena",
-                  "outdoor_space",
+                  "outside_venue",
+                  "stage",
+                  "seating",
+                  "bar",
+                  "audience",
+                  "dressing_room",
                   "other"
                 ]
               }

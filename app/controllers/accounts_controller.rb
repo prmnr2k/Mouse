@@ -266,8 +266,7 @@ class AccountsController < ApplicationController
       param :form, :phone, :string, :optional, "Account's phone"
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param :form, :image_description, :string, :optional, "Image description"
-      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                        "stadium_arena", "outdoor_space", "other"]
+      param_list :form, :image_type, :string, :optional, "Image type", ["outside_venue", "stage", "seating", "bar", "audience", "dressing_room", "other"]
       param :form, :image_type_description, :string, :optional, "Image other type description"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
@@ -388,8 +387,7 @@ class AccountsController < ApplicationController
       param :form, :phone, :string, :optional, "Account's phone"
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param :form, :image_description, :string, :optional, "Image description"
-      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                        "stadium_arena", "outdoor_space", "other"]
+      param_list :form, :image_type, :string, :optional, "Image type", ["outside_venue", "stage", "seating", "bar", "audience", "dressing_room", "other"]
       param :form, :image_type_description, :string, :optional, "Image other type description"
       param_list :form, :account_type, :string, :required, "Account type", ["venue", "artist", "fan"]
       param :form, :image, :file, :optional, "Image"
@@ -621,7 +619,7 @@ class AccountsController < ApplicationController
 
     def set_image_type(image)
         if params[:image_type]
-            obj = ImageType.new(image_type: params[:image_type])
+            obj = ImageType.new(image_type: ImageType.image_types(params[:image_type]))
             if params[:image_type_description]
               obj.description = params[:image_type_description]
             end
