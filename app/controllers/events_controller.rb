@@ -394,7 +394,7 @@ class EventsController < ApplicationController
       if params[:size]
         @events = @events.joins(
           :venue => {venue: :public_venue}
-        ).where(public_venues: {type_of_space: [params[:size]]})
+        ).where(public_venues: {type_of_space: PublicVenue.type_of_spaces[params[:size]]})
       end
     end
 

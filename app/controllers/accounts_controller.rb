@@ -619,7 +619,7 @@ class AccountsController < ApplicationController
 
     def set_image_type(image)
         if params[:image_type]
-            obj = ImageType.new(image_type: ImageType.image_types(params[:image_type]))
+            obj = ImageType.new(image_type: ImageType.image_types[params[:image_type]])
             if params[:image_type_description]
               obj.description = params[:image_type_description]
             end
