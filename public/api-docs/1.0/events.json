@@ -84,7 +84,7 @@
               "paramType": "query",
               "name": "size",
               "type": "string",
-              "description": "Event's venue type of space ['night_club', 'concert_hall']",
+              "description": "Event's venue type of space ('night_club'|'concert_hall'|...)",
               "required": false
             },
             {
