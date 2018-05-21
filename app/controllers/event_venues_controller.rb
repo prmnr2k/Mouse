@@ -218,7 +218,6 @@ class EventVenuesController < ApplicationController
     summary "Resend message"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Venue account id"
-    param :form, :message_id, :integer, :optional, "Inbox message id"
     param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["one_hour", "one_day", "one_week", "one_month"]
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -227,6 +226,12 @@ class EventVenuesController < ApplicationController
     response :not_found
   end
   def resend_message
+    event_venue = VenueEvent.find_by(venue_id: params[:id], event_id: params[:event_id])
+
+    if !event_venue
+      render status: :not_found and return
+    end
+
     message = InboxMessage.joins(:request_message).where(
       sender_id: params[:account_id],
       receiver_id: params[:id],
@@ -240,6 +245,9 @@ class EventVenuesController < ApplicationController
       new_message.request_message.time_frame = params[:time_frame]
 
       if new_message.save!
+        event_venue.status = 'request_send'
+        event_venue.save
+
         render status: :ok
       else
         render json: @account.errors, status: :unprocessable_entity

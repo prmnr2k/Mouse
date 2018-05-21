@@ -225,7 +225,6 @@ class EventArtistsController < ApplicationController
     summary "Resend message"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Artist account id"
-    param :form, :message_id, :integer, :optional, "Inbox message id"
     param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["one_hour", "one_day", "one_week", "one_month"]
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -234,6 +233,12 @@ class EventArtistsController < ApplicationController
     response :not_found
   end
   def resend_message
+      event_artist = ArtistEvent.find_by(artist_id: params[:id], event_id: params[:event_id])
+
+      if !event_artist
+        render status: :not_found and return
+      end
+
       message = InboxMessage.joins(:request_message).where(
         sender_id: params[:account_id],
         receiver_id: params[:id],
@@ -247,6 +252,9 @@ class EventArtistsController < ApplicationController
         new_message.request_message.time_frame = params[:time_frame]
 
         if new_message.save!
+          event_artist.status = 'request_send'
+          event_artist.save
+
           render status: :ok
         else
           render json: @account.errors, status: :unprocessable_entity

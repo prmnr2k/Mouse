@@ -416,13 +416,6 @@
             },
             {
               "paramType": "form",
-              "name": "message_id",
-              "type": "integer",
-              "description": "Inbox message id",
-              "required": false
-            },
-            {
-              "paramType": "form",
               "name": "time_frame",
               "type": "integer",
               "description": "Time frame to answer",
