@@ -504,6 +504,7 @@ class AccountsController < ApplicationController
       param :query, :capacity_to, :integer, :optional, "Venue capacity to"
       param :query, :types_of_space, :string, :optional, "Venue types of space array ['night_club', 'concert_hall', ...]"
       param :query, :genres, :string, :optional, "Array of genres ['rap', 'rock', ....]"
+      param :query, :exclude_event_id, :integer, :optional, "Exclude artists/venues added to event"
       param :query, :extended, :boolean, :optional, "Extended info"
       param :query, :sort_by_popularity, :boolean, :optional, "Sort results by popularity"
       param :query, :limit, :integer, :optional, "Limit"
@@ -521,6 +522,7 @@ class AccountsController < ApplicationController
       search_address
       search_capacity
       search_type_of_space
+      exclude_event
       sort_results
       order_accounts
       @accounts = @accounts.group("accounts.id")
@@ -985,17 +987,12 @@ class AccountsController < ApplicationController
       end
     end
 
-    def update_events
-      Event.where(creator_id: @to_find.id).each do |event|
-        event.artist_events.where(status: 'pending').each do |relation|
-          relation.status = 'ready'
-          relation.save
-        end
+    def exclude_event
+      if params[:exclude_event_id]
+        accounts_ids = ArtistEvent.where(event_id: params[:exclude_event_id]).pluck("artist_id") +
+          VenueEvent.where(event_id: params[:exclude_event_id]).pluck("venue_id")
 
-        event.venue_events.where(status: 'pending').each do |relation|
-          relation.status = 'ready'
-          relation.save
-        end
+        @accounts = @accounts.where.not(id: accounts_ids)
       end
     end
 
@@ -1009,6 +1006,21 @@ class AccountsController < ApplicationController
 
     def order_accounts
       @accounts = @accounts.order('accounts.display_name, accounts.user_name')
+    end
+
+
+    def update_events
+      Event.where(creator_id: @to_find.id).each do |event|
+        event.artist_events.where(status: 'pending').each do |relation|
+          relation.status = 'ready'
+          relation.save
+        end
+
+        event.venue_events.where(status: 'pending').each do |relation|
+          relation.status = 'ready'
+          relation.save
+        end
+      end
     end
 
     def account_params

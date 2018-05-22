@@ -1548,6 +1548,13 @@
             },
             {
               "paramType": "query",
+              "name": "exclude_event_id",
+              "type": "integer",
+              "description": "Exclude artists/venues added to event",
+              "required": false
+            },
+            {
+              "paramType": "query",
               "name": "extended",
               "type": "boolean",
               "description": "Extended info",
