@@ -367,9 +367,9 @@ class AccountsController < ApplicationController
             set_image
             set_base64_image
 
-            return if not set_fan_params
-            return if not set_venue_params
-            return if not set_artist_params
+            render status: :unprocessable_entity and return if not set_fan_params
+            render status: :unprocessable_entity and return if not set_venue_params
+            render status: :unprocessable_entity and return if not set_artist_params
 
             #AccessHelper.grant_account_access(@account)
             render json: @account, extended: true, my: true, except: :password, status: :created
@@ -483,9 +483,9 @@ class AccountsController < ApplicationController
         set_image
         set_base64_image
 
-        return if not set_fan_params
-        return if not set_venue_params
-        return if not set_artist_params
+        render status: :unprocessable_entity and return if not set_fan_params
+        render status: :unprocessable_entity and return if not set_venue_params
+        render status: :unprocessable_entity and return if not set_artist_params
         if @account.update(account_update_params)
             render json: @account, extended: true, my: true, except: :password, status: :ok
         else
@@ -793,7 +793,7 @@ class AccountsController < ApplicationController
                 render json: @account.errors and return false if not @account.save
             end
             set_artist_genres
-            set_artist_audios
+            return false if not set_artist_audios
             set_artist_albums
             set_artist_video_links
             set_artist_dates
@@ -845,7 +845,7 @@ class AccountsController < ApplicationController
         params[:artist_riders].each do |rider|
           obj = ArtistRider.new(artist_rider_params(rider))
           obj.save
-          @artist.artist_riders<< obj
+          @artist.artist_riders << obj
         end
         @artist.save
       end
@@ -853,13 +853,20 @@ class AccountsController < ApplicationController
 
     def set_artist_audios
       if params[:audio_links]
-        @artist.audio_links.clear
-        @artist.save
+        objs = []
         params[:audio_links].each do |link|
-          obj = AudioLink.new(artist_audio_params(link))
-          obj.save
-          @artist.audio_links << obj
+          if link["audio_link"].start_with?("https://open.spotify.com/")
+            obj = AudioLink.new(artist_audio_params(link))
+            obj.save
+            objs << obj
+          else
+            objs.clear
+            return false
+          end
         end
+
+        @artist.audio_links.clear
+        @artist.audio_links << objs
         @artist.save
       end
     end
