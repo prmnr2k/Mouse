@@ -1,0 +1,369 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://localhost:3000",
+  "resourcePath": "account_images",
+  "apis": [
+    {
+      "path": "/accounts/{account_id}/account_images/base64.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 201,
+              "responseModel": null,
+              "message": "Created"
+            },
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "AccountImages#create_base64",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{account_id}/account_images/change.json",
+      "operations": [
+        {
+          "summary": "Upload image to Account",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "image",
+              "type": "file",
+              "description": "Image to upload",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 201,
+              "responseModel": null,
+              "message": "Created"
+            },
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "AccountImages#change",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{account_id}/account_images/change_base64.json",
+      "operations": [
+        {
+          "summary": "Upload image to Account",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "AccountImages#change_base64",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{account_id}/account_images.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of images",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "AccountImages#index",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/accounts/{account_id}/account_images.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image",
+              "type": "file",
+              "description": "Image",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_description",
+              "type": "string",
+              "description": "Image description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "image_type",
+              "type": "string",
+              "description": "Image type",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "night_club",
+                  "concert_hall",
+                  "event_space",
+                  "theatre",
+                  "additional_room",
+                  "stadium_arena",
+                  "outdoor_space",
+                  "other"
+                ]
+              }
+            },
+            {
+              "paramType": "form",
+              "name": "image_type_description",
+              "type": "string",
+              "description": "Image other type description",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 201,
+              "responseModel": null,
+              "message": "Created"
+            },
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "AccountImages#create",
+          "method": "post"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

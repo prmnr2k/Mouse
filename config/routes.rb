@@ -19,6 +19,13 @@ Rails.application.routes.draw do
 
   #Account routes
   resources :accounts, only: [:create, :update] do
+    resources :account_images, only: [:index, :create] do
+      collection do
+        post :create_base64, path: "base64"
+        post :change
+        post :change_base64
+      end
+    end
     resources :feed, only: :index
     resources :inbox_messages do
       collection do
@@ -34,7 +41,7 @@ Rails.application.routes.draw do
   get 'accounts/my', action: :get_my_accounts, controller: 'accounts'
   get 'accounts/:id', action: :get, controller: 'accounts'
   get 'accounts/:id/events', action: :get_events, controller: 'accounts'
-  get 'accounts/:id/images', action: :get_images, controller: 'accounts'
+  #get 'accounts/:id/images', action: :get_images, controller: 'accounts'
   get 'accounts/:id/is_followed', action: :is_followed, controller: 'accounts'
   get 'accounts/:id/followers', action: :get_followers, controller: 'accounts'
   get 'accounts/:id/following', action: :get_followed, controller: 'accounts'
@@ -42,7 +49,7 @@ Rails.application.routes.draw do
   get 'accounts/:id/upcoming_shows', action: :upcoming_shows, controller: 'accounts'
   post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
   post 'accounts/follow', action: :follow_multiple, controller: 'accounts'
-  post 'accounts/:id/images', action: :upload_image, controller: 'accounts'
+  #post 'accounts/:id/images', action: :upload_image, controller: 'accounts'
   post 'accounts/:id/follow', action: :follow, controller: 'accounts'
   post 'accounts/:id/verify', action: :verify, controller: 'accounts'
   delete 'accounts/:id/unfollow', action: :unfollow, controller: 'accounts'

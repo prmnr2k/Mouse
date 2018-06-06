@@ -74,27 +74,27 @@ class AccountsController < ApplicationController
        render json: @user.accounts.order('accounts.user_name'), extended: @extended, status: :ok
     end
 
-    # GET /accounts/images/<id>
-    swagger_api :get_images do
-      summary "Retrieve list of images"
-      param :path, :id, :integer, :required, "Account id"
-      param :query, :limit, :integer, :optional, "Limit"
-      param :query, :offset, :integer, :optional, "Offset"
-      response :not_found
-    end
-    def get_images
-        images = @to_find.images.where(
-          "base64 is not null and base64 != ''"
-        )
-        if @to_find.image_id != nil
-          images = images.where("id != :id", {id: @to_find.image_id})
-        end
-
-        render json: {
-            total_count: images.count,
-            images: images.limit(params[:limit]).offset(params[:offset])
-        }, image_only: true, status: :ok
-    end
+    # # GET /accounts/images/<id>
+    # swagger_api :get_images do
+    #   summary "Retrieve list of images"
+    #   param :path, :id, :integer, :required, "Account id"
+    #   param :query, :limit, :integer, :optional, "Limit"
+    #   param :query, :offset, :integer, :optional, "Offset"
+    #   response :not_found
+    # end
+    # def get_images
+    #     images = @to_find.images.where(
+    #       "base64 is not null and base64 != ''"
+    #     )
+    #     if @to_find.image_id != nil
+    #       images = images.where("id != :id", {id: @to_find.image_id})
+    #     end
+    #
+    #     render json: {
+    #         total_count: images.count,
+    #         images: images.limit(params[:limit]).offset(params[:offset])
+    #     }, image_only: true, status: :ok
+    # end
 
     # GET /accounts/<id>/upcoming_shows
     swagger_api :upcoming_shows do
@@ -127,26 +127,26 @@ class AccountsController < ApplicationController
       end
     end
 
-    #POST /accounts/images/<account_id>
-    swagger_api :upload_image do
-      summary "Upload image to Account"
-      param :path, :id, :integer, :required, "Account id"
-      param :form, :image, :file, :optional, "Image to upload"
-      param :form, :image_base64, :string, :optional, "Image base64 string"
-      param :form, :image_description, :string, :optional, "Image description"
-      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                        "stadium_arena", "outdoor_space", "other"]
-      param :form, :image_type_description, :string, :optional, "Image other type description"
-      param :header, 'Authorization', :string, :required, 'Authentication token'
-      response :unprocessable_entity
-      response :unauthorized
-      response :not_found
-    end
-    def upload_image
-        set_image
-        set_base64_image
-        render json: @account, status: :ok
-    end
+    # #POST /accounts/images/<account_id>
+    # swagger_api :upload_image do
+    #   summary "Upload image to Account"
+    #   param :path, :id, :integer, :required, "Account id"
+    #   param :form, :image, :file, :optional, "Image to upload"
+    #   param :form, :image_base64, :string, :optional, "Image base64 string"
+    #   param :form, :image_description, :string, :optional, "Image description"
+    #   param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
+    #                                                                     "stadium_arena", "outdoor_space", "other"]
+    #   param :form, :image_type_description, :string, :optional, "Image other type description"
+    #   param :header, 'Authorization', :string, :required, 'Authentication token'
+    #   response :unprocessable_entity
+    #   response :unauthorized
+    #   response :not_found
+    # end
+    # def upload_image
+    #     set_image
+    #     set_base64_image
+    #     render json: @account, status: :ok
+    # end
 
     #GET /accounts/is_followed/<follower_id>
     swagger_api :is_followed do

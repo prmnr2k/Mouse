@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-  "basePath": "https://mouse-back.herokuapp.com",
+  "basePath": "http://localhost:3000",
   "resourcePath": "accounts",
   "apis": [
     {
@@ -1701,46 +1701,6 @@
       ]
     },
     {
-      "path": "/accounts/{id}/images.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of images",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Accounts#get_images",
-          "method": "get"
-        }
-      ]
-    },
-    {
       "path": "/accounts/{id}/is_followed.json",
       "operations": [
         {
@@ -1987,97 +1947,6 @@
             }
           ],
           "nickname": "Accounts#follow_multiple",
-          "method": "post"
-        }
-      ]
-    },
-    {
-      "path": "/accounts/{id}/images.json",
-      "operations": [
-        {
-          "summary": "Upload image to Account",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "image",
-              "type": "file",
-              "description": "Image to upload",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "image_base64",
-              "type": "string",
-              "description": "Image base64 string",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "image_description",
-              "type": "string",
-              "description": "Image description",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "image_type",
-              "type": "string",
-              "description": "Image type",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "night_club",
-                  "concert_hall",
-                  "event_space",
-                  "theatre",
-                  "additional_room",
-                  "stadium_arena",
-                  "outdoor_space",
-                  "other"
-                ]
-              }
-            },
-            {
-              "paramType": "form",
-              "name": "image_type_description",
-              "type": "string",
-              "description": "Image other type description",
-              "required": false
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Accounts#upload_image",
           "method": "post"
         }
       ]
