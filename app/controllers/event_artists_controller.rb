@@ -45,19 +45,23 @@ class EventArtistsController < ApplicationController
     response :not_found
   end
   def send_request
-    @artist_event = @event.artist_events.find_by(artist_id: params[:id])
+    if artist_available?
+      @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
-    if @artist_event and ["ready"].include?(@artist_event.status)
-      artist_acc = Account.find(params[:id])
+      if @artist_event and ["ready"].include?(@artist_event.status)
+        artist_acc = Account.find(params[:id])
 
-      if artist_acc
-        @artist_event.status = 'request_send'
-        send_mouse_request(artist_acc)
-        @artist_event.save
+        if artist_acc
+          @artist_event.status = 'request_send'
+          send_mouse_request(artist_acc)
+          @artist_event.save
 
-        render status: :ok
+          render status: :ok
+        else
+          render status: :not_found
+        end
       else
-        render status: :not_found
+        render status: :unprocessable_entity
       end
     else
       render status: :unprocessable_entity

@@ -46,19 +46,23 @@ class EventVenuesController < ApplicationController
     response :not_found
   end
   def send_request
-    @venue_event = @event.venue_events.find_by(venue_id: params[:id])
+    if venue_available?
+      @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
-    if @venue_event and ["ready"].include?(@venue_event.status)
-      venue_acc = Account.find(params[:id])
+      if @venue_event and ["ready"].include?(@venue_event.status)
+        venue_acc = Account.find(params[:id])
 
-      if venue_acc
-        @venue_event.status = 'request_send'
-        send_mouse_request(venue_acc)
-        @venue_event.save
+        if venue_acc
+          @venue_event.status = 'request_send'
+          send_mouse_request(venue_acc)
+          @venue_event.save
 
-        render status: :ok
+          render status: :ok
+        else
+          render status: :not_found
+        end
       else
-        render status: :not_found
+        render status: :unprocessable_entity
       end
     else
       render status: :unprocessable_entity
