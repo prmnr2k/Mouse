@@ -976,8 +976,10 @@ class AccountsController < ApplicationController
     end
 
     def search_capacity
-      if params[:capacity_from] and params[:capacity_to] and params[:type] == "venue"
-        @accounts = @accounts.joins(:venue).where(venues: {capacity: params[:capacity_from]..params[:capacity_to]})
+      if params[:capacity_from] and params[:type] == "venue"
+        @accounts = @accounts.joins(:venue).where("venues.capacity >= :capacity", {:capacity => params[:capacity_from]})
+      elsif params[:capacity_to] and params[:type] == "venue"
+        @accounts = @accounts.joins(:venue).where("venues.capacity <= :capacity", {:capacity => params[:capacity_to]})
       end
     end
 
