@@ -519,10 +519,11 @@ class AccountsController < ApplicationController
       set_extended
 
       if params[:exclude_event_id]
-        @accounts= Account.left_joins(:venue).where("(accounts.venue_id IS NULL OR venues.venue_type=:public)",
-                                                     {:public => Venue.venue_types['public_venue']})
+        @accounts= Account.left_joins(:venue => {:public_venue => :genres})
       else
-        @accounts = Account.all
+        @accounts = Account.left_joins(:venue => {:public_venue => :genres}).where(
+          "(accounts.venue_id IS NULL OR venues.venue_type=:public)",
+          {:public => Venue.venue_types['public_venue']})
       end
       
       search_text
@@ -935,13 +936,13 @@ class AccountsController < ApplicationController
         end
       elsif params[:type] == 'venue'
         if params[:price_from]
-          @accounts = @accounts.joins(:venue => :public_venue).where(
+          @accounts = @accounts.where(
             "(public_venues.price_for_daytime >= :price OR public_venues.price_for_nighttime >= :price)",
             {:price => params[:price_from]}
           )
         end
         if params[:price_to]
-          @accounts = @accounts.joins(:venue => :public_venue).where(
+          @accounts = @accounts.where(
             "public_venues.price_for_daytime <= :price OR public_venues.price_for_nighttime <= :price",
             {:price => params[:price_to]}
           )
@@ -965,7 +966,7 @@ class AccountsController < ApplicationController
           @accounts = @accounts.joins(:artist => :genres).where(:artist_genres => {genre: genres})
         elsif params[:type] == 'venue'
           genres = collect_genres(VenueGenre)
-          @accounts = @accounts.joins(:venue => {:public_venue => :genres}).where(:venue_genres => {genre: genres})
+          @accounts = @accounts.where(:venue_genres => {genre: genres})
         elsif params[:type] == 'fan'
           genres = collect_genres(FanGenre)
           @accounts = @accounts.joins(:fan => :genres).where(:fan_genres => {genre: genres})
@@ -987,9 +988,9 @@ class AccountsController < ApplicationController
 
     def search_capacity
       if params[:capacity_from] and params[:type] == "venue"
-        @accounts = @accounts.joins(:venue).where("venues.capacity >= :capacity", {:capacity => params[:capacity_from]})
+        @accounts = @accounts.where("venues.capacity >= :capacity", {:capacity => params[:capacity_from]})
       elsif params[:capacity_to] and params[:type] == "venue"
-        @accounts = @accounts.joins(:venue).where("venues.capacity <= :capacity", {:capacity => params[:capacity_to]})
+        @accounts = @accounts.where("venues.capacity <= :capacity", {:capacity => params[:capacity_to]})
       end
     end
 
@@ -1000,9 +1001,7 @@ class AccountsController < ApplicationController
           types_of_space.append(PublicVenue.type_of_spaces[type_of_space])
         end
 
-        @accounts = @accounts.joins(
-          :venue => :public_venue
-        ).where(public_venues: {type_of_space: types_of_space})
+        @accounts = @accounts.where(public_venues: {type_of_space: types_of_space})
       end
     end
 
