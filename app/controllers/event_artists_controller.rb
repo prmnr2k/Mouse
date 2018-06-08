@@ -45,6 +45,7 @@ class EventArtistsController < ApplicationController
     response :not_found
   end
   def send_request
+    params[:artist_id] = params[:id]
     if artist_available?
       @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
@@ -396,13 +397,13 @@ class EventArtistsController < ApplicationController
     end
 
     def send_approval(account)
-      accept_message = AcceptMessage.new(accept_message_params)
-      accept_message.save
+      @accept_message = AcceptMessage.new(accept_message_params)
+      @accept_message.save
 
       inbox_message = InboxMessage.new(name: "#{account.user_name} accepted #{@event.name} invitation", message_type: "accept")
-      inbox_message.accept_message = accept_message
+      inbox_message.accept_message = @accept_message
 
-      @event.accept_messages << accept_message
+      @event.accept_messages << @accept_message
       @event.creator.inbox_messages << inbox_message
       account.sent_messages << inbox_message
     end
@@ -443,8 +444,10 @@ class EventArtistsController < ApplicationController
     end
 
     def set_agreement
-      agreement = AgreedDateTimeAndPrice.new(agreement_params)
-      agreement.price = @message.accept_message.price
+      agreement = AgreedDateTimeAndPrice.new
+      agreement.datetime_from = params[:preferred_date_from]
+      agreement.datetime_to = params[:preferred_date_to]
+      agreement.price = @accept_message.price
       agreement.artist_event = @artist_event
       agreement.save!
     end

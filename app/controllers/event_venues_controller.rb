@@ -46,6 +46,7 @@ class EventVenuesController < ApplicationController
     response :not_found
   end
   def send_request
+    params[:venue_id] = params[:id]
     if venue_available?
       @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
@@ -389,13 +390,13 @@ class EventVenuesController < ApplicationController
   end
 
   def send_approval(account)
-    accept_message = AcceptMessage.new(accept_message_params)
-    accept_message.save
+    @accept_message = AcceptMessage.new(accept_message_params)
+    @accept_message.save
 
     inbox_message = InboxMessage.new(name: "#{account.user_name} accepted #{@event.name} invitation", message_type: "accept")
-    inbox_message.accept_message = accept_message
+    inbox_message.accept_message = @accept_message
 
-    @event.accept_messages << accept_message
+    @event.accept_messages << @accept_message
     @event.creator.inbox_messages << inbox_message
     account.sent_messages << inbox_message
   end
@@ -436,8 +437,10 @@ class EventVenuesController < ApplicationController
   end
 
   def set_agreement
-    agreement = AgreedDateTimeAndPrice.new(agreement_params)
-    agreement.price = @message.accept_message.price
+    agreement = AgreedDateTimeAndPrice.new
+    agreement.datetime_from = params[:preferred_date_from]
+    agreement.datetime_to = params[:preferred_date_to]
+    agreement.price = @accept_message.price
     agreement.venue_event = @venue_event
     agreement.save!
   end
@@ -458,10 +461,6 @@ class EventVenuesController < ApplicationController
 
   def decline_message_params
     params.permit(:reason, :additional_text)
-  end
-
-  def agreement_params
-    params.permit(:datetime_from, :datetime_to, :price)
   end
 
   def venue_available?

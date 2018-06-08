@@ -235,5 +235,8 @@ DEPENDENCIES
   tzinfo-data
   vkontakte_api
 
+RUBY VERSION
+   ruby 2.4.4p296
+
 BUNDLED WITH
-   1.16.0
+   1.16.2
