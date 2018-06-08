@@ -40,7 +40,8 @@ class AccountsController < ApplicationController
       response :ok
     end
     def get_all
-        @accounts = Account.all
+        @accounts = Account.left_joins(:venue).where("(accounts.venue_id IS NULL OR venues.venue_type=:public)",
+                                                     {:public => Venue.venue_types['public_venue']})
         @extended = false
         set_extended
         order_accounts
@@ -71,7 +72,10 @@ class AccountsController < ApplicationController
     def get_my_accounts   
        @extended = false
        set_extended
-       render json: @user.accounts.order('accounts.user_name'), extended: @extended, status: :ok
+
+       accounts = @user.accounts.left_joins(:venue).where("(accounts.venue_id IS NULL OR venues.venue_type=:public)",
+                                                           {:public => Venue.venue_types['public_venue']})
+       render json: accounts.order('accounts.user_name'), extended: @extended, status: :ok
     end
 
     # GET /accounts/images/<id>
@@ -514,7 +518,13 @@ class AccountsController < ApplicationController
       @extended = true
       set_extended
 
-      @accounts = Account.all
+      if params[:exclude_event_id]
+        @accounts= Account.left_joins(:venue).where("(accounts.venue_id IS NULL OR venues.venue_type=:public)",
+                                                     {:public => Venue.venue_types['public_venue']})
+      else
+        @accounts = Account.all
+      end
+      
       search_text
       search_type
       search_price
