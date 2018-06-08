@@ -99,7 +99,6 @@ class EventVenuesController < ApplicationController
           read_message
           @venue_event.status = 'owner_accepted'
 
-          set_agreement
           change_event_date
           change_event_funding
           change_event_address
@@ -180,6 +179,7 @@ class EventVenuesController < ApplicationController
       read_message
       @venue_event.status = 'accepted'
       send_approval(@account)
+      set_agreement
       @venue_event.save
 
       render status: :ok

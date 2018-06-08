@@ -98,7 +98,6 @@ class EventArtistsController < ApplicationController
         read_message
         @artist_event.status = 'owner_accepted'
 
-        set_agreement
         change_event_date
         change_event_funding
         send_accept_message(@artist_event.account)
@@ -184,6 +183,7 @@ class EventArtistsController < ApplicationController
       read_message
       @artist_event.status = 'accepted'
       send_approval(@artist_acc)
+      set_agreement
       @artist_event.save
 
       render status: :ok
