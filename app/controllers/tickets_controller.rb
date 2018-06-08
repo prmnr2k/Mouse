@@ -28,7 +28,7 @@ class TicketsController < ApplicationController
     param :form, :price, :integer, :required, "Ticket price"
     param :form, :count, :integer, :required, "Ticket count"
     param_list :form, :type, :string, :required, "Ticket type", ["in_person", "vr"]
-    param :form, :is_promotional, :boolean, :required, "Promotional ticket"
+    param :form, :is_promotional, :boolean, :optional, "Promotional ticket"
     param :form, :promotional_description, :string, :required, "Promotional ticket description"
     param :form, :is_for_personal_use, :boolean, :required, "Ticket for personal use"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -63,7 +63,7 @@ class TicketsController < ApplicationController
     param :form, :price, :integer, :optional, "Ticket price"
     param :form, :count, :integer, :optional, "Ticket count"
     param_list :form, :type, :string, :optional, "Ticket type", ["in_person", "vr"]
-    param :form, :is_promotional, :boolean, :required, "Promotional ticket"
+    param :form, :is_promotional, :boolean, :optional, "Promotional ticket"
     param :form, :promotional_description, :string, :required, "Promotional ticket description"
     param :form, :is_for_personal_use, :boolean, :required, "Ticket for personal use"
     param :header, 'Authorization', :string, :required, 'Authentication token'
