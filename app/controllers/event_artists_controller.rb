@@ -89,10 +89,10 @@ class EventArtistsController < ApplicationController
     if @event.artist_events.where(status: 'owner_accepted').count >= @event.artists_number
       render status: :unprocessable_entity and return
     end
-
-    if @message.is_read
-      render status: :unprocessable_entity and return
-    end
+    #TODO: check here pls
+    #if @message.is_read
+    #  render status: :unprocessable_entity and return
+    #end
 
     if @artist_event and ["accepted"].include?(@artist_event.status)
       if date_valid?
@@ -130,9 +130,10 @@ class EventArtistsController < ApplicationController
   def owner_decline
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
-    if params[:message_id] and @message.is_read
-      render status: :unprocessable_entity and return
-    end
+    #TODO: check here pls
+    #if params[:message_id] and @message.is_read
+    #  render status: :unprocessable_entity and return
+    #end
 
     if @artist_event and not ["decline"].include?(@artist_event.status)
       if params[:message_id]

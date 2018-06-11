@@ -90,10 +90,10 @@ class EventVenuesController < ApplicationController
       if @event.venue_events.where(status: 'owner_accepted').count >= Rails.configuration.number_of_venues
         render status: :unprocessable_entity and return
       end
-
-      if @message.is_read
-        render status: :unprocessable_entity and return
-      end
+      #TODO: check here pls
+      #if @message.is_read
+        #render status: :unprocessable_entity and return
+      #end
 
       if @venue_event and ["accepted"].include?(@venue_event.status)
         if date_valid?
@@ -132,9 +132,10 @@ class EventVenuesController < ApplicationController
   def owner_decline
     @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
-    if params[:message_id] and @message.is_read
-      render status: :unprocessable_entity and return
-    end
+    #TODO: check here pls
+    #if params[:message_id] and @message.is_read
+    #  render status: :unprocessable_entity and return
+    #end
 
     if @venue_event and @venue_event.status != 'owner_accepted'
       if params[:message_id]
@@ -171,7 +172,7 @@ class EventVenuesController < ApplicationController
   end
   def venue_accept
     @venue_event = @event.venue_events.find_by(venue_id: @account.id)
-
+    
     if @message.is_read
       render status: :unprocessable_entity and return
     end
