@@ -804,7 +804,8 @@ class AccountsController < ApplicationController
                 render json: @account.errors and return false if not @account.save
             end
             set_artist_genres
-            return false if not set_artist_audios
+            #check here again
+            set_artist_audios
             set_artist_albums
             set_artist_video_links
             set_artist_dates
