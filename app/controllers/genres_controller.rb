@@ -6,7 +6,7 @@ class GenresController < ApplicationController
     summary "Get genres list"
   end
   def all
-    render json: GenresHelper.all, status: :ok
+    render json: GenresHelper.readable_json, status: :ok
   end
 
   # GET /genres/artists
