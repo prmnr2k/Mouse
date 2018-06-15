@@ -78,6 +78,6 @@ class CommentsController < ApplicationController
     def authorize_account
       @user = AuthorizeHelper.authorize(request)
       @account = Account.find(params[:account_id])
-      render status: :unauthorized if @user == nil or @account.user != @user or @account.account_type != 'fan'
+      render status: :unauthorized if @user == nil or @account.user != @user
     end
 end
