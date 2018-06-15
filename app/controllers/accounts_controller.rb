@@ -612,7 +612,7 @@ class AccountsController < ApplicationController
             image = Image.new(description: params[:image_description], base64: Base64.encode64(File.read(params[:image].path)))
             image.save
             @account.image = image
-            @account.images << image
+            #@account.images << image
 
             set_image_type(image)
         end
@@ -624,7 +624,7 @@ class AccountsController < ApplicationController
             image = Image.new(description: params[:image_description], base64: params[:image_base64])
             image.save
             @account.image = image
-            @account.images << image
+            #@account.images << image
 
             set_image_type(image)
         end
@@ -880,6 +880,7 @@ class AccountsController < ApplicationController
         @artist.audio_links << objs
         @artist.save
       end
+      return true
     end
 
     def set_artist_dates
