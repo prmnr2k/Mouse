@@ -8,8 +8,8 @@ class CommentsController < ApplicationController
   swagger_api :index do
     summary "Retrieve list of comments"
     param :path, :event_id, :integer, :required, "Event id"
-    param :query, :limit, :integer, :required, "Limit"
-    param :query, :offset, :integer, :required, "Offset"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
   end
   def index
     @comments = Comment.where(event_id: params[:event_id])

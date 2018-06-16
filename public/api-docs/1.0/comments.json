@@ -22,14 +22,14 @@
               "name": "limit",
               "type": "integer",
               "description": "Limit",
-              "required": true
+              "required": false
             },
             {
               "paramType": "query",
               "name": "offset",
               "type": "integer",
               "description": "Offset",
-              "required": true
+              "required": false
             }
           ],
           "nickname": "Comments#index",
