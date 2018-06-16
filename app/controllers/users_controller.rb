@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def get_me
-    render json: @user, except: :password
+      render json: @user, serializer: UsersSerializer
   end
 
   # POST /users/create
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
       user.delete("password")
 
       set_base64_image
-      render json: user, except: :password, status: :created
+      render json: user,  serializer: UsersSerializer, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -49,11 +49,11 @@ class UsersController < ApplicationController
 
   # PUT /users/update/<id>
   def update
-    if @user.update(user_update_params)
-      render json: @user, except: :password, status: :ok
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
+      if @user.update(user_update_params)
+          render json: @user, serializer: UsersSerializer, status: :ok
+      else
+          render json: @user.errors, status: :unprocessable_entity
+      end
   end
 
   # PUT /users/update_me
@@ -77,14 +77,14 @@ class UsersController < ApplicationController
       @phone_validation = PhoneValidation.find_by(phone: params[:register_phone])
       render json: {register_phone: [:NOT_VALIDATED]}, status: :unprocessable_entity and return if not @phone_validation or @phone_validation.is_validated == false
     end
-
+    
     if @user.update(user_update_params)
       set_base64_image
 
-      render json: @user, except: :password, status: :ok
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
+      render json: @user, serializer: UsersSerializer, status: :ok
+      else
+          render json: @user.errors, status: :unprocessable_entity
+      end
   end
 
   # DELETE /users/1
@@ -96,6 +96,8 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+
+    render status: :ok
   end
 
   private
