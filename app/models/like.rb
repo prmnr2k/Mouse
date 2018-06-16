@@ -14,7 +14,7 @@ class Like < ApplicationRecord
       res.delete('updated_at')
       res.delete('id')
       res[:event] = event.as_json(only: [:id, :name])
-      res[:account] = account.as_json(only: [:id, :user_name, :image_id])
+      res[:account] = account.as_json(only: [:id, :user_name, :image_id, :display_name])
     end
     return res
   end
