@@ -21,6 +21,18 @@ class ArtistEvent < ApplicationRecord
 
   def as_json(options={})
     res = super
+
+    if options[:dates]
+      res.delete("id")
+      res.delete("artist_id")
+      res.delete("status")
+      res.delete("created_at")
+      res.delete("updated_at")
+      res[:date] = event.date_from
+
+      return res
+    end
+
     res.delete('id')
     res.delete('event_id')
 

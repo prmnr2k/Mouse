@@ -2,7 +2,6 @@ class Artist < ApplicationRecord
     has_many :genres, foreign_key: 'artist_id', class_name: 'ArtistGenre'
 
     has_one :account
-    has_many :events
     has_many :audio_links
     has_many :artist_albums
     has_many :artist_riders
@@ -30,6 +29,10 @@ class Artist < ApplicationRecord
 
             if options[:my]
                 res[:available_dates] = available_dates
+                res[:events_dates] = account.artist_events.joins(:event).where(
+                  artist_events: {status: [ArtistEvent.statuses['owner_accepted'], ArtistEvent.statuses['active']]},
+                  events: {is_active: true}
+                ).as_json(dates: true)
                 res[:artist_riders] = artist_riders
                 res[:preferred_venues] = artist_preferred_venues
             end
