@@ -36,7 +36,7 @@ class FeedController < ApplicationController
       e[:action] = ''
     end
 
-    event_updates = EventUpdate.joins(:event).where(
+    event_updates = EventUpdate.left_joins(:event => :comments).where(
       :events => {creator_id: following, is_active: true}
     ).as_json(feed: true)
     event_updates.each do |e|

@@ -9,6 +9,7 @@ class EventUpdate < ApplicationRecord
         if options[:feed]
             res[:event] = event.as_json(only: [:id, :name])
             res[:account] = event.creator.as_json(:only => [:id, :user_name, :image_id])
+            res[:comments] = event.comments.count
 
             res.delete('user_id')
             res.delete('event_id')
