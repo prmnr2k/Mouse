@@ -87,7 +87,7 @@ class EventArtistsController < ApplicationController
     @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
     if @event.artist_events.where(status: 'owner_accepted').count >= @event.artists_number
-      render status: :unprocessable_entity and return
+      render json: {errors: "Full event"}, status: :unprocessable_entity and return
     end
     #TODO: check here pls
     #if @message.is_read
@@ -106,7 +106,7 @@ class EventArtistsController < ApplicationController
 
         render status: :ok
       else
-        render status: :unprocessable_entity
+        render json: {errors: "Invalid date"}, status: :unprocessable_entity
       end
     else
       render status: :not_found
