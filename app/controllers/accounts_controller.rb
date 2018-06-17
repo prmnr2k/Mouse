@@ -866,7 +866,7 @@ class AccountsController < ApplicationController
       if params[:audio_links]
         objs = []
         params[:audio_links].each do |link|
-          if link["audio_link"].start_with?("https://open.spotify.com/")
+          if link["audio_link"].start_with?("https://soundcloud.com/")
             obj = AudioLink.new(artist_audio_params(link))
             obj.save
             objs << obj

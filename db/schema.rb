@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180510092659) do
+ActiveRecord::Schema.define(version: 20180616111735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,8 +178,8 @@ ActiveRecord::Schema.define(version: 20180510092659) do
     t.integer "event_id"
     t.integer "account_id"
     t.string "text"
-    t.datetime "created_at", default: "2018-02-09 20:31:48", null: false
-    t.datetime "updated_at", default: "2018-02-09 20:31:48", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "decline_messages", force: :cascade do |t|
