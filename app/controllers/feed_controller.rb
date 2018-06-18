@@ -38,14 +38,14 @@ class FeedController < ApplicationController
 
     event_updates = EventUpdate.left_joins(:event => :comments).where(
       :events => {creator_id: following, is_active: true}
-    ).as_json(feed: true)
+    ).as_json(feed: true, user: @user)
     event_updates.each do |e|
       e[:type] = "event update"
       e[:action] = "#{e['action']} #{e['field']}"
       e.delete('field')
     end
     #
-    @feed = likes.concat(event_updates).sort_by{|u| u[:created_at]}
+    @feed = likes.concat(event_updates).sort_by{|u| u[:created_at]}.reverse
 
     render json: @feed
   end

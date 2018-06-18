@@ -10,6 +10,8 @@ class EventUpdate < ApplicationRecord
             res[:event] = event.as_json(only: [:id, :name])
             res[:account] = event.creator.as_json(:only => [:id, :user_name, :image_id])
             res[:comments] = event.comments.count
+            res[:likes] = event.likes.count
+            res[:is_liked] = event.likes.where(user_id: options[:user].id).exists?
 
             res.delete('user_id')
             res.delete('event_id')

@@ -414,7 +414,7 @@ class EventsController < ApplicationController
     end
 
   def check_params
-    if params[:date_from] or params[:date_to] and @event.is_crowdfunding_event
+    if (params[:date_from] or params[:date_to]) and @event.is_crowdfunding_event
       founded = @event.tickets.joins(:fan_tickets).sum("fan_tickets.price")
 
       return :forbidden if founded >= @event.funding_goal
