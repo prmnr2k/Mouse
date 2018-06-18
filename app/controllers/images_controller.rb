@@ -74,18 +74,23 @@ class ImagesController < ApplicationController
   end
   def delete_image
       @image = Image.find(params[:id])
-      if @image.account_id != nil and @image.account.user == @user and @image.account == @account
+      if @account.image_id == @image.id
+        @account.image = nil
+        @image.destroy
+        @account.save
+        render json: @account, status: :ok and return
+      elsif @image.account_id != nil and @image.account.user == @user and @image.account == @account
         @account.image = nil if @account.image == @image
         @image.destroy
         @account.save
-        render json: @account, status: :ok
+        render json: @account, status: :ok and return
       elsif @image.event_id != nil and @image.event.creator.user == @user and @image.event.creator == @account
         _event = @image.event
 
         _event.image = nil if _event.image == @image
         @image.destroy
         _event.save
-        render json: _event, status: :ok
+        render json: _event, status: :ok and return
       else
         render status: :forbidden
       end

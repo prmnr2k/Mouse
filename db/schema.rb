@@ -127,8 +127,8 @@ ActiveRecord::Schema.define(version: 20180617202104) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lng"
     t.float "lat"
+    t.float "lng"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
