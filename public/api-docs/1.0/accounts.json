@@ -473,9 +473,9 @@
             },
             {
               "paramType": "form",
-              "name": "available_dates",
+              "name": "disable_dates",
               "type": "string",
-              "description": "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]",
+              "description": "Artist disable dates [{'date': ''}, {...}]",
               "required": false
             },
             {
@@ -1189,9 +1189,9 @@
             },
             {
               "paramType": "form",
-              "name": "available_dates",
+              "name": "disable_dates",
               "type": "string",
-              "description": "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]",
+              "description": "Artist disable dates [{'date': ''}, {...}]",
               "required": false
             },
             {
