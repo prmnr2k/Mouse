@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180617202104) do
+ActiveRecord::Schema.define(version: 20180619153248) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,8 +75,7 @@ ActiveRecord::Schema.define(version: 20180617202104) do
 
   create_table "artist_dates", force: :cascade do |t|
     t.integer "artist_id"
-    t.date "begin_date"
-    t.date "end_date"
+    t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -127,8 +126,8 @@ ActiveRecord::Schema.define(version: 20180617202104) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lat"
     t.float "lng"
+    t.float "lat"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"

@@ -28,7 +28,7 @@ class Artist < ApplicationRecord
             end
 
             if options[:my]
-                res[:available_dates] = available_dates
+                res[:disable_dates] = available_dates
                 res[:events_dates] = account.artist_events.joins(:event).where(
                   artist_events: {status: [ArtistEvent.statuses['owner_accepted'], ArtistEvent.statuses['active']]},
                   events: {is_active: true}
