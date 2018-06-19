@@ -6,7 +6,7 @@ class Artist < ApplicationRecord
     has_many :artist_albums
     has_many :artist_riders
     has_many :artist_preferred_venues
-    has_many :available_dates, foreign_key: 'artist_id', class_name: ArtistDate
+    has_many :disable_dates, foreign_key: 'artist_id', class_name: ArtistDate
     has_many :artist_videos
 
     geocoded_by :preferred_address, latitude: :lat, longitude: :lng
@@ -28,7 +28,7 @@ class Artist < ApplicationRecord
             end
 
             if options[:my]
-                res[:disable_dates] = available_dates
+                res[:disable_dates] = disable_dates
                 res[:events_dates] = account.artist_events.joins(:event).where(
                   artist_events: {status: [ArtistEvent.statuses['owner_accepted'], ArtistEvent.statuses['active']]},
                   events: {is_active: true}

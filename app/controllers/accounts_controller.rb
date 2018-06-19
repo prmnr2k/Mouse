@@ -326,7 +326,7 @@ class AccountsController < ApplicationController
       param :form, :artist_email, :string, :optional, "Artist's email"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]"
       param :form, :artist_albums, :string, :optional, "Array of artist albums objects [{'album_name': '', 'album_artwork': '', 'album_link': ''}, {...}]"
-      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]"
+      param :form, :disable_dates, :string, :optional, "Artist disable dates [{'date': ''}, {...}]"
       param :form, :performance_min_time, :integer, :optional, "Artist min time to perform (hr)"
       param :form, :performance_max_time, :integer, :optional, "Artist max time to perform (hr)"
       param :form, :price_from, :integer, :optional, "Artist min price to perform"
@@ -447,7 +447,7 @@ class AccountsController < ApplicationController
       param :form, :artist_email, :string, :optional, "Artist's email"
       param :form, :audio_links, :string, :optional, "Array of links to audio of artist [{'song_name': '', 'album_name': '', 'audio_link': ''}, {...}]"
       param :form, :artist_albums, :string, :optional, "Array of artist albums objects [{'album_name': '', 'album_artwork': '', 'album_link': ''}, {...}]"
-      param :form, :available_dates, :string, :optional, "Artist available dates [{'begin_date': '', 'end_date': ''}, {...}]"
+      param :form, :disable_dates, :string, :optional, "Artist disable dates [{'date': ''}, {...}]"
       param :form, :performance_min_time, :integer, :optional, "Artist min time to perform (hr)"
       param :form, :performance_max_time, :integer, :optional, "Artist max time to perform (hr)"
       param :form, :price_from, :integer, :optional, "Artist min price to perform"
@@ -908,12 +908,12 @@ class AccountsController < ApplicationController
     end
 
     def set_artist_dates
-      if params[:available_dates]
-        @artist.available_dates.clear
-        params[:available_dates].each do |date_range|
+      if params[:disable_dates]
+        @artist.disable_dates.clear
+        params[:disable_dates].each do |date_range|
           obj = ArtistDate.new(artist_dates_params(date_range))
           obj.save
-          @artist.available_dates << obj
+          @artist.disable_dates << obj
         end
         @artist.save
       end
@@ -1130,7 +1130,7 @@ class AccountsController < ApplicationController
     end
 
     def artist_dates_params(date)
-      date.permit(:begin_date, :end_date)
+      date.permit(:date)
     end
 
     def artist_video_params(video)
