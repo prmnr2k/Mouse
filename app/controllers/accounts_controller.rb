@@ -147,8 +147,8 @@ class AccountsController < ApplicationController
       response :not_found
     end
     def upload_image
-        set_image
-        set_base64_image
+        set_image_gallery
+        set_base64_image_gallery
         render json: @account, status: :ok
     end
 
@@ -626,8 +626,32 @@ class AccountsController < ApplicationController
             @account.image = image
             #@account.images << image
 
-            set_image_type(image)
+            #set_image_type(image)
         end
+    end
+
+    def set_image_gallery
+      if params[:image]
+        #@account.image.delete if @account.image != nil
+        image = Image.new(description: params[:image_description], base64: Base64.encode64(File.read(params[:image].path)))
+        image.save
+        #@account.image = image
+        @account.images << image
+
+        set_image_type(image)
+      end
+    end
+
+    def set_base64_image_gallery
+      if params[:image_base64]
+        #@account.image.delete if @account.image != nil
+        image = Image.new(description: params[:image_description], base64: params[:image_base64])
+        image.save
+        #@account.image = image
+        @account.images << image
+
+        set_image_type(image)
+      end
     end
 
     def set_image_type(image)
