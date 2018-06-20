@@ -131,6 +131,7 @@ class UsersController < ApplicationController
       image = Image.new(base64: params[:image_base64])
       image.save
       @user.image = image
+      @user.save
     end
   end
 end
