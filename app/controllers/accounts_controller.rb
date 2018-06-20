@@ -313,6 +313,7 @@ class AccountsController < ApplicationController
       param :form, :city, :string, :optional, "Venue (public only) city"
       param :form, :state, :string, :optional, "Venue (public only) state"
       param :form, :zipcode, :integer, :optional, "Venue (public only) zipcode"
+      param :form, :other_address, :string, :optional, "Venue (public only) other address"
       param :form, :minimum_notice, :integer, :optional, "Venue (public only) minimum notice time"
       param :form, :is_flexible, :boolean, :optional, "Is venue (public only) time flexible"
       param :form, :price_for_daytime, :integer, :optional, "Venue (public only) price for daytime"
@@ -434,6 +435,7 @@ class AccountsController < ApplicationController
       param :form, :city, :string, :optional, "Venue (public only) city"
       param :form, :state, :string, :optional, "Venue (public only) state"
       param :form, :zipcode, :integer, :optional, "Venue (public only) zipcode"
+      param :form, :other_address, :string, :optional, "Venue (public only) other address"
       param :form, :minimum_notice, :integer, :optional, "Venue (public only) minimum notice time"
       param :form, :is_flexible, :boolean, :optional, "Is venue (public only) time flexible"
       param :form, :price_for_daytime, :integer, :optional, "Venue (public only) price for daytime"
@@ -1087,7 +1089,7 @@ class AccountsController < ApplicationController
                     :num_of_bathrooms, :min_age, :has_bar, :located, :dress_code, :audio_description,
                     :lighting_description, :stage_description, :type_of_space, :price, :country, :city,
                     :state, :zipcode, :minimum_notice, :is_flexible, :price_for_daytime, :price_for_nighttime,
-                    :performance_time_from, :performance_time_to, :other_genre_description)
+                    :performance_time_from, :performance_time_to, :other_genre_description, :other_address)
     end
     
     def venue_dates_params(date)

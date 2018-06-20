@@ -28,6 +28,7 @@ class PublicVenue < ApplicationRecord
     attrs[:city] = city
     attrs[:state] = state
     attrs[:zipcode] = zipcode
+    attrs[:other_address] = other_address
     attrs[:minimum_notice] = minimum_notice
     attrs[:is_flexible] = is_flexible
     attrs[:price_for_daytime] = price_for_daytime

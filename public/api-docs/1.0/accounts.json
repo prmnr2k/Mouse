@@ -382,6 +382,13 @@
             },
             {
               "paramType": "form",
+              "name": "other_address",
+              "type": "string",
+              "description": "Venue (public only) other address",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "minimum_notice",
               "type": "integer",
               "description": "Venue (public only) minimum notice time",
@@ -1094,6 +1101,13 @@
               "name": "zipcode",
               "type": "integer",
               "description": "Venue (public only) zipcode",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "other_address",
+              "type": "string",
+              "description": "Venue (public only) other address",
               "required": false
             },
             {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180619153248) do
+ActiveRecord::Schema.define(version: 20180620195058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -375,6 +375,7 @@ ActiveRecord::Schema.define(version: 20180619153248) do
     t.time "performance_time_from"
     t.time "performance_time_to"
     t.string "other_genre_description"
+    t.string "other_address", default: ""
   end
 
   create_table "questions", force: :cascade do |t|
