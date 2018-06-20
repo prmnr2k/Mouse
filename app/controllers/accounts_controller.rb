@@ -138,8 +138,8 @@ class AccountsController < ApplicationController
       param :form, :image, :file, :optional, "Image to upload"
       param :form, :image_base64, :string, :optional, "Image base64 string"
       param :form, :image_description, :string, :optional, "Image description"
-      param_list :form, :image_type, :string, :optional, "Image type", ["night_club", "concert_hall", "event_space", "theatre", "additional_room",
-                                                                        "stadium_arena", "outdoor_space", "other"]
+      param_list :form, :image_type, :string, :optional, "Image type",
+                 ["outside_venue", "stage", "seating", "bar", "audience", "dressing_room", "other"]
       param :form, :image_type_description, :string, :optional, "Image other type description"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity

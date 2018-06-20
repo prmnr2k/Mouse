@@ -2,7 +2,7 @@ class ImageType < ApplicationRecord
   enum image_type: [:outside_venue, :stage, :seating, :bar, :audience, :dressing_room, :other]
   validates :image_type, presence: true
 
-  belongs_to :image
+  belongs_to :image, optional: true
 
   def as_json(options={})
     res = super
