@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180620195058) do
+ActiveRecord::Schema.define(version: 20180620201746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -418,6 +418,8 @@ ActiveRecord::Schema.define(version: 20180620195058) do
     t.string "video"
     t.boolean "is_promotional", default: false
     t.string "promotional_description"
+    t.datetime "promotional_date_from"
+    t.datetime "promotional_date_to"
   end
 
   create_table "tickets_types", force: :cascade do |t|

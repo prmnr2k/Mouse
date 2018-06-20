@@ -29,7 +29,9 @@ class TicketsController < ApplicationController
     param :form, :count, :integer, :required, "Ticket count"
     param_list :form, :type, :string, :required, "Ticket type", ["in_person", "vr"]
     param :form, :is_promotional, :boolean, :optional, "Promotional ticket"
-    param :form, :promotional_description, :string, :required, "Promotional ticket description"
+    param :form, :promotional_description, :string, :optional, "Promotional ticket description"
+    param :form, :promotional_date_from, :datetime, :optional, "Promotional ticket description"
+    param :form, :promotional_date_to, :datetime, :optional, "Promotional ticket description"
     param :form, :is_for_personal_use, :boolean, :required, "Ticket for personal use"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -64,7 +66,9 @@ class TicketsController < ApplicationController
     param :form, :count, :integer, :optional, "Ticket count"
     param_list :form, :type, :string, :optional, "Ticket type", ["in_person", "vr"]
     param :form, :is_promotional, :boolean, :optional, "Promotional ticket"
-    param :form, :promotional_description, :string, :required, "Promotional ticket description"
+    param :form, :promotional_description, :string, :optional, "Promotional ticket description"
+    param :form, :promotional_date_from, :datetime, :optional, "Promotional ticket description"
+    param :form, :promotional_date_to, :datetime, :optional, "Promotional ticket description"
     param :form, :is_for_personal_use, :boolean, :required, "Ticket for personal use"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -160,7 +164,7 @@ class TicketsController < ApplicationController
 
     def ticket_params
       params.permit(:name, :price, :description, :count, :is_promotional, :promotional_description,
-                    :is_for_personal_use, :event_id)
+                    :promotional_date_from, :promotional_date_to, :is_for_personal_use, :event_id)
     end
 
     def authorize_account

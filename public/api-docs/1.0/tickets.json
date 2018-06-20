@@ -78,7 +78,21 @@
               "name": "promotional_description",
               "type": "string",
               "description": "Promotional ticket description",
-              "required": true
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "promotional_date_from",
+              "type": "datetime",
+              "description": "Promotional ticket description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "promotional_date_to",
+              "type": "datetime",
+              "description": "Promotional ticket description",
+              "required": false
             },
             {
               "paramType": "form",
@@ -250,7 +264,21 @@
               "name": "promotional_description",
               "type": "string",
               "description": "Promotional ticket description",
-              "required": true
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "promotional_date_from",
+              "type": "datetime",
+              "description": "Promotional ticket description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "promotional_date_to",
+              "type": "datetime",
+              "description": "Promotional ticket description",
+              "required": false
             },
             {
               "paramType": "form",
