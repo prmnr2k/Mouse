@@ -23,7 +23,7 @@ class Event < ApplicationRecord
   has_many :tickets, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
-  has_many :event_updates
+  has_many :event_updates, dependent: :destroy
 
   belongs_to :venue, class_name: 'Account', optional: true
 
