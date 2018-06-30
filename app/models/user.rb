@@ -11,12 +11,11 @@ class User < ApplicationRecord
 	validate :check_old, if: :password_changed?, on: :update
 	attr_accessor :old_password
 
-
     has_many :tokens, dependent: :destroy	
 	has_many :accounts, dependent: :destroy
 	has_many :likes, dependent: :destroy
 
-		belongs_to :image, optional: true
+	belongs_to :image, optional: true
 
 	#has_and_belongs_to_many :accesses, dependent: :destroy
 

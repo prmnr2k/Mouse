@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20180620202440) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lng"
     t.float "lat"
+    t.float "lng"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
@@ -301,6 +301,16 @@ ActiveRecord::Schema.define(version: 20180620202440) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "history_actions", force: :cascade do |t|
+    t.integer "action"
+    t.integer "object_type"
+    t.integer "field"
+    t.integer "object_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "account_id"
   end
 
   create_table "image_types", force: :cascade do |t|
