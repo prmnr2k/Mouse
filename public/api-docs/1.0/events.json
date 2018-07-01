@@ -1,7 +1,7 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-  "basePath": "https://mouse-back.herokuapp.com",
+  "basePath": "http://localhost:3000",
   "resourcePath": "events",
   "apis": [
     {
@@ -401,6 +401,13 @@
             },
             {
               "paramType": "form",
+              "name": "additional_costs",
+              "type": "integer",
+              "description": "Additional cost",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "genres",
               "type": "string",
               "description": "Genres list ['pop', 'rock', ...]",
@@ -653,6 +660,13 @@
               "name": "artists_number",
               "type": "integer",
               "description": "Event artists number",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "additional_costs",
+              "type": "integer",
+              "description": "Additional cost",
               "required": false
             },
             {
