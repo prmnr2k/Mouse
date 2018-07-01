@@ -1,6 +1,7 @@
 class TicketsController < ApplicationController
   before_action :auth_creator_and_set_event
   before_action :set_ticket, only: [:show, :update, :destroy]
+  before_action :before_change_tickets, only: [:update, :create]
 
   swagger_controller :tickets, "Tickets"
 
@@ -131,6 +132,17 @@ class TicketsController < ApplicationController
       elsif params[:type] == "vr" and @event.has_vr == false
         @event.has_vr = true
         @event.save!
+      end
+    end
+
+    def before_change_tickets
+      tickets_count = @event.tickets.joins(:tickets_type).where(tickets_types: {name: params[:type]}).sum('tickets.count')
+      tickets_count += params[:count].to_i
+
+      if params[:type] == 'in_person' and tickets_count > @event.venue.venue.capacity.to_i
+        render json: {error: "Tickets limit expired"}, status: :unprocessable_entity and return
+      elsif params[:type] == 'vr' and tickets_count > @event.venue.venue.vr_capacity.to_i
+        render json: {error: "Tickets limit expired"}, status: :unprocessable_entity and return
       end
     end
 
