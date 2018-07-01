@@ -2,7 +2,7 @@ class User < ApplicationRecord
 
     validates :email, presence: true, uniqueness: true
 	validates :register_phone, uniqueness: true, allow_nil: true
-	validates :password, length: {:within => 6..100} #, confirmation: true
+	validates :password, length: {:within => 6..100}, :allow_blank => true #, confirmation: true
 
 	before_save :encrypt, if: :password_changed?
 	validates_confirmation_of :password, message: 'NOT_MATCHED'
