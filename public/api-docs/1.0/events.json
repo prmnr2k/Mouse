@@ -401,7 +401,7 @@
             },
             {
               "paramType": "form",
-              "name": "additional_costs",
+              "name": "additional_cost",
               "type": "integer",
               "description": "Additional cost",
               "required": false
@@ -671,7 +671,7 @@
             },
             {
               "paramType": "form",
-              "name": "additional_costs",
+              "name": "additional_cost",
               "type": "integer",
               "description": "Additional cost",
               "required": false
