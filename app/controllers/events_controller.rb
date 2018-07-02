@@ -76,6 +76,7 @@ class EventsController < ApplicationController
     param :form, :address, :string, :optional, "Event address"
     param :form, :artists_number, :integer, :optional, "Event artists number"
     param :form, :additional_costs, :integer, :optional, "Additional cost"
+    param :form, :family_and_friends_amount, :integer, :optional, "Family and friends amount"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -126,6 +127,7 @@ class EventsController < ApplicationController
     param :form, :address, :string, :optional, "Event address"
     param :form, :artists_number, :integer, :optional, "Event artists number"
     param :form, :additional_costs, :integer, :optional, "Additional cost"
+    param :form, :family_and_friends_amount, :integer, :optional, "Family and friends amount"
     param :form, :genres, :string, :optional, "Genres list ['pop', 'rock', ...]"
     param :form, :collaborators, :string, :optional, "Collaborators list [1,2,3, ...]"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -443,7 +445,8 @@ class EventsController < ApplicationController
       params.permit(:name, :tagline, :hashtag, :description, :funding_from, :funding_to,
                     :funding_goal, :comments_available, :updates_available, :date_from, :date_to,
                     :event_season, :event_year, :event_length, :event_time, :is_crowdfunding_event,
-                    :city_lat, :city_lng, :address, :artists_number, :video_link, :additional_costs)
+                    :city_lat, :city_lng, :address, :artists_number, :video_link, :additional_costs,
+                    :family_and_friends_amount)
     end
 
     def authorize

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180620202440) do
+ActiveRecord::Schema.define(version: 20180702101640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 20180620202440) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lat"
     t.float "lng"
+    t.float "lat"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
@@ -251,6 +251,8 @@ ActiveRecord::Schema.define(version: 20180620202440) do
     t.datetime "old_date_to"
     t.string "hashtag"
     t.integer "additional_cost"
+    t.boolean "has_private_venue"
+    t.integer "family_and_friends_amount"
   end
 
   create_table "fan_genres", force: :cascade do |t|
@@ -301,16 +303,6 @@ ActiveRecord::Schema.define(version: 20180620202440) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
   end
 
   create_table "image_types", force: :cascade do |t|

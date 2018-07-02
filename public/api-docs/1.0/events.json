@@ -408,6 +408,13 @@
             },
             {
               "paramType": "form",
+              "name": "family_and_friends_amount",
+              "type": "integer",
+              "description": "Family and friends amount",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "genres",
               "type": "string",
               "description": "Genres list ['pop', 'rock', ...]",
@@ -667,6 +674,13 @@
               "name": "additional_costs",
               "type": "integer",
               "description": "Additional cost",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "family_and_friends_amount",
+              "type": "integer",
+              "description": "Family and friends amount",
               "required": false
             },
             {
