@@ -109,6 +109,7 @@ class EventsController < ApplicationController
     param :form, :video_link, :string, :optional, "Event video"
     param :form, :name, :string, :optional, "Event name"
     param :form, :tagline, :string, :optional, "Tagline"
+    param :form, :hashtag, :string, :optional, "Hashtag"
     param :form, :description, :string, :optional, "Short description"
     param :form, :funding_from, :datetime, :optional, "Finding duration from"
     param :form, :funding_to, :datetime, :optional, "Finding duration to"

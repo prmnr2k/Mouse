@@ -535,6 +535,13 @@
             },
             {
               "paramType": "form",
+              "name": "hashtag",
+              "type": "string",
+              "description": "Hashtag",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "description",
               "type": "string",
               "description": "Short description",
