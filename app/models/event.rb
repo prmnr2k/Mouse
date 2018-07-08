@@ -5,6 +5,7 @@ class Event < ApplicationRecord
 
   enum event_season: [:spring, :summer, :autumn, :winter]
   enum event_time: [:morning, :afternoon, :evening]
+  enum status: StatusHelper.events
 
   has_many :event_collaborators, foreign_key: 'event_id'
   has_many :collaborators, through: :event_collaborators, class_name: 'Account'

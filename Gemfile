@@ -52,4 +52,6 @@ gem 'vkontakte_api'
 
 gem "paperclip"
 
-gem 'twilio-ruby' 
+gem 'twilio-ruby'
+
+gem 'active_model_serializers', '~> 0.10.0', require: true

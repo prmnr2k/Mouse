@@ -1,5 +1,5 @@
 class VenueEvent < ApplicationRecord
-  enum status: StatusHelper.all
+  enum status: StatusHelper.invites
 
   belongs_to :event
   belongs_to :account, foreign_key: :venue_id

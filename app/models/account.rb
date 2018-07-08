@@ -3,6 +3,7 @@ class Account < ApplicationRecord
 	validates :account_type, presence: true
 
 	enum account_type: [:venue, :artist, :fan]
+	enum status: StatusHelper.accounts
 
 	validates :user_name, presence: true, uniqueness: true, length: {:within => 3..30}
 

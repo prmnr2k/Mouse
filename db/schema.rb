@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180702101640) do
+ActiveRecord::Schema.define(version: 20180707172802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20180702101640) do
     t.string "user_name"
     t.string "display_name"
     t.boolean "is_verified", default: false
+    t.integer "status", default: 0
   end
 
   create_table "agreed_date_time_and_prices", force: :cascade do |t|
@@ -253,6 +254,7 @@ ActiveRecord::Schema.define(version: 20180702101640) do
     t.integer "additional_cost"
     t.boolean "has_private_venue"
     t.integer "family_and_friends_amount"
+    t.integer "status", default: 0
   end
 
   create_table "fan_genres", force: :cascade do |t|
@@ -460,6 +462,7 @@ ActiveRecord::Schema.define(version: 20180702101640) do
     t.string "last_name"
     t.string "user_name"
     t.integer "image_id"
+    t.boolean "is_superuser", default: false
   end
 
   create_table "venue_dates", force: :cascade do |t|

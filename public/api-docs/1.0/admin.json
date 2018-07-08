@@ -1,0 +1,160 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://localhost:3000",
+  "resourcePath": "admin",
+  "apis": [
+    {
+      "path": "/admin/statuses.json",
+      "operations": [
+        {
+          "summary": "Retrieve statuses values",
+          "nickname": "Admin#statuses",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/new_accounts_count.json",
+      "operations": [
+        {
+          "summary": "Get number of new accounts in the system",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Admin#new_accounts_count",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/accounts/requests.json",
+      "operations": [
+        {
+          "summary": "Get all account requests",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "account_type",
+              "type": "string",
+              "description": "Type of accounts",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "all",
+                  "artist",
+                  "fan",
+                  "venue"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Admin#account_requests",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/events/requests.json",
+      "operations": [
+        {
+          "summary": "Get all event requests",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Admin#event_requests",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/make_superuser.json",
+      "operations": [
+        {
+          "summary": "Give user a superuser role",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            }
+          ],
+          "nickname": "Admin#make_superuser",
+          "method": "post"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

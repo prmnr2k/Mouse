@@ -126,4 +126,11 @@ Rails.application.routes.draw do
       post :create_many, path: "many"
     end
   end
+
+  # admin routes
+  get 'admin/statuses', action: :statuses, controller: 'admin'
+  get 'admin/new_accounts_count', action: :new_accounts_count, controller: 'admin'
+  get 'admin/accounts/requests', action: :account_requests, controller: 'admin'
+  get 'admin/events/requests', action: :event_requests, controller: 'admin'
+  post 'admin/make_superuser', action: :make_superuser, controller: 'admin'
 end
