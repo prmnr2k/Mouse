@@ -21,13 +21,13 @@ class FanTicketsController < ApplicationController
       @events = Event.joins(:tickets => :fan_tickets).where(
         fan_tickets: {account_id: params[:account_id]}
       ).where(
-        "(events.date_from >= :date OR events.date_from IS NULL)", {:date => DateTime.now}
+        "(events.date_to >= :date OR events.date_to IS NULL)", {:date => DateTime.now}
       ).group("events.id")
     else
       @events = Event.joins(:tickets => :fan_tickets).where(
         fan_tickets: {account_id: params[:account_id]}
       ).where(
-        "events.date_from < :date", {:date => DateTime.now}
+        "events.date_to < :date", {:date => DateTime.now}
       ).group("events.id")
 
     end
