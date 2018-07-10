@@ -21,8 +21,12 @@ class PhoneValidationsController < ApplicationController
     response :unprocessable_entity
   end
   def create
-    @phone_validation = PhoneValidation.new(phone_validation_params)
+    phone_validation = PhoneValidation.find_by(phone_validation_params)
+    if phone_validation != nil and phone_validation.is_validated == true
+      render json: {errors: "Already validated"}, status: :unprocessable_entity and return
+    end
 
+    @phone_validation = PhoneValidation.find_or_create_by(phone_validation_params)
     @phone_validation.code = '0000'
     @phone_validation.is_validated = false
     if @phone_validation.save
