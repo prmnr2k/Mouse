@@ -97,6 +97,39 @@
       ]
     },
     {
+      "path": "/admin/accounts/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve account by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Account id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Admin#get_account",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/events/requests.json",
       "operations": [
         {
@@ -132,6 +165,39 @@
             }
           ],
           "nickname": "Admin#event_requests",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/events/{id}.json",
+      "operations": [
+        {
+          "summary": "Retrieve event by id",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Event id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "Admin#get_event",
           "method": "get"
         }
       ]

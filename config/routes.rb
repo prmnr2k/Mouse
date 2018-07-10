@@ -131,6 +131,8 @@ Rails.application.routes.draw do
   get 'admin/statuses', action: :statuses, controller: 'admin'
   get 'admin/new_accounts_count', action: :new_accounts_count, controller: 'admin'
   get 'admin/accounts/requests', action: :account_requests, controller: 'admin'
+  get 'admin/accounts/:id', action: :get_account, controller: 'admin'
   get 'admin/events/requests', action: :event_requests, controller: 'admin'
+  get 'admin/events/:id', action: :get_event, controller: 'admin'
   post 'admin/make_superuser', action: :make_superuser, controller: 'admin'
 end

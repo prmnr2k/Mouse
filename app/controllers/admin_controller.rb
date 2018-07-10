@@ -58,6 +58,17 @@ class AdminController < ApplicationController
            status: :ok
   end
 
+  # GET admin/accounts/<id>
+  swagger_api :get_account do
+    summary "Retrieve account by id"
+    param :path, :id, :integer, :required, "Account id"
+    param :header, 'Authorization', :string, :optional, 'Authentication token'
+    response :not_found
+  end
+  def get_account
+    render json: Account.find(params[:id]), extended: true, my: true, status: :ok
+  end
+
   # GET admin/events/requests
   swagger_api :event_requests do
     summary "Get all event requests"
@@ -73,6 +84,18 @@ class AdminController < ApplicationController
            each_serializer: AdminEventSerializer,
            status: :ok
   end
+
+  # GET admin/events/1
+  swagger_api :get_event do
+    summary "Retrieve event by id"
+    param :path, :id, :integer, :required, "Event id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :ok
+  end
+  def get_event
+    render json: Event.find(params[:id]), extended: true, status: :ok
+  end
+
 
   private
   def authorize_admin
