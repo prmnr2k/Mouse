@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180707172802) do
+ActiveRecord::Schema.define(version: 20180710143945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -467,13 +467,12 @@ ActiveRecord::Schema.define(version: 20180707172802) do
 
   create_table "venue_dates", force: :cascade do |t|
     t.integer "venue_id"
-    t.date "begin_date"
-    t.date "end_date"
-    t.integer "is_available"
-    t.integer "price"
-    t.integer "booking_notice"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "date"
+    t.integer "price_for_daytime"
+    t.integer "price_for_nighttime"
+    t.boolean "is_available", default: true
   end
 
   create_table "venue_emails", force: :cascade do |t|

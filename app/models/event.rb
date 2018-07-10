@@ -26,7 +26,7 @@ class Event < ApplicationRecord
   has_many :likes, foreign_key: 'event_id', dependent: :destroy
   has_many :event_updates, dependent: :destroy
 
-  belongs_to :venue, class_name: 'Account', optional: true
+  belongs_to :venue, optional: true
 
   belongs_to :image, optional: true
   has_many :images, dependent: :destroy

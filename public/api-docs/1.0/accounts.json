@@ -321,7 +321,7 @@
               "paramType": "form",
               "name": "dates",
               "type": "string",
-              "description": "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',\n                                                            'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]",
+              "description": "Venue dates [{'date': '', 'price_for_daytime': '', 'price_for_nighttime': '',\n                                                              'is_available': ''}, {...}]",
               "required": false
             },
             {
@@ -1044,7 +1044,7 @@
               "paramType": "form",
               "name": "dates",
               "type": "string",
-              "description": "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',\n                                                            'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]",
+              "description": "Venue dates [{'date': '', 'price_for_daytime': '', 'price_for_nighttime': '',\n                                                              'is_available': ''}, {...}]",
               "required": false
             },
             {

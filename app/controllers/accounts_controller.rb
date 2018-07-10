@@ -303,8 +303,8 @@ class AccountsController < ApplicationController
       param :form, :audio_description, :string, :optional, "Venue audio description (public_venue only)"
       param :form, :lighting_description, :string, :optional, "Venue lighting description (public_venue only)"
       param :form, :stage_description, :string, :optional, "Venue stage description (public_venue only)"
-      param :form, :dates, :string, :optional, "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',
-                                                            'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]"
+      param :form, :dates, :string, :optional, "Venue dates [{'date': '', 'price_for_daytime': '', 'price_for_nighttime': '',
+                                                              'is_available': ''}, {...}]"
       param :form, :emails, :string, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
@@ -425,8 +425,8 @@ class AccountsController < ApplicationController
       param :form, :audio_description, :string, :optional, "Venue audio description (public_venue only)"
       param :form, :lighting_description, :string, :optional, "Venue lighting description (public_venue only)"
       param :form, :stage_description, :string, :optional, "Venue stage description (public_venue only)"
-      param :form, :dates, :string, :optional, "Venue dates [{'begin_date': '', 'end_date': '', 'is_available': '',
-                                                            'price': '', 'booking_notice': 'same_day|one_day|two_seven_days'}, {...}]"
+      param :form, :dates, :string, :optional, "Venue dates [{'date': '', 'price_for_daytime': '', 'price_for_nighttime': '',
+                                                              'is_available': ''}, {...}]"
       param :form, :emails, :string, :optional, "Venue dates [{'name': '', 'email': ''}, {...}]"
       param :form, :office_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
       param :form, :operating_hours, :string, :optional, "Venue dates [{'begin_time': '', 'end_time': '', 'day': ''}, {...}]"
@@ -1093,7 +1093,7 @@ class AccountsController < ApplicationController
     end
     
     def venue_dates_params(date)
-        date.permit(:begin_date, :end_date, :is_available, :price, :booking_notice)
+        date.permit(:date, :price_for_daytime, :price_for_nighttime, :is_available)
     end
 
     def venue_email_params(email)
