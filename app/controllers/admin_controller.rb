@@ -139,7 +139,7 @@ class AdminController < ApplicationController
   private
   def authorize_admin
     user = AuthorizeHelper.authorize(request)
-    render status: :unauthorized if user == nil or user.is_superuser == false and return
+    render status: :unauthorized if user == nil or user.is_superuser == false or user.is_admin == false and return
   end
 
   def user_create_params
