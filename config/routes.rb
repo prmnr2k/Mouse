@@ -135,4 +135,5 @@ Rails.application.routes.draw do
   get 'admin/events/requests', action: :event_requests, controller: 'admin'
   get 'admin/events/:id', action: :get_event, controller: 'admin'
   post 'admin/make_superuser', action: :make_superuser, controller: 'admin'
+  post 'admin/create_admin', action: :create_admin, controller: 'admin'
 end

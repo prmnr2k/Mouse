@@ -1,6 +1,6 @@
 class User < ApplicationRecord
 
-    validates :email, presence: true, uniqueness: true
+	validates :email, presence: true, uniqueness: true
 	validates :register_phone, uniqueness: true, allow_nil: true
 	validates :password, length: {:within => 6..100}, :allow_blank => true #, confirmation: true
 
@@ -11,7 +11,7 @@ class User < ApplicationRecord
 	validate :check_old, if: :password_changed?, on: :update
 	attr_accessor :old_password
 
-    has_many :tokens, dependent: :destroy	
+	has_many :tokens, dependent: :destroy
 	has_many :accounts, dependent: :destroy
 	has_many :likes, dependent: :destroy
 

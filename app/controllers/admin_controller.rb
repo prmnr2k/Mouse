@@ -21,13 +21,52 @@ class AdminController < ApplicationController
   # POST /admin/make_superuser
   swagger_api :make_superuser do
     summary "Give user a superuser role"
-    param :form, :account_id, :integer, :required, "Account id"
+    param :form, :user_id, :integer, :required, "Account id"
     # param :header, 'Authorization', :string, :required, 'Authentication token'
     # response :unauthorized
   end
   def make_superuser
-    account = Account.find(params[:account_id]).update(is_superuser: true)
+    account = User.find(params[:user_id]).update(is_superuser: true)
     render json: account, status: :ok
+  end
+
+  # POST /admin/create_admin
+  swagger_api :create_admin do
+    summary "Creates admin credential for login"
+    param :form, :image_base64, :string, :optional, "Image base64 string"
+    param :form, :first_name, :string, :required, "First name"
+    param :form, :last_name, :string, :required, "Last name"
+    param :form, :user_name, :string, :required, "Mouse username"
+    param :form, :email, :string, :required, "Email"
+    param :form, :password, :password, :required, "Your password"
+    param :form, :password_confirmation, :password, :required, "Confirm your password"
+    param :form, :register_phone, :string, :required, "Phone number"
+    param :form, :address, :string, :optional, "Address"
+    param :form, :other_address, :string, :optional, "Other address"
+    param :form, :city, :string, :optional, "City"
+    param :form, :country, :string, :optional, "Country"
+    param :form, :state, :string, :optional, "State"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unprocessable_entity
+    response :unauthorized
+  end
+  def create_admin
+    @user = User.new(user_create_params)
+    @user.is_admin = true
+    if @user.save
+      set_base64_image
+      set_admin
+      set_phone_validation
+
+      token = AuthenticateHelper.process_token(request, @user)
+      user = @user.as_json
+      user[:token] = token.token
+      user.delete("password")
+
+      render json: user, except: :password, status: :created
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /admin/statuses
@@ -101,5 +140,37 @@ class AdminController < ApplicationController
   def authorize_admin
     user = AuthorizeHelper.authorize(request)
     render status: :unauthorized if user == nil or user.is_superuser == false and return
+  end
+
+  def user_create_params
+    params.permit(:email, :password, :password_confirmation, :register_phone, :first_name, :last_name, :user_name)
+  end
+
+  def admin_create_params
+    params.permit(:address, :other_address, :city, :state, :country)
+  end
+
+  def set_admin
+    admin = Admin.new(admin_create_params)
+    admin.user_id = @user.id
+    unless admin.save
+      render json: admin.errors, status: :unprocessable_entity and return
+    end
+  end
+
+  def set_base64_image
+    if params[:image_base64]
+      image = Image.new(base64: params[:image_base64])
+      image.save
+      @user.image = image
+      @user.save
+    end
+  end
+
+  def set_phone_validation
+    phone_validation = PhoneValidation.new(phone: params[:register_phone])
+    unless phone_validation.save
+      render json: phone_validation.errors, status: :unprocessable_entity and return
+    end
   end
 end
