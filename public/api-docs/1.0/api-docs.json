@@ -20,6 +20,14 @@
       "description": "Users"
     },
     {
+      "path": "/api-docs/1.0/artist_videos.{format}",
+      "description": "Artist's video"
+    },
+    {
+      "path": "/api-docs/1.0/artists.{format}",
+      "description": "Artists"
+    },
+    {
       "path": "/api-docs/1.0/account_images.{format}",
       "description": "Account images"
     },

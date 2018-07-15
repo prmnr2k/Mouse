@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180714135236) do
+ActiveRecord::Schema.define(version: 20180715193503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,17 +42,15 @@ ActiveRecord::Schema.define(version: 20180714135236) do
   create_table "accounts", force: :cascade do |t|
     t.integer "image_id"
     t.string "phone"
-    t.integer "fan_id"
-    t.integer "artist_id"
-    t.integer "venue_id"
-    t.integer "account_type"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "user_name"
     t.string "display_name"
-    t.boolean "is_verified", default: false
     t.integer "status", default: 0
+    t.string "actable_type"
+    t.bigint "actable_id"
+    t.index ["actable_type", "actable_id"], name: "index_accounts_on_actable_type_and_actable_id"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -136,8 +134,6 @@ ActiveRecord::Schema.define(version: 20180714135236) do
 
   create_table "artists", force: :cascade do |t|
     t.string "about"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.float "lng"
     t.float "lat"
     t.string "preferred_address"
@@ -289,8 +285,6 @@ ActiveRecord::Schema.define(version: 20180714135236) do
     t.string "address"
     t.float "lat"
     t.float "lng"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
   end
@@ -542,8 +536,6 @@ ActiveRecord::Schema.define(version: 20180714135236) do
     t.string "address"
     t.float "lat"
     t.float "lng"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "description"
     t.integer "capacity"
     t.integer "venue_type"

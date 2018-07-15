@@ -1,13 +1,14 @@
 class Artist < ApplicationRecord
-    has_many :genres, foreign_key: 'artist_id', class_name: 'ArtistGenre, dependent: :destroy'
+    acts_as :account
 
-    has_one :account
+    has_many :genres, foreign_key: 'artist_id', class_name: 'ArtistGenre', dependent: :destroy
     has_many :audio_links, dependent: :destroy
     has_many :artist_albums, dependent: :destroy
     has_many :artist_riders, dependent: :destroy
     has_many :artist_preferred_venues, dependent: :destroy
-    has_many :disable_dates, foreign_key: 'artist_id', class_name: ArtistDate, dependent: :destroy
+    has_many :disable_dates, foreign_key: 'artist_id', class_name: 'ArtistDate', dependent: :destroy
     has_many :artist_videos, dependent: :destroy
+    has_many :artist_events
 
     geocoded_by :preferred_address, latitude: :lat, longitude: :lng
     reverse_geocoded_by :lat, :lng, address: :preferred_address
@@ -29,7 +30,7 @@ class Artist < ApplicationRecord
 
             if options[:my]
                 res[:disable_dates] = disable_dates
-                res[:events_dates] = account.artist_events.joins(:event).where(
+                res[:events_dates] = artist_events.joins(:event).where(
                   artist_events: {status: [ArtistEvent.statuses['owner_accepted'], ArtistEvent.statuses['active']]},
                   events: {is_active: true}
                 ).as_json(dates: true)

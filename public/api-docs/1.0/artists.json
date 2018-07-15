@@ -1,0 +1,666 @@
+{
+  "apiVersion": "1.0",
+  "swaggerVersion": "1.2",
+  "basePath": "http://protected-island-7029.herokuapp.com",
+  "resourcePath": "artists",
+  "apis": [
+    {
+      "path": "/artists.json",
+      "operations": [
+        {
+          "summary": "Creates new artist",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Artist's name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "display_name",
+              "type": "string",
+              "description": "Artist's name to display",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "phone",
+              "type": "string",
+              "description": "Artist's phone",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "Artist first name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Artist last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "about",
+              "type": "string",
+              "description": "About artist",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "stage_name",
+              "type": "string",
+              "description": "Artist stage name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "manager_name",
+              "type": "string",
+              "description": "Artist's manager name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "artist_email",
+              "type": "string",
+              "description": "Artist's email",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "genres",
+              "type": "string",
+              "description": "Artist genres ['genre1', 'genre2', ...]",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_min_time",
+              "type": "integer",
+              "description": "Artist min time to perform (hr)",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_max_time",
+              "type": "integer",
+              "description": "Artist max time to perform (hr)",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_from",
+              "type": "integer",
+              "description": "Artist min price to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_to",
+              "type": "integer",
+              "description": "Artist max time to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "additional_hours_price",
+              "type": "integer",
+              "description": "Artist price for additional hours",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_hide_pricing_from_profile",
+              "type": "boolean",
+              "description": "Hide artist pricing from profile?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_hide_pricing_from_search",
+              "type": "boolean",
+              "description": "Hide artist pricing from search?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "days_to_travel",
+              "type": "integer",
+              "description": "Artist days to travel",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "can_perform_without_band",
+              "type": "boolean",
+              "description": "Can artist perform without band?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "preferred_address",
+              "type": "string",
+              "description": "Artist preferred address to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "lat",
+              "type": "float",
+              "description": "Artist lat",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "lng",
+              "type": "float",
+              "description": "Artist lng",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_perform_with_band",
+              "type": "boolean",
+              "description": "Is artist perform with band?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_perform_with_backing_vocals",
+              "type": "boolean",
+              "description": "Is artist perform with backing vocals?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "can_perform_without_backing_vocals",
+              "type": "boolean",
+              "description": "Can artist perform without backing vocals?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_permitted_to_stream",
+              "type": "boolean",
+              "description": "Is artist give permission to stream?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_permitted_to_advertisement",
+              "type": "boolean",
+              "description": "Is artist give permission to advertisement?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "has_conflict_contracts",
+              "type": "boolean",
+              "description": "Has artist conflict contracts to advertisement?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "conflict_companies_names",
+              "type": "string",
+              "description": "Names of artist's conflict companies",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "preferred_venue_text",
+              "type": "string",
+              "description": "Artist other preferred venue types",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "min_time_to_book",
+              "type": "integer",
+              "description": "Artist min time to book",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "min_time_to_free_cancel",
+              "type": "integer",
+              "description": "Artist min time to cancel",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "late_cancellation_fee",
+              "type": "integer",
+              "description": "Artist late cancellation fee",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "refund_policy",
+              "type": "string",
+              "description": "Artist refund policy",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "preferred_venues",
+              "type": "string",
+              "description": "Array of preferred venue types",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "facebook",
+              "type": "string",
+              "description": "Artist facebook username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "twitter",
+              "type": "string",
+              "description": "Artist twitter username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "instagram",
+              "type": "string",
+              "description": "Artist instagram username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "snapchat",
+              "type": "string",
+              "description": "Artist snapchat username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "spotify",
+              "type": "string",
+              "description": "Artist spotify username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "soundcloud",
+              "type": "string",
+              "description": "Artist soundcloud username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "youtube",
+              "type": "string",
+              "description": "Artist youtube username",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Artists#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/artists/{id}.json",
+      "operations": [
+        {
+          "summary": "Updates existing artist",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Artist id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Artist's name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "display_name",
+              "type": "string",
+              "description": "Artist's name to display",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "phone",
+              "type": "string",
+              "description": "Artist's phone",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "Artist first name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Artist last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "about",
+              "type": "string",
+              "description": "About artist",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "stage_name",
+              "type": "string",
+              "description": "Artist stage name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "manager_name",
+              "type": "string",
+              "description": "Artist's manager name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "artist_email",
+              "type": "string",
+              "description": "Artist's email",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "genres",
+              "type": "string",
+              "description": "Artist genres ['genre1', 'genre2', ...]",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_min_time",
+              "type": "integer",
+              "description": "Artist min time to perform (hr)",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "performance_max_time",
+              "type": "integer",
+              "description": "Artist max time to perform (hr)",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_from",
+              "type": "integer",
+              "description": "Artist min price to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "price_to",
+              "type": "integer",
+              "description": "Artist max time to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "additional_hours_price",
+              "type": "integer",
+              "description": "Artist price for additional hours",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_hide_pricing_from_profile",
+              "type": "boolean",
+              "description": "Hide artist pricing from profile?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_hide_pricing_from_search",
+              "type": "boolean",
+              "description": "Hide artist pricing from search?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "days_to_travel",
+              "type": "integer",
+              "description": "Artist days to travel",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "can_perform_without_band",
+              "type": "boolean",
+              "description": "Can artist perform without band?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "preferred_address",
+              "type": "string",
+              "description": "Artist preferred address to perform",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "lat",
+              "type": "float",
+              "description": "Artist lat",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "lng",
+              "type": "float",
+              "description": "Artist lng",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_perform_with_band",
+              "type": "boolean",
+              "description": "Is artist perform with band?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_perform_with_backing_vocals",
+              "type": "boolean",
+              "description": "Is artist perform with backing vocals?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "can_perform_without_backing_vocals",
+              "type": "boolean",
+              "description": "Can artist perform without backing vocals?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_permitted_to_stream",
+              "type": "boolean",
+              "description": "Is artist give permission to stream?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "is_permitted_to_advertisement",
+              "type": "boolean",
+              "description": "Is artist give permission to advertisement?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "has_conflict_contracts",
+              "type": "boolean",
+              "description": "Has artist conflict contracts to advertisement?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "conflict_companies_names",
+              "type": "string",
+              "description": "Names of artist's conflict companies",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "preferred_venue_text",
+              "type": "string",
+              "description": "Artist other preferred venue types",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "min_time_to_book",
+              "type": "integer",
+              "description": "Artist min time to book",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "min_time_to_free_cancel",
+              "type": "integer",
+              "description": "Artist min time to cancel",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "late_cancellation_fee",
+              "type": "integer",
+              "description": "Artist late cancellation fee",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "refund_policy",
+              "type": "string",
+              "description": "Artist refund policy",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "preferred_venues",
+              "type": "string",
+              "description": "Array of preferred venue types",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "facebook",
+              "type": "string",
+              "description": "Artist facebook username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "twitter",
+              "type": "string",
+              "description": "Artist twitter username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "instagram",
+              "type": "string",
+              "description": "Artist instagram username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "snapchat",
+              "type": "string",
+              "description": "Artist snapchat username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "spotify",
+              "type": "string",
+              "description": "Artist spotify username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "soundcloud",
+              "type": "string",
+              "description": "Artist soundcloud username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "youtube",
+              "type": "string",
+              "description": "Artist youtube username",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Artists#update",
+          "method": "patch"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

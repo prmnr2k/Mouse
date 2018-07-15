@@ -55,3 +55,5 @@ gem "paperclip"
 gem 'twilio-ruby'
 
 gem 'active_model_serializers', '~> 0.10.0'
+
+gem 'active_record-acts_as'

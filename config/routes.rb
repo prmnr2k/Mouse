@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   patch 'users/me', action: :update_me, controller: 'users'
   patch 'users/:id/email', action: :change_email, controller: 'users'
 
+  resources :artists, only: [:create, :update] do
+    resources :artist_videos, only: [:index, :create, :destroy]
+  end
+
   #Account routes
   resources :accounts, only: [:create, :update] do
     resources :account_images, only: [:index, :create] do

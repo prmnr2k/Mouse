@@ -17,22 +17,25 @@ class AuthenticateHelper
 		end
 
 		def self.authorize_and_get_user(request)
-			@user = AuthorizeHelper.authorize(request)
+			user = AuthorizeHelper.authorize(request)
+      return user
+		end
 
-			if @user == nil
-				render status: :unauthorized and return
+		def self.authorize_and_get_account(request, id)
+			user = authorize_and_get_user(request)
+
+			account = Account.find(id)
+			if user == nil or account.user != user
+				return nil
+      else
+        return account
 			end
 		end
 
-		def self.authorize_and_get_account(request, field_name)
-			authorize_and_get_user(request)
-			unless performed?
-				render status: :unauthorized and return
-			end
-
-			@account = Account.find(params[field_name])
-			if @user == nil or @account.user != @user
-				render status: :unauthorized and return
+		def self.authorized?(account)
+			if request.headers['Authorization']
+				user = AuthorizeHelper.authorize(request)
+				return (user != nil and user == account.user)
 			end
 		end
 

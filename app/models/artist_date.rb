@@ -1,5 +1,5 @@
 class ArtistDate < ApplicationRecord
-  belongs_to :artist, foreign_key: :artist_id
+  belongs_to :artist
 
   def as_json(options={})
     res = super

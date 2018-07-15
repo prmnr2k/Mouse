@@ -2,7 +2,7 @@ class ArtistEvent < ApplicationRecord
   enum status: StatusHelper.invites
 
   belongs_to :event
-  belongs_to :account, foreign_key: :artist_id
+  belongs_to :artist
   has_one :agreed_date_time_and_price, dependent: :destroy
 
   validates_uniqueness_of :event_id, scope: [:artist_id]
