@@ -14,6 +14,26 @@ class AuthenticateHelper
         token = Token.new(user_id: user.id, info: info)
 		token.save
         return token
-	end
+		end
+
+		def self.authorize_and_get_user(request)
+			@user = AuthorizeHelper.authorize(request)
+
+			if @user == nil
+				render status: :unauthorized and return
+			end
+		end
+
+		def self.authorize_and_get_account(request, field_name)
+			authorize_and_get_user(request)
+			unless performed?
+				render status: :unauthorized and return
+			end
+
+			@account = Account.find(params[field_name])
+			if @user == nil or @account.user != @user
+				render status: :unauthorized and return
+			end
+		end
 
 end

@@ -1,7 +1,11 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
+<<<<<<< HEAD
   "basePath": "http://protected-island-7029.herokuapp.com",
+=======
+  "basePath": "http://localhost:3000",
+>>>>>>> refac
   "resourcePath": "accounts",
   "apis": [
     {
@@ -1715,46 +1719,6 @@
       ]
     },
     {
-      "path": "/accounts/{id}/images.json",
-      "operations": [
-        {
-          "summary": "Retrieve list of images",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Accounts#get_images",
-          "method": "get"
-        }
-      ]
-    },
-    {
       "path": "/accounts/{id}/is_followed.json",
       "operations": [
         {
@@ -2006,6 +1970,7 @@
       ]
     },
     {
+<<<<<<< HEAD
       "path": "/accounts/{id}/images.json",
       "operations": [
         {
@@ -2096,6 +2061,8 @@
       ]
     },
     {
+=======
+>>>>>>> refac
       "path": "/accounts/{id}/follow.json",
       "operations": [
         {
