@@ -1,5 +1,5 @@
 class AdminAccountSerializer < ActiveModel::Serializer
-  attributes :created_at, :account_type, :display_name, :status, :address, :first_name, :last_name
+  attributes :id, :created_at, :account_type, :display_name, :status, :address, :first_name, :last_name
 
   def address
     if object.account_type == 'artist'
