@@ -1,7 +1,7 @@
 class Ticket < ApplicationRecord
   belongs_to :event
 
-  has_one :tickets_type
+  has_one :tickets_type, dependent: :destroy
 
   has_many :fan_tickets
 

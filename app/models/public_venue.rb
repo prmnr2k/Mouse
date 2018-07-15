@@ -6,7 +6,7 @@ class PublicVenue < ApplicationRecord
   enum located: [:indoors, :outdoors, :both]
 
   belongs_to :venue
-  has_many :genres, foreign_key: 'venue_id', class_name: 'VenueGenre'
+  has_many :genres, foreign_key: 'venue_id', class_name: 'VenueGenre', dependent: :destroy
 
   def get_attrs
     attrs = {}

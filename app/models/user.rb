@@ -13,11 +13,9 @@ class User < ApplicationRecord
 
 	has_many :tokens, dependent: :destroy
 	has_many :accounts, dependent: :destroy
-	has_many :likes, dependent: :destroy
+	has_many :likes
 
 	belongs_to :image, optional: true
-
-	#has_and_belongs_to_many :accesses, dependent: :destroy
 
     SALT = 'elite_salt'
     
