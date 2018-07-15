@@ -1,11 +1,7 @@
 {
   "apiVersion": "1.0",
   "swaggerVersion": "1.2",
-<<<<<<< HEAD
   "basePath": "http://protected-island-7029.herokuapp.com",
-=======
-  "basePath": "http://localhost:3000",
->>>>>>> refac
   "resourcePath": "accounts",
   "apis": [
     {
@@ -1970,99 +1966,6 @@
       ]
     },
     {
-<<<<<<< HEAD
-      "path": "/accounts/{id}/images.json",
-      "operations": [
-        {
-          "summary": "Upload image to Account",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "image",
-              "type": "file",
-              "description": "Image to upload",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "image_base64",
-              "type": "string",
-              "description": "Image base64 string",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "image_description",
-              "type": "string",
-              "description": "Image description",
-              "required": false
-            },
-            {
-              "paramType": "form",
-              "name": "image_type",
-              "type": "string",
-              "description": "Image type",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "outside_venue",
-                  "stage",
-                  "seating",
-                  "bar",
-                  "audience",
-                  "dressing_room",
-                  "other"
-                ]
-              }
-            },
-            {
-              "paramType": "form",
-              "name": "image_type_description",
-              "type": "string",
-              "description": "Image other type description",
-              "required": false
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            },
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            },
-            {
-              "code": 422,
-              "responseModel": null,
-              "message": "Unprocessable Entity"
-            }
-          ],
-          "nickname": "Accounts#upload_image",
-          "method": "post"
-        }
-      ]
-    },
-    {
-=======
->>>>>>> refac
       "path": "/accounts/{id}/follow.json",
       "operations": [
         {
