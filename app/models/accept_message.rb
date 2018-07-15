@@ -1,5 +1,5 @@
 class AcceptMessage < ApplicationRecord
-  belongs_to :inbox_message, dependent: :destroy
+  belongs_to :inbox_message
   belongs_to :event
 
   def as_json(options={})

@@ -3,7 +3,7 @@ class VenueEvent < ApplicationRecord
 
   belongs_to :event
   belongs_to :account, foreign_key: :venue_id
-  has_one :agreed_date_time_and_price
+  has_one :agreed_date_time_and_price, dependent: :destroy
 
   validates_uniqueness_of :event_id, scope: [:venue_id]
 
