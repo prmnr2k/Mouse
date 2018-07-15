@@ -1,13 +1,13 @@
 class Artist < ApplicationRecord
-    has_many :genres, foreign_key: 'artist_id', class_name: 'ArtistGenre'
+    has_many :genres, foreign_key: 'artist_id', class_name: 'ArtistGenre, dependent: :destroy'
 
     has_one :account
-    has_many :audio_links
-    has_many :artist_albums
-    has_many :artist_riders
-    has_many :artist_preferred_venues
-    has_many :disable_dates, foreign_key: 'artist_id', class_name: ArtistDate
-    has_many :artist_videos
+    has_many :audio_links, dependent: :destroy
+    has_many :artist_albums, dependent: :destroy
+    has_many :artist_riders, dependent: :destroy
+    has_many :artist_preferred_venues, dependent: :destroy
+    has_many :disable_dates, foreign_key: 'artist_id', class_name: ArtistDate, dependent: :destroy
+    has_many :artist_videos, dependent: :destroy
 
     geocoded_by :preferred_address, latitude: :lat, longitude: :lng
     reverse_geocoded_by :lat, :lng, address: :preferred_address

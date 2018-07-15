@@ -3,7 +3,7 @@ class ArtistEvent < ApplicationRecord
 
   belongs_to :event
   belongs_to :account, foreign_key: :artist_id
-  has_one :agreed_date_time_and_price
+  has_one :agreed_date_time_and_price, dependent: :destroy
 
   validates_uniqueness_of :event_id, scope: [:artist_id]
 

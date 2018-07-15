@@ -1,7 +1,7 @@
 class RequestMessage < ApplicationRecord
   enum time_frame: TimeFrameHelper.all
 
-  belongs_to :inbox_message, dependent: :destroy
+  belongs_to :inbox_message
   belongs_to :event
   belongs_to :artist_event, optional: true
   belongs_to :venue_event, optional: true
