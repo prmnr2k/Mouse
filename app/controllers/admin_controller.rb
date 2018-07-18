@@ -143,11 +143,11 @@ class AdminController < ApplicationController
   end
 
   def user_create_params
-    params.permit(:email, :password, :password_confirmation, :register_phone, :first_name, :last_name, :user_name)
+    params.permit(:email, :password, :password_confirmation, :register_phone)
   end
 
   def admin_create_params
-    params.permit(:address, :other_address, :city, :state, :country)
+    params.permit(:address, :other_address, :city, :state, :country, :first_name, :last_name, :user_name)
   end
 
   def set_admin
