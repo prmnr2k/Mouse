@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180714135236) do
+ActiveRecord::Schema.define(version: 20180718154213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20180714135236) do
     t.string "first_name"
     t.string "last_name"
     t.string "user_name"
+    t.integer "image_id"
   end
 
   create_table "agreed_date_time_and_prices", force: :cascade do |t|
@@ -141,8 +142,8 @@ ActiveRecord::Schema.define(version: 20180714135236) do
     t.string "about"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "lng"
     t.float "lat"
+    t.float "lng"
     t.string "preferred_address"
     t.string "first_name"
     t.string "last_name"
@@ -266,7 +267,6 @@ ActiveRecord::Schema.define(version: 20180714135236) do
     t.datetime "old_date_to"
     t.string "hashtag"
     t.integer "additional_cost"
-    t.boolean "has_private_venue"
     t.integer "family_and_friends_amount"
     t.integer "status", default: 0
   end

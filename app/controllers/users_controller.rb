@@ -16,10 +16,6 @@ class UsersController < ApplicationController
   # POST /users/create
   swagger_api :create do
     summary "Creates user credential for login"
-    param :form, :first_name, :string, :required, "First name"
-    param :form, :last_name, :string, :required, "Last name"
-    param :form, :user_name, :string, :required, "Mouse username"
-    param :form, :image_base64, :string, :required, "Image base64 string"
     param :form, :email, :string, :required, "Email"
     param :form, :password, :password, :required, "Your password"
     param :form, :password_confirmation, :password, :optional, "Confirm your password"
@@ -59,10 +55,6 @@ class UsersController < ApplicationController
   # PUT /users/update_me
   swagger_api :update_me do
     summary "Update my user info"
-    param :form, :first_name, :string, :required, "First name"
-    param :form, :last_name, :string, :required, "Last name"
-    param :form, :user_name, :string, :required, "Mouse username"
-    param :form, :image_base64, :string, :required, "Image base64 string"
     param :form, :email, :string, :optional, "Email"
     param :form, :password, :password, :optional, "Your password"
     param :form, :password_confirmation, :password, :optional, "Confirm your password"

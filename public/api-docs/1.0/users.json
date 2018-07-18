@@ -12,34 +12,6 @@
           "parameters": [
             {
               "paramType": "form",
-              "name": "first_name",
-              "type": "string",
-              "description": "First name",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "last_name",
-              "type": "string",
-              "description": "Last name",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "user_name",
-              "type": "string",
-              "description": "Mouse username",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "image_base64",
-              "type": "string",
-              "description": "Image base64 string",
-              "required": true
-            },
-            {
-              "paramType": "form",
               "name": "email",
               "type": "string",
               "description": "Email",
@@ -111,34 +83,6 @@
         {
           "summary": "Update my user info",
           "parameters": [
-            {
-              "paramType": "form",
-              "name": "first_name",
-              "type": "string",
-              "description": "First name",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "last_name",
-              "type": "string",
-              "description": "Last name",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "user_name",
-              "type": "string",
-              "description": "Mouse username",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "image_base64",
-              "type": "string",
-              "description": "Image base64 string",
-              "required": true
-            },
             {
               "paramType": "form",
               "name": "email",
