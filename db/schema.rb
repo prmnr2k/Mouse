@@ -64,6 +64,9 @@ ActiveRecord::Schema.define(version: 20180714135236) do
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "user_name"
   end
 
   create_table "agreed_date_time_and_prices", force: :cascade do |t|
