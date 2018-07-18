@@ -13,6 +13,7 @@ class EventArtistsController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :artist_id, :integer, :required, "Artist account id"
+    param :form, :price, :integer, :optional, "Estimated price to perform"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -22,6 +23,12 @@ class EventArtistsController < ApplicationController
     if artist_available?
       @event.artists << @artist_acc
       @event.save
+
+      if @artist_acc.user == @creator.user
+        @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
+        @artist_event.update(status: 'owner_accepted')
+        set_agreement
+      end
 
       render status: :ok
     else
@@ -100,7 +107,6 @@ class EventArtistsController < ApplicationController
         @artist_event.status = 'owner_accepted'
 
         change_event_date
-        change_event_funding
         send_accept_message(@artist_event.account)
         @artist_event.save
 
@@ -142,7 +148,6 @@ class EventArtistsController < ApplicationController
 
       if @artist_event.status == 'owner_accepted'
         undo_change_event_date
-        undo_change_event_funding
       end
 
       @artist_event.status = 'owner_declined'
@@ -448,7 +453,7 @@ class EventArtistsController < ApplicationController
       agreement = AgreedDateTimeAndPrice.new
       agreement.datetime_from = params[:preferred_date_from]
       agreement.datetime_to = params[:preferred_date_to]
-      agreement.price = @accept_message.price
+      agreement.price = params[:price]
       agreement.artist_event = @artist_event
       agreement.save!
     end
@@ -497,16 +502,6 @@ class EventArtistsController < ApplicationController
       @event.date_to = @event.old_date_to
       @event.old_date_from = nil
       @event.old_date_to = nil
-      @event.save!
-    end
-
-    def change_event_funding
-      @event.funding_goal += @artist_event.agreed_date_time_and_price.price
-      @event.save!
-    end
-
-    def undo_change_event_funding
-      @event.funding_goal -= @artist_event.agreed_date_time_and_price.price
       @event.save!
     end
 

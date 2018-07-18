@@ -13,6 +13,7 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :form, :venue_id, :integer, :required, "Venue account id"
+    param :form, :price, :integer, :optional, "Estimated price to perform"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
     response :unprocessable_entity
@@ -22,6 +23,18 @@ class EventVenuesController < ApplicationController
     if venue_available?
       @event.venues << @venue_acc
       @event.save
+
+      if @venue_acc.user == @creator.user and @event.venue_events.where(status: 'owner_accepted').count == 0
+        if @venue_acc.venue.venue_type == 'private_residence'
+          @event.has_private_venue = true
+        end
+
+        @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
+        @venue_event.update(status: 'owner_accepted')
+        @event.venue_id = @venue_acc.id
+        set_agreement
+        @event.save
+      end
 
       render status: :ok
     else
@@ -87,7 +100,7 @@ class EventVenuesController < ApplicationController
   def owner_accept
       @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
-      if @event.venue_events.where(status: 'owner_accepted').count >= Rails.configuration.number_of_venues
+      if @event.venue_events.where(status: 'owner_accepted').count > 0
         render status: :unprocessable_entity and return
       end
       #TODO: check here pls
@@ -101,7 +114,6 @@ class EventVenuesController < ApplicationController
           @venue_event.status = 'owner_accepted'
 
           change_event_date
-          change_event_funding
           change_event_address
           send_accept_message(@venue_event.account)
           @venue_event.save
@@ -137,14 +149,13 @@ class EventVenuesController < ApplicationController
     #  render status: :unprocessable_entity and return
     #end
 
-    if @venue_event and @venue_event.status != 'owner_accepted'
+    if @venue_event and not ["decline"].include?(@venue_event.status)
       if params[:message_id]
         read_message
       end
 
       if @venue_event.status == 'owner_accepted'
         undo_change_event_date
-        undo_change_event_funding
         undo_change_event_address
       end
 
@@ -441,7 +452,7 @@ class EventVenuesController < ApplicationController
     agreement = AgreedDateTimeAndPrice.new
     agreement.datetime_from = params[:preferred_date_from]
     agreement.datetime_to = params[:preferred_date_to]
-    agreement.price = @accept_message.price
+    agreement.price = params[:price]
     agreement.venue_event = @venue_event
     agreement.save!
   end
@@ -468,7 +479,6 @@ class EventVenuesController < ApplicationController
     @venue_acc = Account.find(params[:venue_id])
 
     if @venue_acc and @venue_acc.account_type == 'venue'
-      #and @event.venue_events.where.not(status: 'declined').count < Rails.configuration.number_of_venues
       return true
     end
 
@@ -507,16 +517,6 @@ class EventVenuesController < ApplicationController
     @event.save!
   end
 
-  def change_event_funding
-    @event.funding_goal += @venue_event.agreed_date_time_and_price.price
-    @event.save!
-  end
-
-  def undo_change_event_funding
-    @event.funding_goal -= @venue_event.agreed_date_time_and_price.price
-    @event.save!
-  end
-
   def change_event_address
     @venue_acc = @venue_event.account
 
@@ -536,7 +536,12 @@ class EventVenuesController < ApplicationController
     @event.address = @event.old_address
     @event.city_lat = @event.old_city_lat
     @event.city_lng = @event.old_city_lng
+
+    venue_acc = Account.find(@event.venue_id)
     @event.venue_id = nil
+    if venue_acc.venue.venue_type == 'private_residence'
+      @event.has_private_venue = false
+    end
 
     @event.save!
   end

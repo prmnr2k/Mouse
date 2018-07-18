@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180718154213) do
+ActiveRecord::Schema.define(version: 20180718170724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(version: 20180718154213) do
     t.integer "additional_cost"
     t.integer "family_and_friends_amount"
     t.integer "status", default: 0
+    t.boolean "has_private_venue"
   end
 
   create_table "fan_genres", force: :cascade do |t|
