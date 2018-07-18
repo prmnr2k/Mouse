@@ -129,12 +129,22 @@ Rails.application.routes.draw do
   end
 
   # admin routes
+  resources :admin, only: [:create, :update]
   get 'admin/statuses', action: :statuses, controller: 'admin'
-  get 'admin/new_accounts_count', action: :new_accounts_count, controller: 'admin'
-  get 'admin/accounts/requests', action: :account_requests, controller: 'admin'
-  get 'admin/accounts/:id', action: :get_account, controller: 'admin'
-  get 'admin/events/requests', action: :event_requests, controller: 'admin'
-  get 'admin/events/:id', action: :get_event, controller: 'admin'
   post 'admin/make_superuser', action: :make_superuser, controller: 'admin'
-  post 'admin/create_admin', action: :create_admin, controller: 'admin'
+
+  get 'admin/accounts/new', action: :new_accounts_count, controller: 'admin_accounts'
+  get 'admin/accounts/new_count', action: :new_count, controller: 'admin_accounts'
+  get 'admin/accounts/requests', action: :account_requests, controller: 'admin_accounts'
+  get 'admin/accounts/:id', action: :get_account, controller: 'admin_accounts'
+  post 'admin/accounts/:id/approve', action: :approve, controller: 'admin_accounts'
+  post 'admin/accounts/:id/deny', action: :deny, controller: 'admin_accounts'
+  delete 'admin/accounts/:id', action: :destroy, controller: 'admin_accounts'
+
+  get 'admin/events/new_count', action: :new_count, controller: 'admin_events'
+  get 'admin/events/requests', action: :event_requests, controller: 'admin_events'
+  get 'admin/events/:id', action: :get_event, controller: 'admin_events'
+  post 'admin/events/:id/approve', action: :approve, controller: 'admin_events'
+  post 'admin/events/:id/deny', action: :deny, controller: 'admin_events'
+  delete 'admin/events/:id', action: :destroy, controller: 'admin_events'
 end

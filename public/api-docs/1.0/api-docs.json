@@ -81,7 +81,15 @@
     },
     {
       "path": "/api-docs/1.0/admin.{format}",
-      "description": "Accounts"
+      "description": "AdminPanel"
+    },
+    {
+      "path": "/api-docs/1.0/admin_accounts.{format}",
+      "description": "AdminPanel"
+    },
+    {
+      "path": "/api-docs/1.0/admin_events.{format}",
+      "description": "AdminPanel"
     }
   ],
   "authorizations": null,

@@ -25,6 +25,7 @@ class Account < ApplicationRecord
 	belongs_to :fan, optional: true
 	belongs_to :artist, optional: true
 	belongs_to :venue, optional: true
+	belongs_to :denier, foreign_key: 'denier_id', class_name: 'Admin', optional: true
 
 	belongs_to :image, optional: true
 

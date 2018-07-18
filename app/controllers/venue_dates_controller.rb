@@ -88,7 +88,7 @@ class VenueDatesController < ApplicationController
   def authorize_and_set_venue
     user = AuthorizeHelper.authorize(request)
     account = Account.find(params[:account_id])
-    render status: :unauthorized if user == nil or account.user != user or account.account_type != 'venue' and return
+    render status: :unauthorized and return if user == nil or account.user != user or account.account_type != 'venue'
 
     @venue = account.venue
   end

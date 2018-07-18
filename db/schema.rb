@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180718170724) do
+ActiveRecord::Schema.define(version: 20180718211252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20180718170724) do
     t.string "display_name"
     t.boolean "is_verified", default: false
     t.integer "status", default: 0
+    t.integer "denier_id"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -270,6 +271,7 @@ ActiveRecord::Schema.define(version: 20180718170724) do
     t.integer "family_and_friends_amount"
     t.integer "status", default: 0
     t.boolean "has_private_venue"
+    t.integer "denier_id"
   end
 
   create_table "fan_genres", force: :cascade do |t|

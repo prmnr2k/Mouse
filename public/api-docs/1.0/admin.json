@@ -5,224 +5,7 @@
   "resourcePath": "admin",
   "apis": [
     {
-      "path": "/admin/statuses.json",
-      "operations": [
-        {
-          "summary": "Retrieve statuses values",
-          "nickname": "Admin#statuses",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/admin/new_accounts_count.json",
-      "operations": [
-        {
-          "summary": "Get number of new accounts in the system",
-          "parameters": [
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            }
-          ],
-          "nickname": "Admin#new_accounts_count",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/admin/accounts/requests.json",
-      "operations": [
-        {
-          "summary": "Get all account requests",
-          "parameters": [
-            {
-              "paramType": "query",
-              "name": "account_type",
-              "type": "string",
-              "description": "Type of accounts",
-              "required": true,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "all",
-                  "artist",
-                  "fan",
-                  "venue"
-                ]
-              }
-            },
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            }
-          ],
-          "nickname": "Admin#account_requests",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/admin/accounts/{id}.json",
-      "operations": [
-        {
-          "summary": "Retrieve account by id",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": false
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 404,
-              "responseModel": null,
-              "message": "Not Found"
-            }
-          ],
-          "nickname": "Admin#get_account",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/admin/events/requests.json",
-      "operations": [
-        {
-          "summary": "Get all event requests",
-          "parameters": [
-            {
-              "paramType": "query",
-              "name": "limit",
-              "type": "integer",
-              "description": "Limit",
-              "required": false
-            },
-            {
-              "paramType": "query",
-              "name": "offset",
-              "type": "integer",
-              "description": "Offset",
-              "required": false
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 401,
-              "responseModel": null,
-              "message": "Unauthorized"
-            }
-          ],
-          "nickname": "Admin#event_requests",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/admin/events/{id}.json",
-      "operations": [
-        {
-          "summary": "Retrieve event by id",
-          "parameters": [
-            {
-              "paramType": "path",
-              "name": "id",
-              "type": "integer",
-              "description": "Event id",
-              "required": true
-            },
-            {
-              "paramType": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Authentication token",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 200,
-              "responseModel": null,
-              "message": "Ok"
-            }
-          ],
-          "nickname": "Admin#get_event",
-          "method": "get"
-        }
-      ]
-    },
-    {
-      "path": "/admin/make_superuser.json",
-      "operations": [
-        {
-          "summary": "Give user a superuser role",
-          "parameters": [
-            {
-              "paramType": "form",
-              "name": "user_id",
-              "type": "integer",
-              "description": "Account id",
-              "required": true
-            }
-          ],
-          "nickname": "Admin#make_superuser",
-          "method": "post"
-        }
-      ]
-    },
-    {
-      "path": "/admin/create_admin.json",
+      "path": "/admin.json",
       "operations": [
         {
           "summary": "Creates admin credential for login",
@@ -338,7 +121,165 @@
               "message": "Unprocessable Entity"
             }
           ],
-          "nickname": "Admin#create_admin",
+          "nickname": "Admin#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/admin/{id}.json",
+      "operations": [
+        {
+          "summary": "Updates admin credential for login",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Admin id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "image_base64",
+              "type": "string",
+              "description": "Image base64 string",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "First name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Last name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Mouse username",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "register_phone",
+              "type": "string",
+              "description": "Phone number",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "address",
+              "type": "string",
+              "description": "Address",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "address_other",
+              "type": "string",
+              "description": "Other address",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "city",
+              "type": "string",
+              "description": "City",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "country",
+              "type": "string",
+              "description": "Country",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "state",
+              "type": "string",
+              "description": "State",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Admin#update",
+          "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/admin/statuses.json",
+      "operations": [
+        {
+          "summary": "Retrieve statuses values",
+          "nickname": "Admin#statuses",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/make_superuser.json",
+      "operations": [
+        {
+          "summary": "Give user a superuser role",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "user_id",
+              "type": "integer",
+              "description": "User id",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "first_name",
+              "type": "string",
+              "description": "First name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "last_name",
+              "type": "string",
+              "description": "Last name",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "user_name",
+              "type": "string",
+              "description": "Mouse username",
+              "required": true
+            }
+          ],
+          "nickname": "Admin#make_superuser",
           "method": "post"
         }
       ]
