@@ -7,12 +7,22 @@ class InboxMessage < ApplicationRecord
   has_one :accept_message
   has_one :request_message
 
+  def self.expiration_date
+    if self.request_message
+      return self.created_at + TimeFrameHelper.to_seconds(self.time_frame)
+    else
+      return nil
+    end
+  end
+
   def as_json(options={})
     res = super
     res.delete('event_id')
     res.delete('request_msg_id')
     res.delete('accept_msg_id')
     res.delete('decline_msg_id')
+
+    res[:receiver] = receiver.as_json(for_message: true)
 
     if options[:extended]
       if request_message

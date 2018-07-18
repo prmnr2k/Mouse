@@ -13,7 +13,7 @@ class InboxMessagesController < ApplicationController
     response :ok
   end
   def index
-    render json: @account.inbox_messages.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @account.inbox_messages.order(:created_at).limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # GET account/1/inbox_messages/1
@@ -46,7 +46,7 @@ class InboxMessagesController < ApplicationController
     response :unauthorized
   end
   def my
-    render json: @account.sent_messages.limit(params[:limit]).offset(params[:offset]), status: :ok
+    render json: @account.sent_messages.order(:created_at).limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # POST account/1/inbox_messages/1/change_responce_time
