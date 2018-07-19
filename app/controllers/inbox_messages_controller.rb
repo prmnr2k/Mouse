@@ -13,7 +13,10 @@ class InboxMessagesController < ApplicationController
     response :ok
   end
   def index
-    render json: @account.inbox_messages.order(:created_at => :desc).limit(params[:limit]).offset(params[:offset]), status: :ok
+    messages = @account.inbox_messages.select(
+      "inbox_messages.*, interval(date_expires, 1 day) as is_expiring"
+    ).order(:is_expiring => :desc, :created_at => :desc)
+    render json: messages.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # GET account/1/inbox_messages/1
