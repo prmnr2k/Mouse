@@ -26,6 +26,20 @@ class AdminAccountsController < ApplicationController
     render json: Accounts.where(status: 'pending').count, status: :ok
   end
 
+  # GET /admin/accounts/user_usage
+  swagger_api :user_usage do
+    summary "Get users usage of the system"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+  end
+  def user_usage
+    render json: {
+      likes: Like.count,
+      comments: Comment.count,
+      clicks: Event.sum(:clicks)
+    }, status: :ok
+  end
+
   # GET admin/accounts/requests
   swagger_api :account_requests do
     summary "Get all account requests"
