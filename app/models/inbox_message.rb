@@ -10,13 +10,11 @@ class InboxMessage < ApplicationRecord
   def as_json(options = {})
     res = super
     res.delete('event_id')
-    res.delete('created_at')
     res.delete('updated_at')
     res.delete('request_msg_id')
     res.delete('accept_msg_id')
     res.delete('decline_msg_id')
 
-    res[:created_at] = created_at.to_date
     res[:sender] = sender.as_json(for_message: true)
 
     if request_message
