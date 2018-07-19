@@ -10,11 +10,16 @@ class RequestMessage < ApplicationRecord
     res = super
     res.delete('id')
     res.delete('event_id')
+    res.delete('created_at')
+    res.delete('updated_at')
 
     res[:event_info] = event
 
-    if res.created_at + TimeFrameHelper.to_seconds(res.time_frame) < DateTime.now
+    expiration_date = created_at + TimeFrameHelper.to_seconds(time_frame)
+    if expiration_date < DateTime.now
       res[:status] = 'time_expired'
+    elsif expiration_date - 1.day <= DateTime.now
+      res[:status] = 'expires_soon'
     else
       res[:status] = 'valid'
     end
