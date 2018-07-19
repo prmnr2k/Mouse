@@ -7,7 +7,7 @@ namespace :inbox_messages do
     ActiveRecord::Base.transaction do
       requests.each do |request|
         request.expiration_date = request.created_at + TimeFrameHelper.to_seconds(request.time_frame)
-        request.save!
+        request.save
 
         print "."
       end
