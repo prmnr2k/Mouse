@@ -81,6 +81,14 @@ class PhoneValidationsController < ApplicationController
     render json: File.read("#{Rails.root}/public/phone_codes.json"), status: :ok
   end
 
+  # GET /phone_validations/new_codes
+  swagger_api :get_new_codes do
+    summary "Retrieve list of phone codes"
+  end
+  def get_new_codes
+    render json: File.read("#{Rails.root}/public/new_phone_codes.json"), status: :ok
+  end
+
   # DELETE /phone_validations/1
   def destroy
     @phone_validation.destroy

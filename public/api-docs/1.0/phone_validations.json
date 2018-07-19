@@ -15,6 +15,16 @@
       ]
     },
     {
+      "path": "/phone_validations/new_codes.json",
+      "operations": [
+        {
+          "summary": "Retrieve list of phone codes",
+          "nickname": "PhoneValidations#get_new_codes",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/phone_validations/resend.json",
       "operations": [
         {
