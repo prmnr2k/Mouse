@@ -22,7 +22,7 @@ class InboxMessage < ApplicationRecord
     res.delete('accept_msg_id')
     res.delete('decline_msg_id')
 
-    res[:receiver] = receiver.as_json(for_message: true)
+    res[:sender] = sender.as_json(for_message: true)
 
     if options[:extended]
       if request_message

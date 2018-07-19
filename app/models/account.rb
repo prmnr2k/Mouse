@@ -53,22 +53,24 @@ class Account < ApplicationRecord
 	end
 
     def as_json(options={})
-			if not options[:only]
-				if options[:for_message]
-					attrs = {}
-					attrs[:image_id] = image.id
-					attrs[:user_name] = user_name
-					attrs[:account_type] = account_type
+			if options[:for_message]
+				attrs = {}
+				attrs[:image_id] = image_id
+				attrs[:user_name] = user_name
+				attrs[:account_type] = account_type
 
-					if fan
-						attrs[:full_name] = fan.first_name + ' ' + fan.last_name
-					elsif artist
-						attrs[:full_name] = artist.first_name + ' ' + artist.last_name
-					elsif venue
-						attrs[:full_name] = display_name
-					end
+				if fan
+					attrs[:full_name] = "#{fan.first_name} #{fan.last_name}"
+				elsif artist
+					attrs[:full_name] = "#{artist.first_name} #{artist.last_name}"
+				elsif venue
+					attrs[:full_name] = display_name
 				end
 
+				return attrs
+			end
+
+			if not options[:only]
 				if fan
 					return fan.as_json(options)
 				end
