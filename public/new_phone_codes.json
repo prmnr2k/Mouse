@@ -1207,6 +1207,7 @@
     "name": "Saint Helena",
     "code": "sh",
     "dial_code": "290",
+    "format": "",
     "priority": 0
   },
   {
@@ -1234,6 +1235,7 @@
     "name": "Saint Pierre and Miquelon (Saint-Pierre-et-Miquelon)",
     "code": "pm",
     "dial_code": "508",
+    "format": "",
     "priority": 0
   },
   {
