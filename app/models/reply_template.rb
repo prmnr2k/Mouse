@@ -1,3 +1,3 @@
 class ReplyTemplate < ApplicationRecord
-  enum status: [:new, :approved]
+  enum status: [:added, :approved]
 end

@@ -41,7 +41,7 @@ class AdminReplyTemplatesController < ApplicationController
   end
   def create
     template = ReplyTemplate.new(reply_template_params)
-    template.status = 'new'
+    template.status = 'added'
 
     if template.save!
       render json: template, status: :created
