@@ -132,6 +132,7 @@ Rails.application.routes.draw do
   # admin routes
   resources :admin, only: [:create, :update]
   get 'admin/statuses', action: :statuses, controller: 'admin'
+  get 'admin/:user_id/my', action: :get_my, controller: 'admin'
   post 'admin/make_superuser', action: :make_superuser, controller: 'admin'
 
   get 'admin/accounts/new', action: :new_accounts_count, controller: 'admin_accounts'

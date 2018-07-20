@@ -245,6 +245,44 @@
       ]
     },
     {
+      "path": "/admin/{user_id}/my.json",
+      "operations": [
+        {
+          "summary": "Get my admin account",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "integer",
+              "description": "User id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Admin#get_my",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/make_superuser.json",
       "operations": [
         {

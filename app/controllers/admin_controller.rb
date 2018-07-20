@@ -1,7 +1,8 @@
 class AdminController < ApplicationController
 
   # TODO: fix it
-  before_action :authorize_admin, except: [:make_superuser, :statuses]
+  before_action :authorize_admin, except: [:make_superuser, :statuses, :get_my]
+  before_action :authorize_admin_and_set_user, only: [:get_my]
   swagger_controller :admin, "AdminPanel"
 
   # POST /admin/make_superuser
@@ -20,6 +21,22 @@ class AdminController < ApplicationController
     admin.user_id = user.id
     if admin.save!
       render json: admin, serializer: AdminSerializer, status: :created
+    end
+  end
+
+  # GET /admin/<user_id>/my
+  swagger_api :get_my do
+    summary "Get my admin account"
+    param :path, :user_id, :integer, :required, "User id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def get_my
+    if @user.admin
+      render json: @user.admin, serializer: AdminSerializer, status: :ok
+    else
+      render status: :not_found
     end
   end
 
@@ -101,6 +118,11 @@ class AdminController < ApplicationController
   def authorize_admin
     user = AuthorizeHelper.authorize(request)
     render status: :unauthorized and return if user == nil or (user.is_superuser == false and user.is_admin == false)
+  end
+
+  def authorize_admin_and_set_user
+    @user = AuthorizeHelper.authorize(request)
+    render status: :unauthorized and return if @user == nil or (@user.is_superuser == false and @user.is_admin == false)
   end
 
   def user_params
