@@ -90,6 +90,10 @@
     {
       "path": "/api-docs/1.0/admin_events.{format}",
       "description": "AdminPanel"
+    },
+    {
+      "path": "/api-docs/1.0/admin_questions.{format}",
+      "description": "AdminPanel"
     }
   ],
   "authorizations": null,

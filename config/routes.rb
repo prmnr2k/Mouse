@@ -150,4 +150,16 @@ Rails.application.routes.draw do
   post 'admin/events/:id/approve', action: :approve, controller: 'admin_events'
   post 'admin/events/:id/deny', action: :deny, controller: 'admin_events'
   delete 'admin/events/:id', action: :destroy, controller: 'admin_events'
+
+  get 'admin/questions', action: :index, controller: 'admin_questions'
+  get 'admin/questions/:id', action: :show, controller: 'admin_questions'
+  post 'admin/questions/:id/reply', action: :reply, controller: 'admin_questions'
+  delete 'admin/questions/:id', action: :destroy, controller: 'admin_questions'
+
+  get 'admin/reply_templates', action: :index, controller: 'reply_templates'
+  get 'admin/reply_templates/:id', action: :show, controller: 'reply_templates'
+  post 'admin/reply_templates', action: :create, controller: 'reply_templates'
+  post 'admin/reply_templates/:id/approve', action: :approve, controller: 'reply_templates'
+  patch 'admin/reply_templates/:id', action: :update, controller: 'reply_templates'
+  delete 'admin/reply_templates/:id', action: :destroy, controller: 'reply_templates'
 end

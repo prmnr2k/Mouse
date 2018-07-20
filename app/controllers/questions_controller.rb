@@ -30,6 +30,7 @@ class QuestionsController < ApplicationController
   # POST /questions
   swagger_api :create do
     summary "Send question"
+    param :form, :account_id, :integer, :optional, "Account id"
     param :form, :subject, :string, :required, "Subject of question"
     param :form, :message, :string, :required, "Message"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -38,7 +39,12 @@ class QuestionsController < ApplicationController
   end
   def create
     @question = Question.new(question_params)
-    @question.user = @user
+
+    if params[:account_id]
+      @question.account = Account.find(params[:account_id])
+    else
+      @question.account = @user.accounts.first
+    end
 
     if @question.save
       render json: @question, status: :created, location: @question
