@@ -1,5 +1,5 @@
 class Feedback < ApplicationRecord
   enum feedback_type: [:bug, :enhancement, :compliment]
 
-  belongs_to :user
+  belongs_to :account
 end

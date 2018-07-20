@@ -45,6 +45,13 @@
           "parameters": [
             {
               "paramType": "form",
+              "name": "account_id",
+              "type": "integer",
+              "description": "Account id",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "feedback_type",
               "type": "string",
               "description": "Type of feedback",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180720144828) do
+ActiveRecord::Schema.define(version: 20180720190540) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -305,7 +305,7 @@ ActiveRecord::Schema.define(version: 20180720144828) do
     t.integer "feedback_type"
     t.string "detail", default: ""
     t.integer "rate_score"
-    t.integer "user_id"
+    t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

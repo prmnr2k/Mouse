@@ -30,6 +30,7 @@ class FeedbacksController < ApplicationController
   # POST /feedbacks
   swagger_api :create do
     summary "Send feedback"
+    param :form, :account_id, :integer, :optional, "Account id"
     param_list :form, :feedback_type, :string, :required, "Type of feedback", ["bug", "enhancement", "compliment"]
     param :form, :detail, :string, :optional, "Message text"
     param :form, :rate_score, :string, :required, "Rate score"
@@ -39,7 +40,12 @@ class FeedbacksController < ApplicationController
   end
   def create
     @feedback = Feedback.new(feedback_params)
-    @feedback.user = @user
+
+    if params[:account_id]
+      @feedback.account = Account.find(params[:account_id])
+    else
+      @feedback.account = @user.accounts.first
+    end
 
     if @feedback.save
       render json: @feedback, status: :created

@@ -162,4 +162,11 @@ Rails.application.routes.draw do
   post 'admin/reply_templates/:id/approve', action: :approve, controller: 'reply_templates'
   patch 'admin/reply_templates/:id', action: :update, controller: 'reply_templates'
   delete 'admin/reply_templates/:id', action: :destroy, controller: 'reply_templates'
+
+  get 'admin/feedbacks', action: :index, controller: 'admin_feedback'
+  get 'admin/feedbacks/overall', action: :overall, controller: 'admin_feedback'
+  get 'admin/feedbacks/counts', action: :counts, controller: 'admin_feedback'
+  get 'admin/feedbacks/:id', action: :show, controller: 'admin_feedback'
+  post 'admin/feedbacks/:id/thank_you', action: :thank_you, controller: 'admin_feedback'
+  delete 'admin/feedbacks/:id', action: :destroy, controller: 'admin_feedback'
 end
