@@ -9,7 +9,7 @@ class AdminEventsController < ApplicationController
     response :unauthorized
   end
   def new_count
-    render json: Events.where(status: 'just_added').count, status: :ok
+    render json: Event.where(status: 'just_added').count, status: :ok
   end
 
   # GET admin/events/requests

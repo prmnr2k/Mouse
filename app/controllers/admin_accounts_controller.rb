@@ -23,7 +23,7 @@ class AdminAccountsController < ApplicationController
     response :unauthorized
   end
   def new_count
-    render json: Accounts.where(status: 'pending').count, status: :ok
+    render json: Account.where(status: 'pending').count, status: :ok
   end
 
   # GET /admin/accounts/user_usage
