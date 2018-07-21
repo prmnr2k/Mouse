@@ -10,14 +10,15 @@ class VenueDatesController < ApplicationController
     response :not_found
     response :ok
   end
+
   def index
     if params[:current_date]
       render json: {
         dates: @venue.dates.where(
-          date: params[:current_date].to_date.beginning_of_month .. params[:current_date].to_date.end_of_month
+          date: params[:current_date].to_date.beginning_of_month..params[:current_date].to_date.end_of_month
         ),
         event_dates: @venue.events.where(
-          date_from: params[:current_date].to_date.beginning_of_month .. params[:current_date].to_date.end_of_month
+          date_from: params[:current_date].to_date.beginning_of_month..params[:current_date].to_date.end_of_month
         ).as_json(only: [:id, :date_from, :date_to])
       }, status: :ok
     else
@@ -42,6 +43,7 @@ class VenueDatesController < ApplicationController
     response :unauthorized
     response :ok
   end
+
   def create
     date = @venue.dates.find_or_create_by(date: params[:date], venue_id: params[:account_id])
 
@@ -66,6 +68,7 @@ class VenueDatesController < ApplicationController
     response :unauthorized
     response :ok
   end
+
   def create_from_array
     params[:dates].each do |date|
       venue_date = @venue.dates.find_or_create_by(date: date[:date], venue_id: params[:account_id])
@@ -73,12 +76,12 @@ class VenueDatesController < ApplicationController
       if venue_date.update(venue_date_update_params(date))
         @venue.dates << venue_date
         @venue.save
-
-        render json: venue_date, status: :ok
       else
-        render json: venue_date.errors, status: :unprocessable_entity
+        render json: venue_date.errors, status: :unprocessable_entity and return
       end
     end
+
+    render json: @venue.dates, status: :ok
   end
 
   swagger_api :destroy do
@@ -90,6 +93,7 @@ class VenueDatesController < ApplicationController
     response :unauthorized
     response :ok
   end
+
   def destroy
     date = @venue.dates.find(params[:id])
 
