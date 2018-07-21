@@ -21,7 +21,7 @@ class AdminAccountSerializer < ActiveModel::Serializer
   end
 
   def processed_by
-    if object.processed_by
+    if object.admin
       object.admin.user_name
     else
       nil
