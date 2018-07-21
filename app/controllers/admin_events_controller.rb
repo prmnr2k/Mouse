@@ -68,15 +68,16 @@ class AdminEventsController < ApplicationController
   def approve
     event = Event.find(params[:id])
 
-    if event and ['pending', 'denied'].include?(event.status)
+    if event and ['just_added', 'pending'].include?(event.status)
       event.update(status: 'approved')
+      event.update(processed_by: @admin.id)
       render status: :ok
     else
       render status: :method_not_allowed
     end
   end
 
-  # POST admin/events/<id>/approve
+  # POST admin/events/<id>/deny
   swagger_api :deny do
     summary "Deny event"
     param :path, :id, :integer, :required, "Event id"
@@ -88,8 +89,9 @@ class AdminEventsController < ApplicationController
   def deny
     event = Event.find(params[:id])
 
-    if event and ['pending', 'approved'].include?(event.status)
-      event.update(status: 'denied', denier_id: @admin.id)
+    if event and ['just_added', 'pending', 'approved'].include?(event.status)
+      event.update(status: 'denied')
+      event.update(processed_by: @admin.id)
       render status: :ok
     else
       render status: :method_not_allowed
