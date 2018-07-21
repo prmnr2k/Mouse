@@ -1,6 +1,6 @@
 class VenueDatesController < ApplicationController
   before_action :set_venue, only: :index
-  before_action :authorize_and_set_venue, only: [:create, :destroy]
+  before_action :authorize_and_set_venue, only: [:create, :destroy, :create_from_array]
   swagger_controller :venue_dates, "Venue dates"
 
   swagger_api :index do
@@ -43,15 +43,41 @@ class VenueDatesController < ApplicationController
     response :ok
   end
   def create
-    date = @venue.dates.find_or_create_by(venue_date_unique_params)
+    date = @venue.dates.find_or_create_by(date: params[:date], venue_id: params[:account_id])
 
-    if date.update(venue_date_update_params)
+    if date.update(venue_date_update_params(params))
       @venue.dates << date
       @venue.save
 
       render json: date, status: :ok
     else
       render json: date.errors, status: :unprocessable_entity
+    end
+  end
+
+  swagger_api :create_from_array do
+    summary "Create venue date"
+    param :path, :account_id, :integer, :required, "Venue id"
+    param :form, :dates, :string, :reqired, "Array of date objects [{'date': '', 'price_for_daytime': '', 'price_for_nighttime': '',
+                                                              'is_available': ''}, {...}]"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :not_found
+    response :unprocessable_entity
+    response :unauthorized
+    response :ok
+  end
+  def create_from_array
+    params[:dates].each do |date|
+      venue_date = @venue.dates.find_or_create_by(date: date[:date], venue_id: params[:account_id])
+
+      if venue_date.update(venue_date_update_params(date))
+        @venue.dates << venue_date
+        @venue.save
+
+        render json: venue_date, status: :ok
+      else
+        render json: venue_date.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -93,11 +119,7 @@ class VenueDatesController < ApplicationController
     @venue = account.venue
   end
 
-  def venue_date_unique_params
-    params.permit(:date, :venue_id)
-  end
-
-  def venue_date_update_params
+  def venue_date_update_params(params)
     params.permit(:price_for_daytime, :price_for_nighttime, :is_available)
   end
 end
