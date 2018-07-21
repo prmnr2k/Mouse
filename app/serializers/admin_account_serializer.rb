@@ -1,5 +1,6 @@
 class AdminAccountSerializer < ActiveModel::Serializer
-  attributes :id, :created_at, :account_type, :display_name, :status, :address, :first_name, :last_name, :denied_by
+  attributes :id, :created_at, :account_type, :display_name, :status,
+             :address, :first_name, :last_name, :processed_by, :image_id
 
   def address
     if object.account_type == 'artist'
@@ -19,9 +20,9 @@ class AdminAccountSerializer < ActiveModel::Serializer
     object.user.last_name
   end
 
-  def denied_by
-    if object.denier
-      object.denier.user_name
+  def processed_by
+    if object.processed_by
+      object.admin.user_name
     else
       nil
     end

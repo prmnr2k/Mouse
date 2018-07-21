@@ -95,15 +95,16 @@ class AdminAccountsController < ApplicationController
   def approve
     account = Account.find(params[:id])
 
-    if account and ['pending', 'denied'].include?(account.status)
+    if account and ['pending'].include?(account.status)
       account.update(status: 'approved')
+      account.update(processed_by: @admin.id)
       render status: :ok
     else
       render status: :method_not_allowed
     end
   end
 
-  # POST admin/accounts/<id>/approve
+  # POST admin/accounts/<id>/deny
   swagger_api :deny do
     summary "Deny account"
     param :path, :id, :integer, :required, "Account id"
@@ -115,12 +116,13 @@ class AdminAccountsController < ApplicationController
   def deny
     account = Account.find(params[:id])
 
-    # if account and ['pending', 'approved'].include?(account.status)
-      account.update(status: 'denied', denier_id: @admin.id)
+    if account and ['pending', 'approved'].include?(account.status)
+      account.update(status: 'denied')
+      account.update(processed_by: @admin.id)
       render status: :ok
-    # else
-    #   render status: :method_not_allowed
-    # end
+    else
+      render status: :method_not_allowed
+    end
   end
 
   # DELETE admin/accounts/<id>

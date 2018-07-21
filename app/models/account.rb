@@ -25,7 +25,7 @@ class Account < ApplicationRecord
 	belongs_to :fan, optional: true
 	belongs_to :artist, optional: true
 	belongs_to :venue, optional: true
-	belongs_to :denier, foreign_key: 'denier_id', class_name: 'Admin', optional: true
+	belongs_to :admin, foreign_key: 'processed_by', class_name: 'Admin', optional: true
 
 	belongs_to :image, optional: true
 
@@ -47,6 +47,7 @@ class Account < ApplicationRecord
 		attrs[:image_id] = image_id
 		attrs[:is_verified] = is_verified
 		attrs[:account_type] = account_type
+		attrs[:status] = status
 		attrs[:followers_count] = followers.count
 		attrs[:following_count] = following.count
 		return attrs
