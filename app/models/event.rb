@@ -27,7 +27,7 @@ class Event < ApplicationRecord
   has_many :event_updates, dependent: :destroy
 
   belongs_to :venue, optional: true
-  belongs_to :denier, foreign_key: 'denier_id', class_name: 'Admin', optional: true
+  belongs_to :admin, foreign_key: 'processed_by', class_name: 'Admin', optional: true
 
   belongs_to :image, optional: true
   has_many :images, dependent: :destroy
