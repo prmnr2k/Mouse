@@ -96,8 +96,8 @@ class AdminController < ApplicationController
     response :unauthorized
   end
   def update
-    admin = Admin.find(params[:id])
-    if admin.update(admin_params)
+    @admin = Admin.find(params[:id])
+    if @admin.update(admin_params)
       set_base64_image
       render json: admin, serializer: AdminSerializer, status: :ok
     else
