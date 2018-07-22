@@ -96,6 +96,10 @@
       "description": "AdminPanel"
     },
     {
+      "path": "/api-docs/1.0/admin_reply_templates.{format}",
+      "description": "AdminPanel"
+    },
+    {
       "path": "/api-docs/1.0/admin_feedback.{format}",
       "description": "AdminPanel"
     }

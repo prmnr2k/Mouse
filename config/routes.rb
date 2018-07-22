@@ -160,12 +160,12 @@ Rails.application.routes.draw do
   post 'admin/questions/:id/reply', action: :reply, controller: 'admin_questions'
   delete 'admin/questions/:id', action: :destroy, controller: 'admin_questions'
 
-  get 'admin/reply_templates', action: :index, controller: 'reply_templates'
-  get 'admin/reply_templates/:id', action: :show, controller: 'reply_templates'
-  post 'admin/reply_templates', action: :create, controller: 'reply_templates'
-  post 'admin/reply_templates/:id/approve', action: :approve, controller: 'reply_templates'
-  patch 'admin/reply_templates/:id', action: :update, controller: 'reply_templates'
-  delete 'admin/reply_templates/:id', action: :destroy, controller: 'reply_templates'
+  get 'admin/reply_templates', action: :index, controller: 'admin_reply_templates'
+  get 'admin/reply_templates/:id', action: :show, controller: 'admin_reply_templates'
+  post 'admin/reply_templates', action: :create, controller: 'admin_reply_templates'
+  post 'admin/reply_templates/:id/approve', action: :approve, controller: 'admin_reply_templates'
+  patch 'admin/reply_templates/:id', action: :update, controller: 'admin_reply_templates'
+  delete 'admin/reply_templates/:id', action: :destroy, controller: 'admin_reply_templates'
 
   get 'admin/feedbacks', action: :index, controller: 'admin_feedback'
   get 'admin/feedbacks/overall', action: :overall, controller: 'admin_feedback'
