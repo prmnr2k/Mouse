@@ -71,6 +71,37 @@ class AdminAccountsController < ApplicationController
            status: :ok
   end
 
+  # GET admin/accounts/funding
+  swagger_api :funding do
+    summary "Get all account requests"
+    param :query, :text, :string, :optional, "Search text"
+    param_list :query, :account_type, :string, :required, 'Type of accounts', ['all', 'artist', 'fan', 'venue']
+    param_list :query, :status, :string, :optional, "Account status", [:pending, :approved, :denied, :active, :inactive]
+    param :query, :limit, :integer, :optional, 'Limit'
+    param :query, :offset, :integer, :optional, 'Offset'
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+  end
+  def funding
+    accounts = Account.all
+
+    if params[:text]
+      accounts = accounts.where("events.name ILIKE :query", query: "%#{params[:text]}%")
+    end
+
+    if params[:account_type] != 'all'
+      accounts = accounts.where(account_type: params[:account_type])
+    end
+
+    if params[:status]
+      accounts = accounts.where(status: params[:status])
+    end
+
+    render json: accounts.limit(params[:limit]).offset(params[:offset]),
+           each_serializer: AdminAccountBankingSerializer,
+           status: :ok
+  end
+
   # GET admin/accounts/<id>
   swagger_api :get_account do
     summary "Retrieve account by id"

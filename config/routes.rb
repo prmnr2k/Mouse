@@ -143,6 +143,7 @@ Rails.application.routes.draw do
   get 'admin/accounts/new_count', action: :new_count, controller: 'admin_accounts'
   get 'admin/accounts/requests', action: :account_requests, controller: 'admin_accounts'
   get 'admin/accounts/user_usage', action: :user_usage, controller: 'admin_accounts'
+  get 'admin/accounts/funding', action: :funding, controller: 'admin_accounts'
   get 'admin/accounts/:id', action: :get_account, controller: 'admin_accounts'
   post 'admin/accounts/:id/approve', action: :approve, controller: 'admin_accounts'
   post 'admin/accounts/:id/deny', action: :deny, controller: 'admin_accounts'

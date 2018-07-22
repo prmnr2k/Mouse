@@ -163,6 +163,86 @@
       ]
     },
     {
+      "path": "/admin/accounts/funding.json",
+      "operations": [
+        {
+          "summary": "Get all account requests",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "text",
+              "type": "string",
+              "description": "Search text",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "account_type",
+              "type": "string",
+              "description": "Type of accounts",
+              "required": true,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "all",
+                  "artist",
+                  "fan",
+                  "venue"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "status",
+              "type": "string",
+              "description": "Account status",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "pending",
+                  "approved",
+                  "denied",
+                  "active",
+                  "inactive"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "AdminAccounts#funding",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/accounts/{id}.json",
       "operations": [
         {
