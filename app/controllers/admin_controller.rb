@@ -99,9 +99,9 @@ class AdminController < ApplicationController
     @admin = Admin.find(params[:id])
     if @admin.update(admin_params)
       set_base64_image
-      render json: admin, serializer: AdminSerializer, status: :ok
+      render json: @admin, serializer: AdminSerializer, status: :ok
     else
-      render json: admin.errors, status: :unprocessable_entity
+      render json: @admin.errors, status: :unprocessable_entity
     end
   end
 
