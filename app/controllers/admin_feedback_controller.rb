@@ -73,7 +73,21 @@ class AdminFeedbackController < ApplicationController
   def thank_you
     feedback = Feedback.find(params[:id])
 
-    redern status: :ok
+    feedback_reply = InboxMessage.new(
+      name: "Admin's reply to your feedback",
+      message_type: "blank",
+      simple_message: params[:message]
+    )
+    feedback_reply.admin = @admin
+    feedback_reply.receiver = feedback.account
+    if feedback_reply.save!
+      feedback.reply = feedback_reply
+      feedback.save
+
+      render json: feedback_reply, status: :created
+    else
+      render json: feedback_reply.errors, status: :unprocessable_entity
+    end
   end
 
   # DELETE /admin/feedbacks/1
