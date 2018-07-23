@@ -83,7 +83,7 @@ class AdminAccountsController < ApplicationController
     response :unauthorized
   end
   def funding
-    accounts = Account.all
+    accounts = Account.all.order(:created_at => :desc)
 
     if params[:text]
       accounts = accounts.where("events.name ILIKE :query", query: "%#{params[:text]}%")

@@ -11,7 +11,7 @@ class AdminReplyTemplatesController < ApplicationController
     response :ok
   end
   def index
-    templates = ReplyTemplate.all
+    templates = ReplyTemplate.all.order(:created_at => :desc)
 
     render json: templates.limit(params[:limit]).offset(params[:offset]), status: :ok
   end

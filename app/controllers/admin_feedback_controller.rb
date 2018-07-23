@@ -12,7 +12,7 @@ class AdminFeedbackController < ApplicationController
     response :ok
   end
   def index
-    feedback = Feedback.all
+    feedback = Feedback.all.order(:created_at => :desc)
 
     if params[:feedback_type] and params[:feedback_type] != 'all'
       feedback = feedback.where(feedback_type: params[:feedback_type])

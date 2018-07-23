@@ -11,7 +11,7 @@ class AdminQuestionsController < ApplicationController
     response :ok
   end
   def index
-    questions = Question.all
+    questions = Question.all.order(:created_at => :desc)
 
     render json: questions.limit(params[:limit]).offset(params[:offset]),
                 each_serializer: SimpleQuestionSerializer, status: :ok

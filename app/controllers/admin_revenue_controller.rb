@@ -13,7 +13,7 @@ class AdminRevenueController < ApplicationController
   def index
     events = Event.select(
       "events.*, sum(fan_tickets.price) as revenue"
-    ).left_joins(:tickets => :fan_tickets).group("events.id")
+    ).left_joins(:tickets => :fan_tickets).order(:date_from => :desc).group("events.id")
 
     render json: events.limit(params[:limit]).offset(params[:offset]),
            each_serializer: AdminEventsRevenueSerializer, status: :ok
@@ -30,7 +30,7 @@ class AdminRevenueController < ApplicationController
   def show
     event = Event.select(
       "events.*, sum(fan_tickets.price) as total_revenue"
-    ).left_joins(:tickets => :fan_tickets).group("events.id").find(params[:id])
+    ).left_joins(:tickets => :fan_tickets).order(:date_from => :desc).group("events.id").find(params[:id])
 
     render json: event, serializer: AdminEventRevenueSerializer, status: :ok
   end
