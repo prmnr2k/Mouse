@@ -174,6 +174,7 @@ Rails.application.routes.draw do
   get 'admin/feedbacks', action: :index, controller: 'admin_feedback'
   get 'admin/feedbacks/overall', action: :overall, controller: 'admin_feedback'
   get 'admin/feedbacks/counts', action: :counts, controller: 'admin_feedback'
+  get 'admin/feedbacks/graph', action: :graph, controller: 'admin_feedback'
   get 'admin/feedbacks/:id', action: :show, controller: 'admin_feedback'
   post 'admin/feedbacks/:id/thank_you', action: :thank_you, controller: 'admin_feedback'
   delete 'admin/feedbacks/:id', action: :destroy, controller: 'admin_feedback'

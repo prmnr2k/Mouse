@@ -48,6 +48,38 @@ class AdminFeedbackController < ApplicationController
     }, status: :ok
   end
 
+
+  # GET /admin/feedbacks/graph
+  swagger_api :graph do
+    summary "Get feedback info for graph"
+    param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :ok
+  end
+  def graph
+    axis = []
+    (DateTime.now.beginning_of_year.to_i..DateTime.now.end_of_year.to_i).step(1.month).each { |v|
+      axis.push(Time.at(v).strftime("%B"))
+    }
+
+    feed = Feedback.order(:feedback_type, :created_at).to_a.group_by(
+      &:feedback_type
+    ).each_with_object({}) {
+      |(k, v), h| h[k] = v.group_by{ |e| e.created_at.strftime("%B") }
+    }.each { |(k, h)|
+      h.each { |m, v|
+        h[m] = v.count
+      }
+    }
+
+    render json: {
+      axis: axis,
+      bugs: feed['bug'],
+      enhancement: feed['enhancement'],
+      compliment: feed['compliment'],
+    }, status: :ok
+  end
+
   # GET /admin/feedbacks/1
   swagger_api :show do
     summary "Retrieve question item"
