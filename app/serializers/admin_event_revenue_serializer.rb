@@ -3,12 +3,16 @@ class AdminEventRevenueSerializer < ActiveModel::Serializer
              :total_revenue, :artist_revenue, :venue_revenue, :vr_revenue, :tickets_revenue, :advertising_revenue
 
   def owner
-    if object.creator.fan
-      return "#{object.creator.fan.first_name} #{object.creator.fan.last_name}"
-    elsif object.creator.artist
-      return "#{object.creator.artist.first_name} #{object.creator.artist.last_name}"
-    elsif object.creator.venue
-      return object.creator.display_name
+    if object.creator
+      if object.creator.fan
+        return "#{object.creator.fan.first_name} #{object.creator.fan.last_name}"
+      elsif object.creator.artist
+        return "#{object.creator.artist.first_name} #{object.creator.artist.last_name}"
+      elsif object.creator.venue
+        return object.creator.display_name
+      end
+    else
+      nil
     end
   end
 
