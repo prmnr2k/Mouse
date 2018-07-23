@@ -167,6 +167,7 @@ Rails.application.routes.draw do
   delete 'admin/questions/:id', action: :destroy, controller: 'admin_questions'
 
   get 'admin/reply_templates', action: :index, controller: 'admin_reply_templates'
+  get 'admin/reply_templates/to_answer', action: :to_answer, controller: 'admin_reply_templates'
   get 'admin/reply_templates/:id', action: :show, controller: 'admin_reply_templates'
   post 'admin/reply_templates', action: :create, controller: 'admin_reply_templates'
   post 'admin/reply_templates/:id/approve', action: :approve, controller: 'admin_reply_templates'

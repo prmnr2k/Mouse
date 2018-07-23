@@ -196,21 +196,8 @@
               "paramType": "query",
               "name": "event_type",
               "type": "string",
-              "description": "Type of events",
-              "required": false,
-              "allowableValues": {
-                "valueType": "LIST",
-                "values": [
-                  "viewed",
-                  "liked",
-                  "commented",
-                  "crowdfund",
-                  "regular",
-                  "successful",
-                  "pending",
-                  "failed"
-                ]
-              }
+              "description": "Array of type of events [:viewed, :liked, :commented, :crowdfund, :regular, :successful, :pending, :failed]",
+              "required": false
             },
             {
               "paramType": "query",

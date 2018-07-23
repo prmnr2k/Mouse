@@ -45,6 +45,46 @@
       ]
     },
     {
+      "path": "/admin/reply_templates/to_answer.json",
+      "operations": [
+        {
+          "summary": "Retrieve approved templates list",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "AdminReplyTemplates#to_answer",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/reply_templates/{id}.json",
       "operations": [
         {

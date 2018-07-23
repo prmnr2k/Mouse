@@ -16,6 +16,20 @@ class AdminReplyTemplatesController < ApplicationController
     render json: templates.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
+  # GET /admin/reply_templates/to_answer
+  swagger_api :to_answer do
+    summary "Retrieve approved templates list"
+    param :query, :limit, :integer, :optional, "Limit"
+    param :query, :offset, :integer, :optional, "Offset"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :ok
+  end
+  def to_answer
+    templates = ReplyTemplate.where(status: 'approved').order(:created_at => :desc)
+
+    render json: templates.limit(params[:limit]).offset(params[:offset]), status: :ok
+  end
+
   # GET /admin/reply_templates/1
   swagger_api :show do
     summary "Retrieve template item"
