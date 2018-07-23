@@ -57,10 +57,6 @@ class AdminEventsController < ApplicationController
     events_base = Event.left_joins(:likes, :comments).select('events.*, count(likes.id) as likes, count(comments.id) as comments')
     events = events_base
 
-    if params[:text] or params[:event_type]
-      events = events.where("0=1")
-    end
-
     if params[:text]
       events = events.where("events.name ILIKE :query", query: "%#{params[:text]}%")
     end
@@ -74,15 +70,15 @@ class AdminEventsController < ApplicationController
         elsif type == 'commented'
           events = events.order("comments DESC")
         elsif type == 'crowdfund'
-          events = events.or(events_base.where(is_crowdfunding_event: true))
+          events = events.where("0=1").or(events_base.where(is_crowdfunding_event: true))
         elsif type == 'regular'
-          events = events.or(events_base.where(is_crowdfunding_event: false))
+          events = events.where("0=1").or(events_base.where(is_crowdfunding_event: false))
         elsif type == 'successful'
-          events = events.or(events_base.where(status: 'approved'))
+          events = events.where("0=1").or(events_base.where(status: 'approved'))
         elsif type == 'pending'
-          events = events.or(events_base.where(status: 'pending'))
+          events = events.where("0=1").or(events_base.where(status: 'pending'))
         elsif type == 'failed'
-          events = events.or(events_base.where(status: 'denied'))
+          events = events.where("0=1").or(events_base.where(status: 'denied'))
         end
       end
     end
