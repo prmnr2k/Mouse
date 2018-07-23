@@ -122,6 +122,54 @@ class AdminEventsController < ApplicationController
            status: :ok
   end
 
+  # GET /admin/events/graph
+  swagger_api :graph do
+    summary "Get events info for graph"
+    param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :ok
+  end
+  def graph
+    if params[:by] == 'all'
+      dates = Event.pluck("min(created_at), max(created_at)").first
+      diff = Time.diff(dates[0], dates[1])
+      if diff[:month] > 0
+        new_step = 'year'
+      elsif diff[:week] > 0
+        new_step = 'month'
+      elsif diff[:day] > 0
+        new_step = 'week'
+      else
+        new_step = 'day'
+      end
+
+      axis = GraphHelper.custom_axis(new_step, dates)
+      dates_range = dates[0]..dates[1]
+      params[:by] = new_step
+    else
+      axis = GraphHelper.axis(params[:by])
+      dates_range = GraphHelper.sql_date_range(params[:by])
+    end
+
+    events = Event.where(
+      created_at: dates_range
+    ).order(:is_crowdfunding_event, :created_at).to_a.group_by(
+      &:is_crowdfunding_event
+    ).each_with_object({}) {
+      |(k, v), h| h[k] = v.group_by{ |e| e.created_at.strftime(GraphHelper.type_str(params[:by])) }
+    }.each { |(k, h)|
+      h.each { |m, v|
+        h[m] = v.count
+      }
+    }
+
+    render json: {
+      axis: axis,
+      crowdfunding: events[true],
+      regular: events[false],
+    }, status: :ok
+  end
+
   # GET admin/events/1
   swagger_api :get_event do
     summary "Retrieve event by id"

@@ -243,6 +243,49 @@
       ]
     },
     {
+      "path": "/admin/accounts/graph.json",
+      "operations": [
+        {
+          "summary": "Get accounts info for graph",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "by",
+              "type": "string",
+              "description": "Data by",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "day",
+                  "week",
+                  "month",
+                  "year",
+                  "all"
+                ]
+              }
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Ok"
+            }
+          ],
+          "nickname": "AdminAccounts#graph",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/accounts/{id}.json",
       "operations": [
         {

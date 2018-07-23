@@ -102,6 +102,55 @@ class AdminAccountsController < ApplicationController
            status: :ok
   end
 
+  # GET /admin/accounts/graph
+  swagger_api :graph do
+    summary "Get accounts info for graph"
+    param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :ok
+  end
+  def graph
+    if params[:by] == 'all'
+      dates = Account.pluck("min(created_at), max(created_at)").first
+      diff = Time.diff(dates[0], dates[1])
+      if diff[:month] > 0
+        new_step = 'year'
+      elsif diff[:week] > 0
+        new_step = 'month'
+      elsif diff[:day] > 0
+        new_step = 'week'
+      else
+        new_step = 'day'
+      end
+
+      axis = GraphHelper.custom_axis(new_step, dates)
+      dates_range = dates[0]..dates[1]
+      params[:by] = new_step
+    else
+      axis = GraphHelper.axis(params[:by])
+      dates_range = GraphHelper.sql_date_range(params[:by])
+    end
+
+    accounts = Account.where(
+      created_at: dates_range
+    ).order(:account_type, :created_at).to_a.group_by(
+      &:account_type
+    ).each_with_object({}) {
+      |(k, v), h| h[k] = v.group_by{ |e| e.created_at.strftime(GraphHelper.type_str(params[:by])) }
+    }.each { |(k, h)|
+      h.each { |m, v|
+        h[m] = v.count
+      }
+    }
+
+    render json: {
+      axis: axis,
+      fan: accounts['fan'],
+      artist: accounts['artist'],
+      venue: accounts['venue'],
+    }, status: :ok
+  end
+
   # GET admin/accounts/<id>
   swagger_api :get_account do
     summary "Retrieve account by id"

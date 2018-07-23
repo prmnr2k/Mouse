@@ -57,15 +57,33 @@ class AdminFeedbackController < ApplicationController
     response :ok
   end
   def graph
-    axis = []
-    (DateTime.now.beginning_of_year.to_i..DateTime.now.end_of_year.to_i).step(1.month).each { |v|
-      axis.push(Time.at(v).strftime("%B"))
-    }
+    if params[:by] == 'all'
+      dates = Feedback.pluck("min(created_at), max(created_at)").first
+      diff = Time.diff(dates[0], dates[1])
+      if diff[:month] > 0
+        new_step = 'year'
+      elsif diff[:week] > 0
+        new_step = 'month'
+      elsif diff[:day] > 0
+        new_step = 'week'
+      else
+        new_step = 'day'
+      end
 
-    feed = Feedback.order(:feedback_type, :created_at).to_a.group_by(
+      axis = GraphHelper.custom_axis(new_step, dates)
+      dates_range = dates[0]..dates[1]
+      params[:by] = new_step
+    else
+      axis = GraphHelper.axis(params[:by])
+      dates_range = GraphHelper.sql_date_range(params[:by])
+    end
+
+    feed = Feedback.where(
+      created_at: dates_range
+    ).order(:feedback_type, :created_at).to_a.group_by(
       &:feedback_type
     ).each_with_object({}) {
-      |(k, v), h| h[k] = v.group_by{ |e| e.created_at.strftime("%B") }
+      |(k, v), h| h[k] = v.group_by{ |e| e.created_at.strftime(GraphHelper.type_str(params[:by])) }
     }.each { |(k, h)|
       h.each { |m, v|
         h[m] = v.count
