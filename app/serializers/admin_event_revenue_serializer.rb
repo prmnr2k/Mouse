@@ -27,14 +27,20 @@ class AdminEventRevenueSerializer < ActiveModel::Serializer
   end
 
   def tickets_revenue
-    0
+    object.tickets.left_joins(:fan_tickets, :tickets_type).where(
+      tickets: {tickets_types: {name: 'in_person'}, is_promotional: false}
+    ).sum('fan_tickets.price')
   end
 
   def vr_revenue
-    0
+    object.tickets.left_joins(:fan_tickets, :tickets_type).where(
+      tickets: {tickets_types: {name: 'vr'}, is_promotional: false}
+    ).sum('fan_tickets.price')
   end
 
   def advertising_revenue
-    0
+    object.tickets.left_joins(:fan_tickets).where(
+      tickets: {is_promotional: true}
+    ).sum('fan_tickets.price')
   end
 end
