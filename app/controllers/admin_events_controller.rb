@@ -31,7 +31,7 @@ class AdminEventsController < ApplicationController
       "sum(fan_tickets.price) >= events.funding_goal").pluck("COUNT(events.id)")[0].to_i
 
     render json: {
-      all: Event.where(status: 'just_added').count,
+      all: Event.count,
       pending: Event.where("events.funding_to > :query", query: DateTime.now).count,
       successful: success,
       failed: failed,
@@ -56,7 +56,7 @@ class AdminEventsController < ApplicationController
       "sum(fan_tickets.price) >= events.funding_goal").pluck("COUNT(events.id)")[0].to_i
 
     render json: {
-      all: Event.where(status: 'just_added').count,
+      all: Event.count,
       successful: success,
       failed: failed
     }, status: :ok

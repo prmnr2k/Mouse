@@ -62,15 +62,24 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def counts
+    date = calculate_date(params[:type], nil)
+    artist = calculate_artist(params[:type], nil)
+    venue = calculate_venue(params[:type], nil)
+    vr = calculate_vr(params[:type], nil)
+    tickets = calculate_tickets(params[:type], nil)
+    advertising = calculate_advertising(params[:type], nil)
+    crowdfunding = calculate_crowdfunding(params[:type], nil)
+    regular = calculate_regular(params[:type], nil)
+
     render json: {
-      date: 0,
-      artist: 0,
-      venue: 0,
-      vr: 0,
-      tickets: 0,
-      advertising: 0,
-      crowdfung: 0,
-      regular: 0
+      date: date,
+      artist:artist,
+      venue: venue,
+      vr: vr,
+      tickets: tickets,
+      advertising: advertising,
+      crowdfung: crowdfunding,
+      regular:regular,
     }, status: :ok
   end
 
@@ -84,7 +93,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def date
-    render json: 0, status: :ok
+    render json: calculate_date(params[:type], params[:by]), status: :ok
   end
 
   # GET /admin/revenue/counts/artist
@@ -97,7 +106,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def artist
-    render json: 0, status: :ok
+    render json: calculate_artist(params[:type], params[:by]), status: :ok
   end
 
   # GET /admin/revenue/venue
@@ -110,7 +119,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def venue
-    render json: 0, status: :ok
+    render json: calculate_venue(params[:type], params[:by]), status: :ok
   end
 
   # GET /admin/revenue/counts/vr
@@ -123,7 +132,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def vr
-    render json: 0, status: :ok
+    render json: calculate_vr(params[:type], params[:by]), status: :ok
   end
 
   # GET /admin/revenue/counts/tickets
@@ -136,7 +145,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def tickets
-    render json: 0, status: :ok
+    render json: calculate_tickets(params[:type], params[:by]), status: :ok
   end
 
   # GET /admin/revenue/counts/advertising
@@ -149,7 +158,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def advertising
-    render json: 0, status: :ok
+    render json: calculate_advertising(params[:type], params[:by]), status: :ok
   end
 
   # GET /admin/revenue/counts/funding
@@ -163,7 +172,11 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def funding
-    render json: 0, status: :ok
+    if params[:funding_type] == 'crowdfunding'
+      render json: calculate_crowdfunding(params[:type], params[:by]), status: :ok
+    else
+      render json: calculate_regular(params[:type], params[:by]), status: :ok
+    end
   end
 
   private
@@ -172,5 +185,81 @@ class AdminRevenueController < ApplicationController
 
     render status: :unauthorized and return if user == nil or (user.is_superuser == false and user.is_admin == false)
     @admin = user.admin
+  end
+
+  def filter_and_count(entity, type, by, sum)
+    if by
+      if by == 'day'
+        entity.where(created_at: DateTime.now)
+      elsif by == 'week'
+        entity.where(created_at: 1.week.ago..DateTime.now)
+      elsif by == 'month'
+        entity.where(created_at: 1.month.ago..DateTime.now)
+      elsif by == 'year'
+        entity.where(created_at: 1.year.ago..DateTime.now)
+      end
+    end
+    entity = entity.sum(sum)
+
+    if type == 'total'
+      entity = entity * 0.1
+    end
+
+    return entity
+  end
+
+  def calculate_date(type, by)
+    date = FanTicket.all
+    return filter_and_count(date, type, by, :price)
+  end
+
+  def calculate_artist(type, by)
+    artist = Event.joins(
+      :artist_events => :agreed_date_time_and_price
+    ).where(artist_events: {status: 'owner_accepted'})
+
+    return filter_and_count(artist, type, by, 'agreed_date_time_and_prices.price')
+  end
+
+  def calculate_venue(type, by)
+    venue = Event.joins(
+      :venue_events => :agreed_date_time_and_price
+    ).where(venue_events: {status: 'owner_accepted'})
+
+    return filter_and_count(venue, type, by, 'agreed_date_time_and_prices.price')
+  end
+
+  def calculate_vr(type, by)
+    vr = Ticket.joins(:fan_tickets, :tickets_type).where(
+      tickets: {tickets_types: {name: 'vr'}, is_promotional: false})
+
+    return filter_and_count(vr, type, by, 'fan_tickets.price')
+  end
+
+  def calculate_tickets(type, by)
+    ticket = Ticket.joins(:fan_tickets, :tickets_type).where(
+      tickets: {tickets_types: {name: 'in_person'}, is_promotional: false})
+
+    return filter_and_count(ticket, type, by, 'fan_tickets.price')
+  end
+
+  def calculate_advertising(type, by)
+    advertising = Ticket.joins(:fan_tickets).where(
+      tickets: {is_promotional: true}
+    )
+
+    return filter_and_count(advertising, type, by, 'fan_tickets.price')
+  end
+
+  def calculate_crowdfunding(type, by)
+    crowdfunding = Event.joins(:tickets => :fan_tickets).where(is_crowdfunding_event: true)
+
+    return filter_and_count(crowdfunding, type, by, 'fan_tickets.price')
+  end
+
+  def calculate_regular(type, by)
+    regular = Event.joins(:tickets => :fan_tickets).where(is_crowdfunding_event: false)
+
+    return filter_and_count(regular, type, by, 'fan_tickets.price')
   end
 end
