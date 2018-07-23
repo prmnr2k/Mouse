@@ -45,10 +45,20 @@ class AdminEventsController < ApplicationController
     response :unauthorized
   end
   def counts
+    success = Event.left_joins(:tickets => :fan_tickets).where(
+      "events.funding_to <= :query", query: DateTime.now
+    ).group("events.id").having(
+      "sum(fan_tickets.price) >= events.funding_goal").pluck("COUNT(events.id)")[0].to_i
+
+    failed = Event.left_joins(:tickets => :fan_tickets).where(
+      "events.funding_to <= :query", query: DateTime.now
+    ).group("events.id").having(
+      "sum(fan_tickets.price) >= events.funding_goal").pluck("COUNT(events.id)")[0].to_i
+
     render json: {
       all: Event.where(status: 'just_added').count,
-      successful: Event.where(status: 'approved').count,
-      failed: Event.where(status: 'denied').count
+      successful: success,
+      failed: failed
     }, status: :ok
   end
 
