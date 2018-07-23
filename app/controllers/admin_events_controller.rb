@@ -67,13 +67,7 @@ class AdminEventsController < ApplicationController
 
     if params[:event_type]
       params[:event_type].each do |type|
-        if type == 'viewed'
-          events = events.order(:views => :desc)
-        elsif type == 'liked'
-          events = events.order("likes DESC")
-        elsif type == 'commented'
-          events = events.order("comments DESC")
-        elsif type == 'crowdfund'
+        if type == 'crowdfund'
           events = events.or(events_base.where(is_crowdfunding_event: true))
         elsif type == 'regular'
           events = events.or(events_base.where(is_crowdfunding_event: false))
@@ -83,6 +77,17 @@ class AdminEventsController < ApplicationController
           events = events.or(events_base.where(status: 'pending'))
         elsif type == 'failed'
           events = events.or(events_base.where(status: 'denied'))
+        end
+      end
+
+      params[:event_type].each do |type|
+        # если сначала есть ордер, то они ругаются((((
+        if type == 'viewed'
+          events = events.order(:views => :desc)
+        elsif type == 'liked'
+          events = events.order("likes DESC")
+        elsif type == 'commented'
+          events = events.order("comments DESC")
         end
       end
     end
