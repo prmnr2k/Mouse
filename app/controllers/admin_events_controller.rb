@@ -2,7 +2,7 @@ class AdminEventsController < ApplicationController
   before_action :authorize_admin
   swagger_controller :admin, "AdminPanel"
 
-  # GET /admin/accounts/new_count
+  # GET /admin/events/new_count
   swagger_api :new_count do
     summary "Get number of new events added"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -12,7 +12,7 @@ class AdminEventsController < ApplicationController
     render json: Event.where(status: 'just_added').count, status: :ok
   end
 
-  # GET /admin/accounts/new_status
+  # GET /admin/events/new_status
   swagger_api :new_status do
     summary "Get events analytics"
     param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
@@ -28,7 +28,7 @@ class AdminEventsController < ApplicationController
     }, status: :ok
   end
 
-  # GET /admin/accounts/count
+  # GET /admin/events/count
   swagger_api :counts do
     summary "Get events analytics"
     param :header, 'Authorization', :string, :required, 'Authentication token'
@@ -37,13 +37,12 @@ class AdminEventsController < ApplicationController
   def counts
     render json: {
       all: Event.where(status: 'just_added').count,
-      pending: Event.where(status: 'pending').count,
       successful: Event.where(status: 'approved').count,
       failed: Event.where(status: 'denied').count
     }, status: :ok
   end
 
-  # GET /admin/accounts/individual
+  # GET /admin/events/individual
   swagger_api :individual do
     summary "Get top 5 events analytics"
     param :query, :text, :string, :optional, "Search text"

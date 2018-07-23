@@ -179,5 +179,14 @@ Rails.application.routes.draw do
   delete 'admin/feedbacks/:id', action: :destroy, controller: 'admin_feedback'
 
   get 'admin/revenue', action: :index, controller: 'admin_revenue'
+  get 'admin/revenue/cities', action: :cities, controller: 'admin_revenue'
+  get 'admin/revenue/counts', action: :counts, controller: 'admin_revenue'
+  get 'admin/revenue/counts/date', action: :date, controller: 'admin_revenue'
+  get 'admin/revenue/counts/artist', action: :artist, controller: 'admin_revenue'
+  get 'admin/revenue/counts/venue', action: :venue, controller: 'admin_revenue'
+  get 'admin/revenue/counts/vr', action: :vr, controller: 'admin_revenue'
+  get 'admin/revenue/counts/tickets', action: :tickets, controller: 'admin_revenue'
+  get 'admin/revenue/counts/advertising', action: :advertising, controller: 'admin_revenue'
+  get 'admin/revenue/counts/funding', action: :funding, controller: 'admin_revenue'
   get 'admin/revenue/:id', action: :show, controller: 'admin_revenue'
 end
