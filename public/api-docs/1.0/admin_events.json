@@ -31,6 +31,49 @@
       ]
     },
     {
+      "path": "/admin/events/new_status.json",
+      "operations": [
+        {
+          "summary": "Get events analytics",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "by",
+              "type": "string",
+              "description": "Data by",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "day",
+                  "week",
+                  "month",
+                  "year",
+                  "all"
+                ]
+              }
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "AdminEvents#new_status",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/events/counts.json",
       "operations": [
         {

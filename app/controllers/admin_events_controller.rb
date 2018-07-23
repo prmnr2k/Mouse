@@ -12,6 +12,22 @@ class AdminEventsController < ApplicationController
     render json: Event.where(status: 'just_added').count, status: :ok
   end
 
+  # GET /admin/accounts/new_status
+  swagger_api :new_status do
+    summary "Get events analytics"
+    param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+  end
+  def new_status
+    render json: {
+      all: Event.where(status: 'just_added').count,
+      pending: Event.where(status: 'pending').count,
+      successful: Event.where(status: 'approved').count,
+      failed: Event.where(status: 'denied').count
+    }, status: :ok
+  end
+
   # GET /admin/accounts/count
   swagger_api :counts do
     summary "Get events analytics"
