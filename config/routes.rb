@@ -150,7 +150,9 @@ Rails.application.routes.draw do
   delete 'admin/accounts/:id', action: :destroy, controller: 'admin_accounts'
 
   get 'admin/events/new_count', action: :new_count, controller: 'admin_events'
+  get 'admin/events/counts', action: :counts, controller: 'admin_events'
   get 'admin/events/requests', action: :event_requests, controller: 'admin_events'
+  get 'admin/events/individual', action: :individual, controller: 'admin_events'
   get 'admin/events/:id', action: :get_event, controller: 'admin_events'
   post 'admin/events/:id/approve', action: :approve, controller: 'admin_events'
   post 'admin/events/:id/deny', action: :deny, controller: 'admin_events'

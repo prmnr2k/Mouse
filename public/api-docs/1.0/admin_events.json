@@ -31,6 +31,32 @@
       ]
     },
     {
+      "path": "/admin/events/counts.json",
+      "operations": [
+        {
+          "summary": "Get events analytics",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "AdminEvents#counts",
+          "method": "get"
+        }
+      ]
+    },
+    {
       "path": "/admin/events/requests.json",
       "operations": [
         {
@@ -106,6 +132,87 @@
             }
           ],
           "nickname": "AdminEvents#event_requests",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/admin/events/individual.json",
+      "operations": [
+        {
+          "summary": "Get top 5 events analytics",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "text",
+              "type": "string",
+              "description": "Search text",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "event_type",
+              "type": "string",
+              "description": "Type of events",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "viewed",
+                  "liked",
+                  "commented",
+                  "crowdfund",
+                  "regular",
+                  "successful",
+                  "pending",
+                  "failed"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "sort_by",
+              "type": "string",
+              "description": "Sort by",
+              "required": false,
+              "allowableValues": {
+                "valueType": "LIST",
+                "values": [
+                  "name",
+                  "date"
+                ]
+              }
+            },
+            {
+              "paramType": "query",
+              "name": "limit",
+              "type": "integer",
+              "description": "Limit",
+              "required": false
+            },
+            {
+              "paramType": "query",
+              "name": "offset",
+              "type": "integer",
+              "description": "Offset",
+              "required": false
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "AdminEvents#individual",
           "method": "get"
         }
       ]

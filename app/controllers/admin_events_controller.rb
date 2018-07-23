@@ -12,6 +12,68 @@ class AdminEventsController < ApplicationController
     render json: Event.where(status: 'just_added').count, status: :ok
   end
 
+  # GET /admin/accounts/count
+  swagger_api :counts do
+    summary "Get events analytics"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+  end
+  def counts
+    render json: {
+      all: Event.where(status: 'just_added').count,
+      pending: Event.where(status: 'pending').count,
+      successful: Event.where(status: 'approved').count,
+      failed: Event.where(status: 'denied').count
+    }, status: :ok
+  end
+
+  # GET /admin/accounts/individual
+  swagger_api :individual do
+    summary "Get top 5 events analytics"
+    param :query, :text, :string, :optional, "Search text"
+    param_list :query, :event_type, :string, :optional, "Type of events",
+               [:viewed, :liked, :commented, :crowdfund, :regular, :successful, :pending, :failed]
+    param_list :query, :sort_by, :string, :optional, "Sort by", [:name, :date]
+    param :query, :limit, :integer, :optional, 'Limit'
+    param :query, :offset, :integer, :optional, 'Offset'
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+  end
+  def individual
+    events = Event.left_joins(:likes, :comments).select('events.*, count(likes.id) as likes, count(comments.id) as comments')
+
+    if params[:text]
+      events = events.where("events.name ILIKE :query", query: "%#{params[:text]}%")
+    end
+
+    if params[:event_type] == 'viewed'
+      events = events.order(:views => :desc)
+    elsif params[:event_type] == 'liked'
+      events = events.order("likes DESC")
+    elsif params[:event_type] == 'commented'
+      events = events.order("comments DESC")
+    elsif params[:event_type] == 'crowdfund'
+      events = events.where(is_crowdfunding_event: true)
+    elsif params[:event_type] == 'regular'
+      events = events.where(is_crowdfunding_event: false)
+    elsif params[:event_type] == 'successful'
+      events = events.where(status: 'approved')
+    elsif params[:event_type] == 'pending'
+      events = events.where(status: 'pending')
+    elsif params[:event_type] == 'failed'
+      events = events.where(status: 'denied')
+    end
+
+    if params[:sort_by] == 'name'
+      events = events.order(:name)
+    elsif params[:sort_by] == 'date'
+      events = events.order(:date_from => :desc)
+    end
+
+    render json: events.group('events.id').limit(params[:limit]).offset(params[:offset]),
+           each_serializer: AdminEventsAnalyticSerializer, status: :ok
+  end
+
   # GET admin/events/requests
   swagger_api :event_requests do
     summary "Get all event requests"
