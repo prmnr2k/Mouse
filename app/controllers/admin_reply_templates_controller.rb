@@ -13,8 +13,7 @@ class AdminReplyTemplatesController < ApplicationController
   def index
     templates = ReplyTemplate.all
 
-    render json: templates.limit(params[:limit]).offset(params[:offset]),
-        each_serializer: CollectionReplyTemplateSerializer, status: :ok
+    render json: templates.limit(params[:limit]).offset(params[:offset]), status: :ok
   end
 
   # GET /admin/reply_templates/1
