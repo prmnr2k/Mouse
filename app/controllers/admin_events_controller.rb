@@ -46,8 +46,7 @@ class AdminEventsController < ApplicationController
   swagger_api :individual do
     summary "Get top 5 events analytics"
     param :query, :text, :string, :optional, "Search text"
-    param_list :query, :event_type, :string, :optional, "Type of events",
-               [:viewed, :liked, :commented, :crowdfund, :regular, :successful, :pending, :failed]
+    param :query, :event_type, :string, :optional, "Array of type of events [:viewed, :liked, :commented, :crowdfund, :regular, :successful, :pending, :failed]"
     param_list :query, :sort_by, :string, :optional, "Sort by", [:name, :date]
     param :query, :limit, :integer, :optional, 'Limit'
     param :query, :offset, :integer, :optional, 'Offset'
@@ -61,22 +60,26 @@ class AdminEventsController < ApplicationController
       events = events.where("events.name ILIKE :query", query: "%#{params[:text]}%")
     end
 
-    if params[:event_type] == 'viewed'
-      events = events.order(:views => :desc)
-    elsif params[:event_type] == 'liked'
-      events = events.order("likes DESC")
-    elsif params[:event_type] == 'commented'
-      events = events.order("comments DESC")
-    elsif params[:event_type] == 'crowdfund'
-      events = events.where(is_crowdfunding_event: true)
-    elsif params[:event_type] == 'regular'
-      events = events.where(is_crowdfunding_event: false)
-    elsif params[:event_type] == 'successful'
-      events = events.where(status: 'approved')
-    elsif params[:event_type] == 'pending'
-      events = events.where(status: 'pending')
-    elsif params[:event_type] == 'failed'
-      events = events.where(status: 'denied')
+    if params[:event_type]
+      params[:event_type].each do |type|
+        if type == 'viewed'
+          events = events.order(:views => :desc)
+        elsif type == 'liked'
+          events = events.order("likes DESC")
+        elsif type == 'commented'
+          events = events.order("comments DESC")
+        elsif type == 'crowdfund'
+          events = events.where(is_crowdfunding_event: true)
+        elsif type == 'regular'
+          events = events.where(is_crowdfunding_event: false)
+        elsif type == 'successful'
+          events = events.where(status: 'approved')
+        elsif type == 'pending'
+          events = events.where(status: 'pending')
+        elsif type == 'failed'
+          events = events.where(status: 'denied')
+        end
+      end
     end
 
     if params[:sort_by] == 'name'
