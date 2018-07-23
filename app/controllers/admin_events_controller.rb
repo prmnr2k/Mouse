@@ -57,7 +57,7 @@ class AdminEventsController < ApplicationController
     events_base = Event.left_joins(:likes, :comments).select('events.*, count(likes.id) as likes, count(comments.id) as comments')
     events = events_base
 
-    if params[:text] or not (['crowdfund', 'regular', 'successful', 'pending', 'failed'] & params[:event_type]).empty?
+    if params[:text] or not (['crowdfund', 'regular', 'successful', 'pending', 'failed'] & params[:event_type].to_a).empty?
       events = events.where("0=1")
     end
 
