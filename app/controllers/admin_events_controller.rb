@@ -104,7 +104,7 @@ class AdminEventsController < ApplicationController
     response :unauthorized
   end
   def event_requests
-    events = Event.all.order(:created_at)
+    events = Event.all.order(:created_at => :desc)
 
     if params[:text]
       events = events.where("events.name ILIKE :query", query: "%#{params[:text]}%")

@@ -10,9 +10,9 @@ class AdminAccountsController < ApplicationController
   end
   def new_accounts_count
     render json: {
-      artist: Account.where(created_at: DateTime.now..1.month.ago, account_type: 'artist').count,
-      fan: Account.where(created_at: DateTime.now..1.month.ago, account_type: 'fan').count,
-      venue: Account.where(created_at: DateTime.now..1.month.ago, account_type: 'venue').count
+      artist: Account.where(created_at: 1.month.ago..DateTime.now, account_type: 'artist').count,
+      fan: Account.where(created_at: 1.month.ago..DateTime.now, account_type: 'fan').count,
+      venue: Account.where(created_at: 1.month.ago..DateTime.now, account_type: 'venue').count
     }, status: :ok
   end
 
@@ -52,7 +52,7 @@ class AdminAccountsController < ApplicationController
     response :unauthorized
   end
   def account_requests
-    accounts = Account.all
+    accounts = Account.all.order(:created_at => :desc)
 
     if params[:text]
       accounts = accounts.where("events.name ILIKE :query", query: "%#{params[:text]}%")
