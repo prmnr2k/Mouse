@@ -36,7 +36,7 @@ class ArtistEvent < ApplicationRecord
     res.delete('id')
     res.delete('event_id')
 
-    res[:artist] = account.artist(for_event: true)
+    res[:artist] = account.artist.as_json(for_event: true)
 
     if ['owner_accepted', 'active'].include?(status)
       res[:agreement] = agreed_date_time_and_price
