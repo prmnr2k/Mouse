@@ -139,9 +139,9 @@ class TicketsController < ApplicationController
       tickets_count = @event.tickets.joins(:tickets_type).where(tickets_types: {name: params[:type]}).sum('tickets.count')
       tickets_count += params[:count].to_i
 
-      if params[:type] == 'in_person' and tickets_count > @event.venue.venue.capacity.to_i
+      if params[:type] == 'in_person' and tickets_count > @event.venue.capacity.to_i
         render json: {error: "Tickets limit expired"}, status: :unprocessable_entity and return
-      elsif params[:type] == 'vr' and tickets_count > @event.venue.venue.vr_capacity.to_i
+      elsif params[:type] == 'vr' and tickets_count > @event.venue.vr_capacity.to_i
         render json: {error: "Tickets limit expired"}, status: :unprocessable_entity and return
       end
     end
