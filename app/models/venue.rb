@@ -20,6 +20,15 @@ class Venue < ApplicationRecord
 
 
     def as_json(options={})
+        if options[:for_event]
+            attrs = {}
+            attrs[:display_name] = display_name
+            attrs[:user_name] = user_name
+            attrs[:image_id] = image_id
+            attrs[:price] = price
+            return attrs
+        end
+
         if options[:extended]
             res = super.merge(account.get_attrs)
             if public_venue
