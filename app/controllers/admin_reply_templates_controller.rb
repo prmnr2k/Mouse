@@ -84,14 +84,14 @@ class AdminReplyTemplatesController < ApplicationController
   end
 
   # POST /admin/reply_templates/1/approve
-  swagger_api :reply do
+  swagger_api :approve do
     summary "Approve template"
     param :path, :id, :integer, :required, "Id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :not_found
     response :created
   end
-  def reply
+  def approve
     template = ReplyTemplate.find(params[:id])
     template.status = 'approved'
 

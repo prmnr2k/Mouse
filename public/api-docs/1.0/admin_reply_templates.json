@@ -168,6 +168,44 @@
       ]
     },
     {
+      "path": "/admin/reply_templates/{id}/approve.json",
+      "operations": [
+        {
+          "summary": "Approve template",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Id",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 201,
+              "responseModel": null,
+              "message": "Created"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "AdminReplyTemplates#approve",
+          "method": "post"
+        }
+      ]
+    },
+    {
       "path": "/admin/reply_templates/{id}.json",
       "operations": [
         {
