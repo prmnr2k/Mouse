@@ -70,7 +70,7 @@ class VenueDatesController < ApplicationController
   end
   def create_from_array
     params[:dates].each do |date|
-      venue_date = @venue.dates.find_by(date: date[:date], venue_id: params[:account_id])
+      venue_date = VenueDate.find_by(date: date[:date], venue_id: params[:account_id])
       if not venue_date
         venue_date = VenueDate.new(date: date[:date], venue_id: params[:account_id])
         if venue_date.save
