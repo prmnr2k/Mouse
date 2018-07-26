@@ -81,7 +81,6 @@ class VenueDatesController < ApplicationController
         end
       end
       if venue_date.update(venue_date_update_params(date))
-        render json: venue_date and return
       else
         render json: venue_date.errors, status: :unprocessable_entity and return
       end
