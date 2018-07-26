@@ -70,7 +70,8 @@ class VenueDatesController < ApplicationController
   end
   def create_from_array
     params[:dates].each do |date|
-      venue_date = VenueDate.find_by(date: date[:date], venue_id: @venue.id)
+      dt = DateTime.parse(date[:date])
+      venue_date = VenueDate.find_by('date >= ? and date <= ? and venue_id = ?', dt.beginning_of_day, dt.end_of_day, @venue.id)
       if not venue_date
         venue_date = VenueDate.new(date: date[:date], venue_id: @venue.id)
         if venue_date.save
