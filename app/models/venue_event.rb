@@ -26,6 +26,8 @@ class VenueEvent < ApplicationRecord
     res.delete('rental_from')
     res.delete('rental_to')
 
+    res[:venue] = account.venue.as_json(for_event: true)
+
     if ['owner_accepted', 'active'].include?(status)
       res[:agreement] = agreed_date_time_and_price
     end

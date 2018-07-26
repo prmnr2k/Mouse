@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180721144010) do
+ActiveRecord::Schema.define(version: 20180722221044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -271,7 +271,7 @@ ActiveRecord::Schema.define(version: 20180721144010) do
     t.integer "family_and_friends_amount"
     t.integer "status", default: 0
     t.boolean "has_private_venue"
-    t.integer "denier_id"
+    t.integer "processed_by"
   end
 
   create_table "fan_genres", force: :cascade do |t|
@@ -308,6 +308,7 @@ ActiveRecord::Schema.define(version: 20180721144010) do
     t.integer "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "message_id"
   end
 
   create_table "followers", force: :cascade do |t|
@@ -360,6 +361,7 @@ ActiveRecord::Schema.define(version: 20180721144010) do
     t.integer "sender_id"
     t.boolean "is_read", default: false
     t.string "simple_message"
+    t.integer "admin_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -410,21 +412,13 @@ ActiveRecord::Schema.define(version: 20180721144010) do
     t.string "other_address", default: ""
   end
 
-  create_table "question_replies", force: :cascade do |t|
-    t.string "subject"
-    t.string "message"
-    t.integer "admin_id"
-    t.integer "question_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "questions", force: :cascade do |t|
     t.integer "account_id"
     t.string "subject"
     t.string "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "message_id"
   end
 
   create_table "reply_templates", force: :cascade do |t|

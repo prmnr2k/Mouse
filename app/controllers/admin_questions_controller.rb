@@ -11,7 +11,7 @@ class AdminQuestionsController < ApplicationController
     response :ok
   end
   def index
-    questions = Question.all
+    questions = Question.all.order(:created_at => :desc)
 
     render json: questions.limit(params[:limit]).offset(params[:offset]),
                 each_serializer: SimpleQuestionSerializer, status: :ok
@@ -43,10 +43,17 @@ class AdminQuestionsController < ApplicationController
   def reply
     question = Question.find(params[:id])
 
-    question_reply = QuestionReply.new(question_reply_params)
-    question_reply.question = question
+    question_reply = InboxMessage.new(
+      name: params[:subject],
+      message_type: "blank",
+      simple_message: params[:message]
+    )
     question_reply.admin = @admin
+    question_reply.receiver = question.account
     if question_reply.save!
+      question.question_reply = question_reply
+      question.save
+
       render json: question_reply, status: :created
     else
       render json: question_reply.errors, status: :unprocessable_entity
@@ -74,9 +81,5 @@ class AdminQuestionsController < ApplicationController
 
     render status: :unauthorized and return if user == nil or (user.is_superuser == false and user.is_admin == false)
     @admin = user.admin
-  end
-
-  def question_reply_params
-    params.permit(:subject, :message)
   end
 end

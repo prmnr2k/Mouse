@@ -12,7 +12,7 @@ class AdminFeedbackController < ApplicationController
     response :ok
   end
   def index
-    feedback = Feedback.all
+    feedback = Feedback.all.order(:created_at => :desc)
 
     if params[:feedback_type] and params[:feedback_type] != 'all'
       feedback = feedback.where(feedback_type: params[:feedback_type])
@@ -48,6 +48,56 @@ class AdminFeedbackController < ApplicationController
     }, status: :ok
   end
 
+
+  # GET /admin/feedbacks/graph
+  swagger_api :graph do
+    summary "Get feedback info for graph"
+    param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :ok
+  end
+  def graph
+    if params[:by] == 'all'
+      dates = Feedback.pluck("min(created_at), max(created_at)").first
+      diff = Time.diff(dates[0], dates[1])
+      if diff[:month] > 0
+        new_step = 'year'
+      elsif diff[:week] > 0
+        new_step = 'month'
+      elsif diff[:day] > 0
+        new_step = 'week'
+      else
+        new_step = 'day'
+      end
+
+      axis = GraphHelper.custom_axis(new_step, dates)
+      dates_range = dates[0]..dates[1]
+      params[:by] = new_step
+    else
+      axis = GraphHelper.axis(params[:by])
+      dates_range = GraphHelper.sql_date_range(params[:by])
+    end
+
+    feed = Feedback.where(
+      created_at: dates_range
+    ).order(:feedback_type, :created_at).to_a.group_by(
+      &:feedback_type
+    ).each_with_object({}) {
+      |(k, v), h| h[k] = v.group_by{ |e| e.created_at.strftime(GraphHelper.type_str(params[:by])) }
+    }.each { |(k, h)|
+      h.each { |m, v|
+        h[m] = v.count
+      }
+    }
+
+    render json: {
+      axis: axis,
+      bugs: feed['bug'],
+      enhancement: feed['enhancement'],
+      compliment: feed['compliment'],
+    }, status: :ok
+  end
+
   # GET /admin/feedbacks/1
   swagger_api :show do
     summary "Retrieve question item"
@@ -73,7 +123,21 @@ class AdminFeedbackController < ApplicationController
   def thank_you
     feedback = Feedback.find(params[:id])
 
-    redern status: :ok
+    feedback_reply = InboxMessage.new(
+      name: "Admin's reply to your feedback",
+      message_type: "blank",
+      simple_message: params[:message]
+    )
+    feedback_reply.admin = @admin
+    feedback_reply.receiver = feedback.account
+    if feedback_reply.save!
+      feedback.reply = feedback_reply
+      feedback.save
+
+      render json: feedback_reply, status: :created
+    else
+      render json: feedback_reply.errors, status: :unprocessable_entity
+    end
   end
 
   # DELETE /admin/feedbacks/1
