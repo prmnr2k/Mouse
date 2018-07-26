@@ -70,18 +70,20 @@ class VenueDatesController < ApplicationController
   end
   def create_from_array
     params[:dates].each do |date|
-      venue_date = @venue.dates.find_or_create_by(date: date[:date], venue_id: params[:account_id])
-      
+      venue_date = @venue.dates.find_by(date: date[:date], venue_id: params[:account_id])
+      if not venue_date
+        venue_date = VenueDate.new(date: date[:date], venue_id: params[:account_id])
+        if venue_date.save
+          @venue.dates << venue_date
+          @venue.save
+        else
+          render json: venue_date.errors, status: :unprocessable_entity and return
+        end
+      end
       venue_date.price_for_daytime = date[:price_for_daytime]
       venue_date.price_for_nighttime = date[:price_for_nighttime]
       venue_date.is_available = date[:is_available]
-
-      if venue_date.save(validate: false)
-        @venue.dates << venue_date
-        @venue.save
-      else
-        render json: venue_date.errors, status: :unprocessable_entity and return
-      end
+      venue_date.save(validate: false)
     end
 
     render json: @venue.dates, status: :ok
