@@ -80,10 +80,10 @@ class VenueDatesController < ApplicationController
           render json: venue_date.errors, status: :unprocessable_entity and return
         end
       end
-      venue_date.price_for_daytime = date[:price_for_daytime]
-      venue_date.price_for_nighttime = date[:price_for_nighttime]
-      venue_date.is_available = date[:is_available]
-      venue_date.save(validate: false)
+      if venue_date.update(venue_date_update_params(date))
+      else
+        render json: venue_date.errors, status: :unprocessable_entity and return
+      end
     end
 
     render json: @venue.dates, status: :ok
