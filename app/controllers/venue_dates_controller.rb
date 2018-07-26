@@ -68,16 +68,23 @@ class VenueDatesController < ApplicationController
     response :unauthorized
     response :ok
   end
-
   def create_from_array
     params[:dates].each do |date|
-      venue_date = @venue.dates.find_or_create_by(date: date[:date], venue_id: params[:account_id])
-
-      if venue_date.update(venue_date_update_params(date))
-        @venue.dates << venue_date
-        @venue.save
+      venue_date = @venue.dates.find_by(date: date[:date], venue_id: params[:account_id])
+      if venue_date
+        if venue_date.update(venue_date_update_params(date))
+          
+        else
+          render json: venue_date.errors, status: :unprocessable_entity and return
+        end
       else
-        render json: venue_date.errors, status: :unprocessable_entity and return
+        venue_date = VenueDate.new(date: date[:date], venue_id: params[:account_id])
+        if venue_date.save
+          @venue.dates << venue_date
+          @venue.save
+        else
+          render json: venue_date.errors, status: :unprocessable_entity and return
+        end
       end
     end
 
