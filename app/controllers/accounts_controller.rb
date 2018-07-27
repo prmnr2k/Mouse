@@ -400,7 +400,7 @@ class AccountsController < ApplicationController
       param :form, :artist_videos, :string, :optional, "Array of link objects [{'name': '', 'album_name': '', 'link': ''}, {...}]"
       param :form, :bio, :string, :optional, "Fan bio"
       param :form, :genres, :string, :optional, "Fan/Artist/Venue (public only) Genres ['genre1', 'genre2', ...]"
-      param :form, :address, :string, :optional, "Fan/Venue address"
+      param :form, :address, :string, :optional, "Fan/Venue address - full address including city, country, state, street etc"
       param :form, :preferred_address, :string, :optional, "Artist preferred address to perform"
       param :form, :lat, :float, :optional, "Fan/Artist/Venue lat"
       param :form, :lng, :float, :optional, "Fan/Artist/Venue lng"
@@ -433,6 +433,7 @@ class AccountsController < ApplicationController
       param :form, :price, :integer, :optional, "Venue (public only) price"
       param :form, :country, :string, :optional, "Venue (public only) country"
       param :form, :city, :string, :optional, "Venue (public only) city"
+      param :form, :street, :string, :optional, "Venue (public only) street"
       param :form, :state, :string, :optional, "Venue (public only) state"
       param :form, :zipcode, :integer, :optional, "Venue (public only) zipcode"
       param :form, :other_address, :string, :optional, "Venue (public only) other address"
@@ -944,6 +945,13 @@ class AccountsController < ApplicationController
     def search_text
       if params[:text]
         @accounts = @accounts.search(params[:text])
+        if params[:type] == 'artist'
+          @accounts = @accounts.joins(:artist).
+            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query OR artist.first_name ILIKE :query OR artist.stage_name ILIKE :query OR artist.last_name ILIKE :query", query: "%#{sanitize_sql_like(params[:text])}%")
+        elsif params[:type] == 'venue'
+          @accounts = @accounts.joins(:venue).
+            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(params[:text])}%")
+        end
       end
     end
 

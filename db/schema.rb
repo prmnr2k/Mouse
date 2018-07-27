@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180722221044) do
+ActiveRecord::Schema.define(version: 20180727123156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -410,6 +410,7 @@ ActiveRecord::Schema.define(version: 20180722221044) do
     t.time "performance_time_to"
     t.string "other_genre_description"
     t.string "other_address", default: ""
+    t.string "street"
   end
 
   create_table "questions", force: :cascade do |t|
