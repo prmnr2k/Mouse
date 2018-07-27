@@ -1,7 +1,7 @@
 namespace :events do
   desc "Change active status"
   task change_items_atatus: :environment do
-    events = Event.joins(:artist_events).where(status: "active")
+    events = Event.joins(:artist_events).where(artist_events: {status: "active"})
     puts "Going to update #{events.count} events"
 
     ActiveRecord::Base.transaction do
@@ -12,7 +12,7 @@ namespace :events do
       end
     end
 
-    events = Event.joins(:venue_events).where(status: "active")
+    events = Event.joins(:venue_events).where(artist_events: {status: "active"})
     puts "Going to update #{events.count} events"
 
     ActiveRecord::Base.transaction do
