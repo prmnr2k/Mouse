@@ -531,7 +531,7 @@ class AccountsController < ApplicationController
       @extended = true
       set_extended
       
-      @accounts = Accounts.all
+      @accounts = Account.all
 
       if params[:type] != 'artist'
         if params[:exclude_event_id]
@@ -958,11 +958,10 @@ class AccountsController < ApplicationController
 
     def search_text
       if params[:text]
-        @accounts = @accounts.search(params[:text])
         if params[:type] == 'artist'
           @accounts = @accounts.joins(:artist).
             where("(accounts.user_name ILIKE :query) OR (accounts.display_name ILIKE :query) OR (artists.first_name ILIKE :query) OR (artists.stage_name ILIKE :query) OR (artists.last_name ILIKE :query)", query: "%#{params[:text]}%")
-        elsif params[:type] == 'venue'
+        else
           @accounts = @accounts.where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query", query: "%#{params[:text]}%")
         end
       end
