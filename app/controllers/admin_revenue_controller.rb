@@ -252,13 +252,13 @@ class AdminRevenueController < ApplicationController
   end
 
   def calculate_crowdfunding(type, by)
-    crowdfunding = FanTicket.joins(:ticket => :event).where(event: {is_crowdfunding_event: true})
+    crowdfunding = FanTicket.joins(:ticket => :event).where(events: {is_crowdfunding_event: true})
 
     return filter_and_count(crowdfunding, type, by, 'fan_tickets.price')
   end
 
   def calculate_regular(type, by)
-    regular = FanTicket.joins(:tickets => :event).where(event: {is_crowdfunding_event: false})
+    regular = FanTicket.joins(:ticket => :event).where(events: {is_crowdfunding_event: false})
 
     return filter_and_count(regular, type, by, 'fan_tickets.price')
   end
