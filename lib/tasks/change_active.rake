@@ -1,6 +1,6 @@
 namespace :events do
   desc "Change active status"
-  task change_artist_number: :environment do
+  task change_items_atatus: :environment do
     events = Event.joins(:artist_events).where(status: "active")
     puts "Going to update #{events.count} events"
 
