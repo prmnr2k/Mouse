@@ -521,12 +521,14 @@ class AccountsController < ApplicationController
       @extended = true
       set_extended
 
-      if params[:exclude_event_id]
-        @accounts= Account.left_joins(:venue => {:public_venue => :genres})
-      else
-        @accounts = Account.left_joins(:venue => {:public_venue => :genres}).where(
-          "(accounts.venue_id IS NULL OR venues.venue_type=:public)",
-          {:public => Venue.venue_types['public_venue']})
+      if params[:type] != 'artist'
+        if params[:exclude_event_id]
+          @accounts= Account.left_joins(:venue => {:public_venue => :genres})
+        else
+          @accounts = Account.left_joins(:venue => {:public_venue => :genres}).where(
+            "(accounts.venue_id IS NULL OR venues.venue_type=:public)",
+            {:public => Venue.venue_types['public_venue']})
+        end
       end
       
       search_text
