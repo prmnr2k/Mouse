@@ -158,7 +158,7 @@ class AdminRevenueController < ApplicationController
     response :ok
   end
   def advertising
-    render json: calculate_advertising(params[:type], params[:by]), status: :ok
+    render json: {count: calculate_advertising(params[:type], params[:by])}, status: :ok
   end
 
   # GET /admin/revenue/counts/funding
