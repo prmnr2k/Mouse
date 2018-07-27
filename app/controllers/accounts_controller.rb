@@ -530,12 +530,14 @@ class AccountsController < ApplicationController
       @extended = true
       set_extended
 
-      if params[:exclude_event_id]
-        @accounts= Account.left_joins(:venue => {:public_venue => :genres})
-      else
-        @accounts = Account.left_joins(:venue => {:public_venue => :genres}).where(
-          "(accounts.venue_id IS NULL OR venues.venue_type=:public)",
-          {:public => Venue.venue_types['public_venue']})
+      if params[:type] != 'artist'
+        if params[:exclude_event_id]
+          @accounts= Account.left_joins(:venue => {:public_venue => :genres})
+        else
+          @accounts = Account.left_joins(:venue => {:public_venue => :genres}).where(
+            "(accounts.venue_id IS NULL OR venues.venue_type=:public)",
+            {:public => Venue.venue_types['public_venue']})
+        end
       end
       
       search_text
@@ -956,10 +958,9 @@ class AccountsController < ApplicationController
         @accounts = @accounts.search(params[:text])
         if params[:type] == 'artist'
           @accounts = @accounts.joins(:artist).
-            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query OR artist.first_name ILIKE :query OR artist.stage_name ILIKE :query OR artist.last_name ILIKE :query", query: "%#{sanitize_sql_like(params[:text])}%")
+            where("(accounts.user_name ILIKE :query) OR (accounts.display_name ILIKE :query) OR (artists.first_name ILIKE :query) OR (artists.stage_name ILIKE :query) OR (artists.last_name ILIKE :query)", query: "%#{params[:text]}%")
         elsif params[:type] == 'venue'
-          @accounts = @accounts.joins(:venue).
-            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(params[:text])}%")
+          @accounts = @accounts.where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query", query: "%#{params[:text]}%")
         end
       end
     end
