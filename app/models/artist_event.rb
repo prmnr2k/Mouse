@@ -11,7 +11,7 @@ class ArtistEvent < ApplicationRecord
 
   def set_defaults
     if self.new_record?
-      if event.creator.is_verified
+      if event.creator.is_verified or event.creator.status == "approved"
         self.status = "ready"
       else
         self.status = "pending"
