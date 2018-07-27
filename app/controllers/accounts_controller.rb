@@ -58,9 +58,18 @@ class AccountsController < ApplicationController
       param :query, :offset, :integer, :optional, "Offset"
     end
     def get_events
-       @events = @to_find.events
-       @events = @events.simple_search(params[:text])
-       render json: @events.order(:id).limit(params[:limit]).offset(params[:offset])
+      if @to_find.account_type == 'venue'
+        @events = Event.where(venue_id: @to_find.id)
+      elsif @to_find.account_type == 'artist'
+        @events = Event.joins(:artist_events).where(artist_events: {artist_id: @to_find.id, status: "owner_accepted"})
+      end
+
+      if @events
+        @events = @events.simple_search(params[:text])
+        render json: @events.order(:id).limit(params[:limit]).offset(params[:offset])
+      else
+        render json: [], status: :ok
+      end
     end
 
     # GET /accounts/my
