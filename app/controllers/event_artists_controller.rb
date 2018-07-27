@@ -24,7 +24,7 @@ class EventArtistsController < ApplicationController
       @event.artists << @artist_acc
       @event.save
 
-      if @artist_acc.user == @creator.user
+      if @artist_acc.user == @creator.user and number_valid?
         @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
         @artist_event.update(status: 'owner_accepted')
         set_agreement
@@ -101,7 +101,7 @@ class EventArtistsController < ApplicationController
     #  render status: :unprocessable_entity and return
     #end
 
-    if @artist_event and ["accepted"].include?(@artist_event.status)
+    if @artist_event and ["accepted"].include?(@artist_event.status) and number_valid?
       if date_valid?
         read_message
         @artist_event.status = 'owner_accepted'
@@ -290,8 +290,8 @@ class EventArtistsController < ApplicationController
     @artist_acc = Account.find(params[:id])
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
-    if @artist_event and @artist_event.status == "owner_accepted"
-      @artist_event.status = "active"
+    if @artist_event
+      @artist_event.is_active = true
       @artist_event.save!
 
       render status: :ok
@@ -314,8 +314,8 @@ class EventArtistsController < ApplicationController
     @artist_acc = Account.find(params[:id])
     @artist_event = @event.artist_events.find_by(artist_id: @artist_acc.id)
 
-    if @artist_event and @artist_event.status == "active"
-        @artist_event.status = "owner_accepted"
+    if @artist_event
+        @artist_event.is_active = false
         @artist_event.save!
 
       render status: :ok
@@ -465,12 +465,15 @@ class EventArtistsController < ApplicationController
 
     def artist_available?
       @artist_acc = Account.find(params[:artist_id])
-      if @artist_acc and @artist_acc.account_type == 'artist' 
-        #and @event.artist_events.where.not(status: 'declined').count < @event.artists_number
+      if @artist_acc and @artist_acc.account_type == 'artist'
         return true
       end
 
       return false
+    end
+
+    def number_valid?
+      return @event.artist_events.where(status: 'owner_accepted').count < @event.artists_number
     end
 
     def date_valid?

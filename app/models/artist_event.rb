@@ -38,7 +38,7 @@ class ArtistEvent < ApplicationRecord
 
     res[:artist] = account.artist.as_json(for_event: true)
 
-    if ['owner_accepted', 'active'].include?(status)
+    if ['owner_accepted'].include?(status)
       res[:agreement] = agreed_date_time_and_price
     end
 

@@ -24,7 +24,7 @@ class EventVenuesController < ApplicationController
       @event.venues << @venue_acc
       @event.save
 
-      if @venue_acc.user == @creator.user and @event.venue_events.where(status: 'owner_accepted').count == 0
+      if @venue_acc.user == @creator.user and @event.venue == nil
         if @venue_acc.venue.venue_type == 'private_residence'
           @event.has_private_venue = true
         end
@@ -289,8 +289,8 @@ class EventVenuesController < ApplicationController
     @venue_acc = Account.find(params[:id])
     @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
 
-    if @venue_event and @venue_event.status == "owner_accepted"
-      @venue_event.status = "active"
+    if @venue_event
+      @venue_event.is_active = true
       @venue_event.save!
 
       render status: :ok
@@ -313,8 +313,8 @@ class EventVenuesController < ApplicationController
     @venue_acc = Account.find(params[:id])
     @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
 
-    if @venue_event and @venue_event.status == "active"
-      @venue_event.status = "owner_accepted"
+    if @venue_event
+      @venue_event.is_active = false
       @venue_event.save!
 
       render status: :ok

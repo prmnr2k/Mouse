@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180722221044) do
+ActiveRecord::Schema.define(version: 20180727122344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 20180722221044) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_active", default: false
   end
 
   create_table "artist_genres", force: :cascade do |t|
@@ -325,16 +326,6 @@ ActiveRecord::Schema.define(version: 20180722221044) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
-  end
-
   create_table "image_types", force: :cascade do |t|
     t.integer "image_id"
     t.integer "image_type"
@@ -532,6 +523,7 @@ ActiveRecord::Schema.define(version: 20180722221044) do
     t.string "reason"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean "is_active", default: false
   end
 
   create_table "venue_genres", force: :cascade do |t|
