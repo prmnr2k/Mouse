@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180727123156) do
+ActiveRecord::Schema.define(version: 20180727212341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,11 @@ ActiveRecord::Schema.define(version: 20180727123156) do
     t.boolean "is_verified", default: false
     t.integer "status", default: 0
     t.integer "processed_by"
+    t.string "preferred_username"
+    t.string "preferred_date"
+    t.integer "preferred_distance", default: 1
+    t.integer "preferred_currency", default: 1
+    t.string "preferred_time"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -324,16 +329,6 @@ ActiveRecord::Schema.define(version: 20180727123156) do
     t.integer "attempt_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "history_actions", force: :cascade do |t|
-    t.integer "action"
-    t.integer "object_type"
-    t.integer "field"
-    t.integer "object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "account_id"
   end
 
   create_table "image_types", force: :cascade do |t|

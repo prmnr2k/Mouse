@@ -50,6 +50,7 @@ Rails.application.routes.draw do
   post 'accounts/:id/images', action: :upload_image, controller: 'accounts'
   post 'accounts/:id/follow', action: :follow, controller: 'accounts'
   post 'accounts/:id/verify', action: :verify, controller: 'accounts'
+  post 'accounts/:id/preferences', action: :preferences, controller: 'accounts'
   delete 'accounts/:id/unfollow', action: :unfollow, controller: 'accounts'
   delete 'accounts/:id', action: :delete, controller: 'accounts'
   #delete 'users/delete/:id', action: :delete, controller: 'users'

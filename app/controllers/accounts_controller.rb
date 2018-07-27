@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
     before_action :authorize_user, only: [:create, :get_my_accounts]
     before_action :authorize_account, only: [:update,  :upload_image, :follow, :unfollow, :is_followed,
-                                             :follow_multiple, :delete]
+                                             :follow_multiple, :delete, :preferences]
     before_action :find_account, only: [:get, :get_images, :upcoming_shows, :get_events, :get_followers, :get_followed, :get_updates, :verify]
     before_action :find_follower_account, only: [:follow, :unfollow, :is_followed]
     swagger_controller :accounts, "Accounts"
@@ -508,6 +508,26 @@ class AccountsController < ApplicationController
         else
             render json: @account.errors, status: :unprocessable_entity
         end
+    end
+
+    # POST account/1/preferences
+    swagger_api :preferences do
+      summary "Set account preferences"
+      param :form, :preferred_username, :string, :optional, "preferred username language"
+      param :form, :preferred_date, :string, :optional, "Preferred date format"
+      param_list :form, :preferred_distance, :integer, :optional, "Preferred distance format", [:km, :mile]
+      param_list :form, :preferred_currency, :integer, :optional, "Preferred currency format", [:rub, :dollar]
+      param :form, :preferred_time, :string, :optional, "Preferred time format"
+      param :header, 'Authorization', :string, :required, 'Authentication token'
+      response :unprocessable_entity
+      response :unauthorized
+    end
+    def preferences
+      if @account.update(account_update_params)
+        render json: @account, extended: true, my: true, except: :password, status: :ok
+      else
+        render json: @account.errors, status: :unprocessable_entity
+      end
     end
 
     swagger_api :search do
@@ -1089,7 +1109,8 @@ class AccountsController < ApplicationController
     end
 
     def account_params
-        params.permit(:user_name, :display_name, :phone, :account_type)
+        params.permit(:user_name, :display_name, :phone, :account_type, :preferred_username,
+                      :preferred_date, :preferred_distance, :preferred_currency, :preferred_time)
     end
 
     def account_update_params 
