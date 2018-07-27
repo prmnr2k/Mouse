@@ -375,6 +375,13 @@
             },
             {
               "paramType": "form",
+              "name": "street",
+              "type": "string",
+              "description": "Venue (public only) street",
+              "required": false
+            },
+            {
+              "paramType": "form",
               "name": "zipcode",
               "type": "integer",
               "description": "Venue (public only) zipcode",

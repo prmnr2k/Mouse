@@ -312,6 +312,7 @@ class AccountsController < ApplicationController
       param :form, :country, :string, :optional, "Venue (public only) country"
       param :form, :city, :string, :optional, "Venue (public only) city"
       param :form, :state, :string, :optional, "Venue (public only) state"
+      param :form, :street, :string, :optional, "Venue (public only) street"
       param :form, :zipcode, :integer, :optional, "Venue (public only) zipcode"
       param :form, :other_address, :string, :optional, "Venue (public only) other address"
       param :form, :minimum_notice, :integer, :optional, "Venue (public only) minimum notice time"
@@ -520,6 +521,8 @@ class AccountsController < ApplicationController
     def search
       @extended = true
       set_extended
+      
+      @accounts = Accounts.all
 
       if params[:type] != 'artist'
         if params[:exclude_event_id]
@@ -528,7 +531,7 @@ class AccountsController < ApplicationController
           @accounts = Account.left_joins(:venue => {:public_venue => :genres}).where(
             "(accounts.venue_id IS NULL OR venues.venue_type=:public)",
             {:public => Venue.venue_types['public_venue']})
-        end
+        end   
       end
       
       search_text
