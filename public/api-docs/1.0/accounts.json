@@ -848,7 +848,7 @@
               "paramType": "form",
               "name": "address",
               "type": "string",
-              "description": "Fan/Venue address",
+              "description": "Fan/Venue address - full address including city, country, state, street etc",
               "required": false
             },
             {
@@ -1087,6 +1087,13 @@
               "name": "city",
               "type": "string",
               "description": "Venue (public only) city",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "street",
+              "type": "string",
+              "description": "Venue (public only) street",
               "required": false
             },
             {
