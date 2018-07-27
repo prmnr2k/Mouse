@@ -162,6 +162,22 @@ class EventsController < ApplicationController
     render json: @event, analytics: true, status: :ok
   end
 
+  # POST /events/1/launch
+  swagger_api :launch do
+    summary "Set event active"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def launch
+    @event.status = "pending"
+    @event.save
+
+    render status: :ok
+  end
+
   # POST /events/1/activate
   swagger_api :set_active do
     summary "Set event active"
@@ -172,10 +188,12 @@ class EventsController < ApplicationController
     response :not_found
   end
   def set_active
-    @event.is_active = true
-    @event.save
+    if ["approved", "inactive"].include?(@event.status)
+      @event.status = "active"
+      @event.save
 
-    render status: :ok
+      render status: :ok
+    end
   end
 
   # POST /events/1/deactivate
@@ -188,10 +206,12 @@ class EventsController < ApplicationController
     response :not_found
   end
   def set_inactive
-    @event.is_active = false
-    @event.save
+    if @event.status == "active"
+      @event.status = "inactive"
+      @event.save
 
-    render status: :ok
+      render status: :ok
+    end
   end
 
   # GET /events/1/click
