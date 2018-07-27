@@ -947,10 +947,10 @@ class AccountsController < ApplicationController
         @accounts = @accounts.search(params[:text])
         if params[:type] == 'artist'
           @accounts = @accounts.joins(:artist).
-            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query OR artist.first_name ILIKE :query OR artist.stage_name ILIKE :query OR artist.last_name ILIKE :query", query: "%#{sanitize_sql_like(params[:text])}%")
+            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query OR artist.first_name ILIKE :query OR artist.stage_name ILIKE :query OR artist.last_name ILIKE :query", query: "%#{params[:text]}%")
         elsif params[:type] == 'venue'
           @accounts = @accounts.joins(:venue).
-            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query", query: "%#{sanitize_sql_like(params[:text])}%")
+            where("accounts.user_name ILIKE :query OR accounts.display_name ILIKE :query", query: "%#{params[:text]}%")
         end
       end
     end
