@@ -2234,7 +2234,8 @@
                 "valueType": "LIST",
                 "values": [
                   "rub",
-                  "dollar"
+                  "dollar",
+                  "euro"
                 ]
               }
             },

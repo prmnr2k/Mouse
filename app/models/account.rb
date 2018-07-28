@@ -5,7 +5,7 @@ class Account < ApplicationRecord
 	enum account_type: [:venue, :artist, :fan]
 	enum status: StatusHelper.accounts
 	enum preferred_distance: [:km, :mile]
-	enum preferred_currency: [:rub, :dollar]
+	enum preferred_currency: [:rub, :dollar, :euro]
 
 	validates :user_name, presence: true, uniqueness: true, length: {:within => 3..30}
 
