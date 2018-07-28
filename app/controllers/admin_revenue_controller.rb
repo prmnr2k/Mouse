@@ -57,19 +57,20 @@ class AdminRevenueController < ApplicationController
   swagger_api :counts do
     summary "Get revenue counts"
     param_list :query, :type, :string, :required, "Type of revenue", [:total, :sales]
+    param_list :query, :by, :string, :optional, "Data by", [:day, :week, :month, :year, :all]
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :not_found
     response :ok
   end
   def counts
-    date = calculate_date(params[:type], nil)
-    artist = calculate_artist(params[:type], nil)
-    venue = calculate_venue(params[:type], nil)
-    vr = calculate_vr(params[:type], nil)
-    tickets = calculate_tickets(params[:type], nil)
-    advertising = calculate_advertising(params[:type], nil)
-    crowdfunding = calculate_crowdfunding(params[:type], nil)
-    regular = calculate_regular(params[:type], nil)
+    date = calculate_date(params[:type], params[:by])
+    artist = calculate_artist(params[:type], params[:by])
+    venue = calculate_venue(params[:type], params[:by])
+    vr = calculate_vr(params[:type], params[:by])
+    tickets = calculate_tickets(params[:type], params[:by])
+    advertising = calculate_advertising(params[:type], params[:by])
+    crowdfunding = calculate_crowdfunding(params[:type], params[:by])
+    regular = calculate_regular(params[:type], params[:by])
 
     render json: {
       date: date,
@@ -252,13 +253,13 @@ class AdminRevenueController < ApplicationController
   end
 
   def calculate_crowdfunding(type, by)
-    crowdfunding = FanTicket.joins(:ticket => :event).where(event: {is_crowdfunding_event: true})
+    crowdfunding = FanTicket.joins(:ticket => :event).where(events: {is_crowdfunding_event: true})
 
     return filter_and_count(crowdfunding, type, by, 'fan_tickets.price')
   end
 
   def calculate_regular(type, by)
-    regular = FanTicket.joins(:tickets => :event).where(event: {is_crowdfunding_event: false})
+    regular = FanTicket.joins(:ticket => :event).where(events: {is_crowdfunding_event: false})
 
     return filter_and_count(regular, type, by, 'fan_tickets.price')
   end
