@@ -27,9 +27,6 @@ class Venue < ApplicationRecord
             attrs[:image_id] = account.image_id
 
             attrs[:price] = nil
-            if public_venue
-                attrs[:price] = public_venue.price
-            end
             return attrs
         end
 

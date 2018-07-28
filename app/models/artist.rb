@@ -20,12 +20,9 @@ class Artist < ApplicationRecord
             attrs[:last_name] = last_name
             attrs[:user_name] = account.user_name
             attrs[:image_id] = account.image_id
-            attrs[:is_hide_pricing_from_search] = is_hide_pricing_from_search
 
+            attrs[:is_hide_pricing_from_search] = is_hide_pricing_from_search
             attrs[:price] = nil
-            unless is_hide_pricing_from_search
-                attrs[:price] = price_to
-            end
             return attrs
         end
 
