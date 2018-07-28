@@ -486,10 +486,6 @@ class EventVenuesController < ApplicationController
   end
 
   def date_valid?
-    #unless @venue_event.agreed_date_time_and_price
-    #  return false
-    #end
-
     if @event.date_from.nil?
       return true
     end
