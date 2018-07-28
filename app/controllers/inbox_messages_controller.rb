@@ -13,8 +13,18 @@ class InboxMessagesController < ApplicationController
     response :ok
   end
   def index
-    messages = @account.inbox_messages.order(:created_at => :desc)
-    render json: messages.limit(params[:limit]).offset(params[:offset]), status: :ok
+    top_messages = @account.inbox_messages.joins(:request_message).where(
+      "request_messages.expiration_date > :query_now AND request_messages.expiration_date <= :query_tomorrow",
+      query_now: DateTime.now, query_tomorrow: DateTime.now + 1.day
+    )
+
+    messages = @account.inbox_messages
+    if top_messages.count > 0
+      messages = messages.where.not(id: top_messages.pluck(:id))
+    end
+    messages = messages.order(:created_at => :desc).limit(params[:limit]).offset(params[:offset])
+
+    render json: (top_messages + messages)[params[:offset].to_i..params[:limit].to_i], status: :ok
   end
 
   # GET account/1/inbox_messages/1

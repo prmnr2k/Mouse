@@ -263,6 +263,7 @@ class EventVenuesController < ApplicationController
       new_message.request_message = message.request_message.dup
       new_message.request_message.time_frame_range = params[:time_frame_range]
       new_message.request_message.time_frame_number = params[:time_frame_number]
+      new_message.expiration_date = DateTime.now + TimeFrameHelper.to_seconds(params[:time_frame_range]) * params[:time_frame_number]
 
       if new_message.save!
         event_venue.status = 'request_send'
@@ -393,6 +394,7 @@ class EventVenuesController < ApplicationController
 
   def send_mouse_request(account)
     request_message = RequestMessage.new(request_message_params)
+    request_message.expiration_date = DateTime.now + TimeFrameHelper.to_seconds(params[:time_frame_range]) * params[:time_frame_number]
     request_message.save
 
     inbox_message = InboxMessage.new(name: "#{@event.name} request", message_type: "request")
