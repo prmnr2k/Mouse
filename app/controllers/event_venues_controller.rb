@@ -49,7 +49,8 @@ class EventVenuesController < ApplicationController
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Venue account id"
     param :form, :account_id, :integer, :required, "Authorized account id"
-    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["one_hour", "one_day", "one_week", "one_month"]
+    param_list :form, :time_frame_range, :integer, :required, "Time frame to answer range", ["hour", "day", "week", "month"]
+    param :form, :time_frame_number, :integer, :required, "Time frame to answer"
     param :form, :is_personal, :boolean, :optional, "Is message personal"
     param :form, :estimated_price, :integer, :optional, "Estimated price to perform"
     param :form, :message, :string, :optional, "Additional text"
@@ -235,7 +236,8 @@ class EventVenuesController < ApplicationController
     summary "Resend message"
     param :path, :event_id, :integer, :required, "Event id"
     param :path, :id, :integer, :required, "Venue account id"
-    param_list :form, :time_frame, :integer, :required, "Time frame to answer", ["one_hour", "one_day", "one_week", "one_month"]
+    param_list :form, :time_frame_range, :integer, :required, "Time frame to answer range", ["hour", "day", "week", "month"]
+    param :form, :time_frame_number, :integer, :required, "Time frame to answer"
     param :form, :account_id, :integer, :required, "Authorized account id"
     param :header, 'Authorization', :string, :required, 'Authentication token'
     response :unauthorized
@@ -259,7 +261,8 @@ class EventVenuesController < ApplicationController
       new_message = message.dup
       new_message.is_read = false
       new_message.request_message = message.request_message.dup
-      new_message.request_message.time_frame = params[:time_frame]
+      new_message.request_message.time_frame_range = params[:time_frame_range]
+      new_message.request_message.time_frame_number = params[:time_frame_number]
 
       if new_message.save!
         event_venue.status = 'request_send'
@@ -463,7 +466,7 @@ class EventVenuesController < ApplicationController
   end
 
   def request_message_params
-    params.permit(:time_frame, :is_personal, :estimated_price, :message)
+    params.permit(:time_frame_range, :time_frame_number, :is_personal, :estimated_price, :message)
   end
 
   def accept_message_params

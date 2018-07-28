@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180727212341) do
+ActiveRecord::Schema.define(version: 20180728110645) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -436,6 +436,8 @@ ActiveRecord::Schema.define(version: 20180727212341) do
     t.integer "inbox_message_id"
     t.integer "event_id"
     t.datetime "expiration_date"
+    t.integer "time_frame_range", default: 0
+    t.integer "time_frame_number", default: 0
   end
 
   create_table "resized_images", force: :cascade do |t|

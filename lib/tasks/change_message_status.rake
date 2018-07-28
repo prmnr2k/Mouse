@@ -14,7 +14,8 @@ namespace :messages do
             request_messages: {event_id: artist.event.id},
             ).order("inbox_messages.created_at DESC").first
 
-          if inbox and inbox.created_at + TimeFrameHelper.to_seconds(inbox.request_message.time_frame) < DateTime.now
+          expiration_date = inbox.created_at + TimeFrameHelper.to_seconds(inbox.time_frame_range) * inbox.time_frame_number
+          if inbox and expiration_date < DateTime.now
             artist.status = "time_expired"
             artist.save!
             puts "."
@@ -35,7 +36,8 @@ namespace :messages do
             request_messages: {event_id: venue.event.id},
             ).order("inbox_messages.created_at DESC").first
 
-          if inbox and inbox.created_at + TimeFrameHelper.to_seconds(inbox.request_message.time_frame) < DateTime.now
+          expiration_date = inbox.created_at + TimeFrameHelper.to_seconds(inbox.time_frame_range) * inbox.time_frame_number
+          if inbox and expiration_date < DateTime.now
             venue.status = "time_expired"
             venue.save!
           end

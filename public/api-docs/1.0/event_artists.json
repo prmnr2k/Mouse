@@ -33,19 +33,26 @@
             },
             {
               "paramType": "form",
-              "name": "time_frame",
+              "name": "time_frame_range",
               "type": "integer",
-              "description": "Time frame to answer",
+              "description": "Time frame to answer range",
               "required": true,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "one_hour",
-                  "one_day",
-                  "one_week",
-                  "one_month"
+                  "hour",
+                  "day",
+                  "week",
+                  "month"
                 ]
               }
+            },
+            {
+              "paramType": "form",
+              "name": "time_frame_number",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true
             },
             {
               "paramType": "form",
@@ -468,19 +475,26 @@
             },
             {
               "paramType": "form",
-              "name": "time_frame",
+              "name": "time_frame_range",
               "type": "integer",
-              "description": "Time frame to answer",
+              "description": "Time frame to answer range",
               "required": true,
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "one_hour",
-                  "one_day",
-                  "one_week",
-                  "one_month"
+                  "hour",
+                  "day",
+                  "week",
+                  "month"
                 ]
               }
+            },
+            {
+              "paramType": "form",
+              "name": "time_frame_number",
+              "type": "integer",
+              "description": "Time frame to answer",
+              "required": true
             },
             {
               "paramType": "form",
