@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :update, :destroy, :set_active, :set_inactive, :analytics,
-                                   :click, :view, :get_updates]
+  before_action :set_event, only: [:show, :update, :destroy, :launch, :set_inactive, :analytics,
+                                   :click, :view, :get_updates, :verify]
   before_action :authorize_account, only: [:my, :create]
-  before_action :authorize_creator, only: [:update, :destroy, :set_active, :set_inactive]
+  before_action :authorize_creator, only: [:update, :destroy, :launch, :set_inactive, :verify]
   swagger_controller :events, "Events"
 
   # GET /events
@@ -162,6 +162,24 @@ class EventsController < ApplicationController
     render json: @event, analytics: true, status: :ok
   end
 
+  # POST /events/1/verify
+  swagger_api :verify do
+    summary "Send event to check"
+    param :path, :id, :integer, :required, "Event id"
+    param :form, :account_id, :integer, :required, "Authorized account id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
+    response :unauthorized
+    response :not_found
+  end
+  def verify
+    if ["declined", "new"].include?(@event.status)
+      @event.status = "pending"
+      @event.save
+
+      render status: :ok
+    end
+  end
+
   # POST /events/1/launch
   swagger_api :launch do
     summary "Set event active"
@@ -172,22 +190,6 @@ class EventsController < ApplicationController
     response :not_found
   end
   def launch
-    @event.status = "pending"
-    @event.save
-
-    render status: :ok
-  end
-
-  # POST /events/1/activate
-  swagger_api :set_active do
-    summary "Set event active"
-    param :path, :id, :integer, :required, "Event id"
-    param :form, :account_id, :integer, :required, "Authorized account id"
-    param :header, 'Authorization', :string, :required, 'Authentication token'
-    response :unauthorized
-    response :not_found
-  end
-  def set_active
     if ["approved", "inactive"].include?(@event.status)
       @event.status = "active"
       @event.save
