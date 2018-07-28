@@ -516,7 +516,7 @@ class AccountsController < ApplicationController
       param :form, :preferred_username, :string, :optional, "preferred username language"
       param :form, :preferred_date, :string, :optional, "Preferred date format"
       param_list :form, :preferred_distance, :integer, :optional, "Preferred distance format", [:km, :mile]
-      param_list :form, :preferred_currency, :integer, :optional, "Preferred currency format", [:rub, :dollar, :euro]
+      param_list :form, :preferred_currency, :integer, :optional, "Preferred currency format", [:RUB, :USD, :EUR]
       param :form, :preferred_time, :string, :optional, "Preferred time format"
       param :header, 'Authorization', :string, :required, 'Authentication token'
       response :unprocessable_entity

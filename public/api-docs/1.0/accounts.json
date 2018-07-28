@@ -2233,9 +2233,9 @@
               "allowableValues": {
                 "valueType": "LIST",
                 "values": [
-                  "rub",
-                  "dollar",
-                  "euro"
+                  "RUB",
+                  "USD",
+                  "EUR"
                 ]
               }
             },
