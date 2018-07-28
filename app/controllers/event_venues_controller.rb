@@ -63,7 +63,7 @@ class EventVenuesController < ApplicationController
     if venue_available?
       @venue_event = @event.venue_events.find_by(venue_id: params[:id])
 
-      if @venue_event and ["ready"].include?(@venue_event.status)
+      if @venue_event and ["ready", "declined", "owner_declined"].include?(@venue_event.status)
         venue_acc = Account.find(params[:id])
 
         if venue_acc

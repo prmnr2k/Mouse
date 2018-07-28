@@ -56,7 +56,7 @@ class EventArtistsController < ApplicationController
     if artist_available?
       @artist_event = @event.artist_events.find_by(artist_id: params[:id])
 
-      if @artist_event and ["ready"].include?(@artist_event.status)
+      if @artist_event and ["ready", "declined", "owner_declined"].include?(@artist_event.status)
         artist_acc = Account.find(params[:id])
 
         if artist_acc
