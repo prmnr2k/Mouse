@@ -1,7 +1,7 @@
 class Fan < ApplicationRecord
-    has_many :genres, foreign_key: 'fan_id', class_name: 'FanGenre'
-    has_many :fan_tickets
-    has_many :comments
+    has_many :genres, foreign_key: 'fan_id', class_name: 'FanGenre', dependent: :destroy
+    has_many :fan_tickets, dependent: :nullify
+    has_many :comments, dependent: :nullify
 
     has_one :account
 

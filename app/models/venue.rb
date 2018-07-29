@@ -9,7 +9,7 @@ class Venue < ApplicationRecord
     has_many :dates, foreign_key: 'venue_id', class_name: 'VenueDate', dependent: :destroy
     has_many :emails, foreign_key: 'venue_id', class_name: 'VenueEmail', dependent: :destroy
     has_many :venue_video_links, dependent: :destroy
-    has_many :events
+    has_many :events, dependent: :nullify
 
     has_one :account
     has_one :public_venue, dependent: :destroy

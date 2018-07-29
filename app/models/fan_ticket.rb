@@ -8,8 +8,11 @@ class FanTicket < ApplicationRecord
     if options[:with_tickets]
       res.delete('ticket_id')
 
-      res[:tickets_left] = ticket.count - FanTicket.where(ticket_id: ticket.id).count
       res[:ticket] = ticket
+      res[:tickets_left] = nil
+      if ticket
+        ticket.count - FanTicket.where(ticket_id: ticket.id).count
+      end
     end
 
     return res

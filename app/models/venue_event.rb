@@ -26,13 +26,15 @@ class VenueEvent < ApplicationRecord
     res.delete('rental_from')
     res.delete('rental_to')
 
-    res[:venue] = account.venue.as_json(for_event: true)
-    res[:approximate_price] = 0
-    if account.venue.public_venue
-      if event.event_time == 'evening'
-        res[:approximate_price] = account.venue.public_venue.price_for_nighttime.to_i * event.event_length.to_i
-      else
-        res[:approximate_price] = account.venue.public_venue.price_for_daytime.to_i * event.event_length.to_i
+    if account
+      res[:venue] = account.venue.as_json(for_event: true)
+      res[:approximate_price] = 0
+      if account.venue.public_venue
+        if event.event_time == 'evening'
+          res[:approximate_price] = account.venue.public_venue.price_for_nighttime.to_i * event.event_length.to_i
+        else
+          res[:approximate_price] = account.venue.public_venue.price_for_daytime.to_i * event.event_length.to_i
+        end
       end
     end
 

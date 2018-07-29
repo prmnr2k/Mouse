@@ -16,7 +16,11 @@ class Like < ApplicationRecord
     if options[:feed]
       res[:event] = event.as_json(only: [:id, :name])
     end
-    res[:account] = account.as_json(only: [:id, :user_name, :image_id, :display_name])
+
+    res[:account] = nil
+    if account
+      account.as_json(only: [:id, :user_name, :image_id, :display_name])
+    end
     return res
   end
 end
