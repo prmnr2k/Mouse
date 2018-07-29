@@ -100,7 +100,8 @@ class UsersController < ApplicationController
       if @user.register_phone
         @validation = PhoneValidation.find_by(phone: @user.register_phone)
         if @validation
-          @validation.destroy
+          @validation.is_used = false
+          @validation.save
         end
       end
       @user.destroy
