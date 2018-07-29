@@ -22,9 +22,19 @@ class InboxMessagesController < ApplicationController
     if top_messages.count > 0
       messages = messages.where.not(id: top_messages.pluck(:id))
     end
-    messages = messages.order(:created_at => :desc).limit(params[:limit]).offset(params[:offset])
 
-    render json: (top_messages + messages)[params[:offset].to_i..params[:limit].to_i], status: :ok
+    offset = nil
+    limit  = nil
+    if params[:limit].to_i > top_messages.count
+      limit = params[:limit].to_i - top_messages.count
+
+      if params[:offset].to_i > top_messages.count
+        offset = params[:offset].to_i - top_messages.count
+      end
+    end
+    messages = messages.order(:created_at => :desc).limit(limit).offset(offset)
+
+    render json: (top_messages + messages), status: :ok
   end
 
   # GET account/1/inbox_messages/1
