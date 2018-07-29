@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'users/me', action: :get_me, controller: 'users'
   patch 'users/me', action: :update_me, controller: 'users'
   patch 'users/:id/email', action: :change_email, controller: 'users'
+  delete 'users', action: :destroy, controller: 'users'
 
   #Account routes
   resources :accounts, only: [:create, :update] do

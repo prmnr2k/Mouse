@@ -137,6 +137,32 @@
           "method": "patch"
         }
       ]
+    },
+    {
+      "path": "/users.json",
+      "operations": [
+        {
+          "summary": "Delete user",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Authorization",
+              "type": "string",
+              "description": "Authentication token",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Users#destroy",
+          "method": "delete"
+        }
+      ]
     }
   ],
   "authorizations": null

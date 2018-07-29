@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorize_me, only: [:update_me, :get_me]
+  before_action :authorize_me, only: [:update_me, :get_me, :destroy]
   swagger_controller :users, "Users"
 
   # GET /users/me
@@ -42,7 +42,6 @@ class UsersController < ApplicationController
       user = @user.as_json
       user[:token] = token.token
       user.delete("password")
-      puts 'aaaa', @phone_validation
       set_base64_image
       if @phone_validation
         @phone_validation.is_used = true
@@ -90,15 +89,24 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1
+  # DELETE /users
   swagger_api :destroy do
     summary "Delete user"
-    param :query, :id, :integer, :required, "User id"
+    param :header, 'Authorization', :string, :required, 'Authentication token'
     response :not_found
   end
-
   def destroy
-    @user.destroy
+    if @user.accounts.count == 0
+      if @user.register_phone
+        @validation = PhoneValidation.find_by(phone: @user.register_phone)
+        if @validation
+          @validation.destroy
+        end
+      end
+      @user.destroy
+    else
+      render status: :unprocessable_entity
+    end
   end
 
   private
