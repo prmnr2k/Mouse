@@ -15,7 +15,6 @@ class RequestMessage < ApplicationRecord
 
     res[:event_info] = event
 
-    expiration_date = created_at + TimeFrameHelper.to_seconds(time_frame_range) * time_frame_number
     if expiration_date < DateTime.now
       res[:status] = 'time_expired'
     elsif expiration_date - 1.day <= DateTime.now
