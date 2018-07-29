@@ -172,7 +172,7 @@ class EventsController < ApplicationController
     response :not_found
   end
   def verify
-    if ["declined", "new"].include?(@event.status)
+    if ["declined", "just_added"].include?(@event.status)
       @event.status = "pending"
       @event.save
 
