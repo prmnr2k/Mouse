@@ -23,12 +23,19 @@ class PhoneValidationsController < ApplicationController
   def create
     phone_validation = PhoneValidation.find_by(phone_validation_params)
     if phone_validation != nil and phone_validation.is_validated == true
-      render json: {errors: "Already validated"}, status: :unprocessable_entity and return
+      if (phone_validation.updated_at + 10.minutes) > DateTime.now.utc
+        render json: {phone: :ALREADY_VALIDATED}, status: :unprocessable_entity and return
+      elsif phone_validation.is_used
+        render json: {phone: :ALREADY_USED}, status: :unprocessable_entity and return
+      else
+        phone_validation.destroy
+      end
     end
 
     @phone_validation = PhoneValidation.find_or_create_by(phone_validation_params)
     @phone_validation.code = '0000'
     @phone_validation.is_validated = false
+    @phone_validation.is_used = false
     if @phone_validation.save
       render json: @phone_validation, except: :code, status: :created
     else

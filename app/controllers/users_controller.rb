@@ -26,7 +26,14 @@ class UsersController < ApplicationController
   def create
     if params[:register_phone]
       @phone_validation = PhoneValidation.find_by(phone: params[:register_phone])
-      render json: {register_phone: [:NOT_VALIDATED]}, status: :unprocessable_entity and return if not @phone_validation or @phone_validation.is_validated == false
+      if not @phone_validation or not @phone_validation.is_validated
+        render json: {register_phone: [:NOT_VALIDATED]}, status: :unprocessable_entity and return 
+      elsif (@phone_validation.updated_at + 10.minutes) < DateTime.now.utc
+        render json: {register_phone: [:TIME_EXPIRED]}, status: :unprocessable_entity and return 
+      end
+      if @phone_validation.is_used
+        render json: {register_phone: [:ALREADY_USED]}, status: :unprocessable_entity and return 
+      end
     end
 
     @user = User.new(user_create_params)
@@ -35,8 +42,12 @@ class UsersController < ApplicationController
       user = @user.as_json
       user[:token] = token.token
       user.delete("password")
-
+      puts 'aaaa', @phone_validation
       set_base64_image
+      if @phone_validation
+        @phone_validation.is_used = true
+        @phone_validation.save
+      end
       render json: user, except: :password, status: :created
     else
       render json: @user.errors, status: :unprocessable_entity
