@@ -14,11 +14,14 @@ class RequestMessage < ApplicationRecord
     res.delete('updated_at')
 
     res[:event_info] = event
-
-    if expiration_date < DateTime.now
-      res[:status] = 'time_expired'
-    elsif expiration_date - 1.day <= DateTime.now
-      res[:status] = 'expires_soon'
+    if expiration_date != nil
+      if expiration_date < DateTime.now
+        res[:status] = 'time_expired'
+      elsif expiration_date - 1.day <= DateTime.now
+        res[:status] = 'expires_soon'
+      else
+        res[:status] = 'valid'
+      end 
     else
       res[:status] = 'valid'
     end
