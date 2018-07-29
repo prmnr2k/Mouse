@@ -3,7 +3,7 @@ class Ticket < ApplicationRecord
 
   has_one :tickets_type, dependent: :destroy
 
-  has_many :fan_tickets
+  has_many :fan_tickets, dependent: :nullify
 
   def as_json(options={})
     res = super

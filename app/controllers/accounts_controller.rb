@@ -603,7 +603,7 @@ class AccountsController < ApplicationController
       response :forbidden
     end
     def delete
-      if User.encrypt_password(params[:password]) == @account.user.password
+      if User.encrypt_password(params[:password].to_s) == @account.user.password
         @account.destroy
         render status: :ok
       else

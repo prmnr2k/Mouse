@@ -6,7 +6,10 @@ class Comment < ApplicationRecord
     res = super
     res.delete('account_id')
 
-    res[:account] = account.as_json(only: [:id, :user_name, :image_id, :display_name])
+    res[:account] = nil
+    if account
+      account.as_json(only: [:id, :user_name, :image_id, :display_name])
+    end
 
     return res
   end

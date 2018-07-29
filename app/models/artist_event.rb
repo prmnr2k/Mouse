@@ -36,11 +36,12 @@ class ArtistEvent < ApplicationRecord
     res.delete('id')
     res.delete('event_id')
 
-    res[:artist] = account.artist.as_json(for_event: true)
-
-    res[:approximate_price] = nil
-    unless account.artist.is_hide_pricing_from_search
-      res[:approximate_price] = account.artist.price_from.to_i * event.event_length.to_i
+    if account
+      res[:artist] = account.artist.as_json(for_event: true)
+      res[:approximate_price] = nil
+      unless account.artist.is_hide_pricing_from_search
+        res[:approximate_price] = account.artist.price_from.to_i * event.event_length.to_i
+      end
     end
 
     if ['owner_accepted'].include?(status)

@@ -17,25 +17,25 @@ class Account < ApplicationRecord
 	has_many :followings_conn, foreign_key: 'by_id', class_name: 'Follower', dependent: :destroy
 	has_many :following, through: :followings_conn, source: 'to'
 
-	has_many :venue_events, foreign_key: 'venue_id'
-	has_many :artist_events, foreign_key: 'artist_id'
+	has_many :venue_events, foreign_key: 'venue_id', dependent: :nullify
+	has_many :artist_events, foreign_key: 'artist_id', dependent: :nullify
 
-	has_many :sent_messages, foreign_key: 'sender_id', class_name: 'InboxMessage'
-	has_many :inbox_messages, foreign_key: 'receiver_id', class_name: 'InboxMessage'
+	has_many :sent_messages, foreign_key: 'sender_id', class_name: 'InboxMessage', dependent: :nullify
+	has_many :inbox_messages, foreign_key: 'receiver_id', class_name: 'InboxMessage', dependent: :nullify
 
 	belongs_to :user
-	belongs_to :fan, optional: true
-	belongs_to :artist, optional: true
-	belongs_to :venue, optional: true
-	belongs_to :admin, foreign_key: 'processed_by', class_name: 'Admin', optional: true
+	belongs_to :fan, optional: true, dependent: :destroy
+	belongs_to :artist, optional: true, dependent: :destroy
+	belongs_to :venue, optional: true, dependent: :destroy
+	belongs_to :admin, foreign_key: 'processed_by', class_name: 'Admin', optional: true, dependent: :destroy
 
 	belongs_to :image, optional: true
 
-	has_many :event_collaborators, foreign_key: :collaborator_id
+	has_many :event_collaborators, foreign_key: :collaborator_id, dependent: :nullify
 	has_many :collaborated, through: :event_collaborators, source: :event, class_name: 'Event'
-	has_many :events, foreign_key: 'creator_id'
-	has_many :likes
-	has_many :account_updates
+	has_many :events, foreign_key: 'creator_id', dependent: :nullify
+	has_many :likes, dependent: :nullify
+	has_many :account_updates, dependent: :nullify
 
 
 	def get_attrs

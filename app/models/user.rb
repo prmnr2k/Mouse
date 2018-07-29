@@ -13,14 +13,14 @@ class User < ApplicationRecord
 
 	has_many :tokens, dependent: :destroy
 	has_many :accounts, dependent: :destroy
-	has_many :likes
+	has_many :likes, dependent: :nullify
 
 	belongs_to :image, optional: true
-	has_one :admin
-	
+	has_one :admin, dependent: :destroy
+
     SALT = 'elite_salt'
     
-    def self.encrypt_password(password)
+	def self.encrypt_password(password)
 		return Digest::SHA256.hexdigest(password + SALT)
 	end
 
