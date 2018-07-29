@@ -1,13 +1,12 @@
 class Account < ApplicationRecord
 	 
 	validates :account_type, presence: true
+	validates :user_name, presence: true, uniqueness: true, length: {:within => 3..30}
 
 	enum account_type: [:venue, :artist, :fan]
 	enum status: StatusHelper.accounts
 	enum preferred_distance: [:km, :mile]
 	enum preferred_currency: [:RUB, :USD, :EUR]
-
-	validates :user_name, presence: true, uniqueness: true, length: {:within => 3..30}
 
 	has_many :images, dependent: :destroy
 

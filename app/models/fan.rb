@@ -1,4 +1,7 @@
 class Fan < ApplicationRecord
+    validates :first_name, presence: true
+    validates :last_name, presence: true
+
     has_many :genres, foreign_key: 'fan_id', class_name: 'FanGenre', dependent: :destroy
     has_many :fan_tickets, dependent: :nullify
     has_many :comments, dependent: :nullify

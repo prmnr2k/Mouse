@@ -1,4 +1,9 @@
 class Artist < ApplicationRecord
+    validates :first_name, presence: true
+    validates :last_name, presence: true
+    validates :artist_email, presence: true
+    validates :about, presence: true
+
     has_many :genres, foreign_key: 'artist_id', class_name: 'ArtistGenre, dependent: :destroy'
 
     has_one :account

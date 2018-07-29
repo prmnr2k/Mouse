@@ -1,4 +1,5 @@
 class ArtistDate < ApplicationRecord
+  validates :date, presence: true
   belongs_to :artist
 
   validates_uniqueness_of :date, scope: [:artist_id]

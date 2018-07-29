@@ -1,4 +1,7 @@
 class VenueOfficeHour < ApplicationRecord
+    validates :day, presence: true
+    validates :begin_time, presence: true
+    validates :end_time, presence: true
     belongs_to :venue
 
     enum day: [:sunday, :monday, :tuesday, :wednesday, :thursday, :friday, :saturday], _prefix: true

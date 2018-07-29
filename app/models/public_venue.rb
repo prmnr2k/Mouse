@@ -1,4 +1,13 @@
 class PublicVenue < ApplicationRecord
+  validates :country, presence: true
+  validates :city, presence: true
+  validates :state, presence: true
+  validates :zipcode, presence: true
+  validates :audio_description, presence: true
+  validates :stage_description, presence: true
+  validates :lighting_description, presence: true
+  validates :price_for_nighttime, presence: true
+  validates :price_for_daytime, presence: true
   validates_inclusion_of :min_age, in: 0..150, allow_nil: true
   validates_inclusion_of :num_of_bathrooms, in: 0..1000000, allow_nil: true
 

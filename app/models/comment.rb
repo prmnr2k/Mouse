@@ -1,4 +1,6 @@
 class Comment < ApplicationRecord
+  validates :text, presence: true
+
   belongs_to :event
   belongs_to :account
 

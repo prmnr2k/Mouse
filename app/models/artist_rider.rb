@@ -1,4 +1,5 @@
 class ArtistRider < ApplicationRecord
+  validates :rider_type, presence: true
   enum rider_type: [:stage, :backstage, :hospitality, :technical]
 
   belongs_to :artist

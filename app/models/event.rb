@@ -1,4 +1,13 @@
 class Event < ApplicationRecord
+  validates :name, presence: true
+  validates :hashtag, presence: true
+  validates :tagline, presence: true
+  validates :artists_number, presence: true
+  validates :event_season, presence: true
+  validates :event_year, presence: true
+  validates :event_time, presence: true
+  validates :event_length, presence: true
+  validates :description, presence: true
   validates_length_of :description, maximum: 500, allow_blank: true
 
   belongs_to :creator, class_name: 'Account'
