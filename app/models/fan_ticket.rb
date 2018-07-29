@@ -1,6 +1,12 @@
 class FanTicket < ApplicationRecord
+  enum currency: CurrencyHelper.all
+
   belongs_to :account
   belongs_to :ticket
+
+  before_save do |ticket|
+    ticket.currency = ticket.account.preferred_currency
+  end
 
   def as_json(options={})
     res = super

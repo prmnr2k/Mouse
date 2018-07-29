@@ -1,4 +1,6 @@
 class Event < ApplicationRecord
+
+  enum currency: CurrencyHelper.all
   validates_length_of :description, maximum: 500, allow_blank: true
 
   belongs_to :creator, class_name: 'Account'
@@ -35,6 +37,10 @@ class Event < ApplicationRecord
   geocoded_by :address, latitude: :city_lat, longitude: :city_lng
   reverse_geocoded_by :city_lat, :city_lng, address: :address
   after_validation :geocode
+
+  before_save do |event|
+    event.currency = event.creator.preferred_currency
+  end
 
   def as_json(options={})
     if options[:only]

@@ -1,10 +1,15 @@
 class RequestMessage < ApplicationRecord
+  enum currency: CurrencyHelper.all
   enum time_frame: TimeFrameHelper.all
 
   belongs_to :inbox_message, dependent: :destroy
   belongs_to :event
   belongs_to :artist_event, optional: true
   belongs_to :venue_event, optional: true
+
+  before_save do |message|
+    message.currency = message.inbox_message.sender.preferred_currency
+  end
 
   def as_json(options={})
     res = super
