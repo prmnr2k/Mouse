@@ -376,7 +376,6 @@ class AccountsController < ApplicationController
     def create
         @account = Account.new(account_params)
         @account.user = @user
-        @account.is_verified = true
 
         if @account.save
             set_image
@@ -576,21 +575,6 @@ class AccountsController < ApplicationController
       @accounts = @accounts.group("accounts.id")
 
       render json: @accounts.limit(params[:limit]).offset(params[:offset]), extended: @extended, status: :ok
-    end
-
-    # POST accounts/1/verify
-    swagger_api :verify do
-      summary "Verify account"
-      param :path, :id, :integer, :required, "Account id"
-      response :unprocessable_entity
-      response :not_found
-    end
-    def verify
-      @to_find.is_verified = true
-      update_events
-      @to_find.save!
-
-      render status: :ok
     end
 
     swagger_api :delete do
