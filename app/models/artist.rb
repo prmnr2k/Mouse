@@ -1,6 +1,6 @@
 class Artist < ApplicationRecord
-    validates :first_name, presence: true
-    validates :last_name, presence: true
+    # validates :first_name, presence: true
+    # validates :last_name, presence: true
     validates :artist_email, presence: true
     validates :about, presence: true
 

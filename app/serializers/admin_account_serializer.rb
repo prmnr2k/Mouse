@@ -1,6 +1,6 @@
 class AdminAccountSerializer < ActiveModel::Serializer
   attributes :id, :created_at, :account_type, :display_name, :status,
-             :address, :first_name, :last_name, :processed_by, :image_id
+             :address, :full_name, :processed_by, :image_id
 
   def address
     if object.account_type == 'artist'
@@ -12,12 +12,12 @@ class AdminAccountSerializer < ActiveModel::Serializer
     end
   end
 
-  def first_name
-    object.user.first_name
-  end
-
-  def last_name
-    object.user.last_name
+  def full_name
+    if object.account_type == 'fan'
+      return "#{object.fan.first_name} #{object.fan.last_name}"
+    else
+      return object.display_name
+    end
   end
 
   def processed_by
