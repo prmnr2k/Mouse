@@ -175,7 +175,7 @@ class AdminAccountsController < ApplicationController
   def approve
     @account = Account.find(params[:id])
 
-    if @account and ['pending'].include?(account.status)
+    if @account and ['pending'].include?(@account.status)
       @account.update(status: 'approved')
       @account.update(processed_by: @admin.id)
       update_events
