@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180729122219) do
+ActiveRecord::Schema.define(version: 20180730122255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 20180729122219) do
     t.datetime "updated_at", null: false
     t.string "user_name"
     t.string "display_name"
-    t.boolean "is_verified", default: false
     t.integer "status", default: 0
     t.integer "processed_by"
     t.string "preferred_username"
@@ -408,7 +407,6 @@ ActiveRecord::Schema.define(version: 20180729122219) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "type_of_space"
-    t.integer "price"
     t.string "country"
     t.string "city"
     t.string "state"
@@ -513,10 +511,6 @@ ActiveRecord::Schema.define(version: 20180729122219) do
     t.string "twitter_id"
     t.string "register_phone"
     t.string "vk_id"
-    t.string "first_name"
-    t.string "last_name"
-    t.string "user_name"
-    t.integer "image_id"
     t.boolean "is_superuser", default: false
     t.boolean "is_admin", default: false
   end
