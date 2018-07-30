@@ -31,7 +31,7 @@ class EventVenuesController < ApplicationController
 
         @venue_event = @event.venue_events.find_by(venue_id: @venue_acc.id)
         @venue_event.update(status: 'owner_accepted')
-        @event.venue_id = @venue_acc.id
+        @event.venue_id = @venue_acc.venue.id
         set_agreement
         @event.save
       end
