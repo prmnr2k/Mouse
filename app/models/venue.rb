@@ -3,7 +3,7 @@ class Venue < ApplicationRecord
     validates :address, presence: true
     validates :lat, presence: true
     validates :lng, presence: true
-    validates :capacity, presence: true
+    # validates :capacity, presence: true
 
     validates_inclusion_of :capacity, in: 1..1000000, allow_nil: true
 
