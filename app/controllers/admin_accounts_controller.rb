@@ -173,11 +173,12 @@ class AdminAccountsController < ApplicationController
     response :method_not_allowed
   end
   def approve
-    account = Account.find(params[:id])
+    @account = Account.find(params[:id])
 
-    if account and ['pending'].include?(account.status)
-      account.update(status: 'approved')
-      account.update(processed_by: @admin.id)
+    if @account and ['pending'].include?(account.status)
+      @account.update(status: 'approved')
+      @account.update(processed_by: @admin.id)
+      update_events
       render status: :ok
     else
       render status: :method_not_allowed
@@ -226,5 +227,19 @@ class AdminAccountsController < ApplicationController
     render status: :unauthorized and return if user == nil or (user.is_superuser == false and user.is_admin == false)
 
     @admin = user.admin
+  end
+
+  def update_events
+    Event.where(creator_id: @account.id).each do |event|
+      event.artist_events.where(status: 'pending').each do |relation|
+        relation.status = 'ready'
+        relation.save
+      end
+
+      event.venue_events.where(status: 'pending').each do |relation|
+        relation.status = 'ready'
+        relation.save
+      end
+    end
   end
 end

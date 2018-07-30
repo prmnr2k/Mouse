@@ -1077,21 +1077,6 @@ class AccountsController < ApplicationController
       @accounts = @accounts.order('accounts.display_name, accounts.user_name')
     end
 
-
-    def update_events
-      Event.where(creator_id: @to_find.id).each do |event|
-        event.artist_events.where(status: 'pending').each do |relation|
-          relation.status = 'ready'
-          relation.save
-        end
-
-        event.venue_events.where(status: 'pending').each do |relation|
-          relation.status = 'ready'
-          relation.save
-        end
-      end
-    end
-
     def account_params
         params.permit(:user_name, :display_name, :phone, :account_type, :preferred_username,
                       :preferred_date, :preferred_distance, :preferred_currency, :preferred_time)
