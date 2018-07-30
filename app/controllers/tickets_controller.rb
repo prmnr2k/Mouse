@@ -136,7 +136,13 @@ class TicketsController < ApplicationController
     end
 
     def before_change_tickets
-      tickets_count = @event.tickets.joins(:tickets_type).where(tickets_types: {name: params[:type]}).sum('tickets.count')
+      tickets_count = @event.tickets.joins(:tickets_type).where(
+        tickets_types: {name: params[:type]}
+      )
+      if @ticket
+        tickets_count = tickets_count.where.not(tickets: {id: @ticket.id})
+      end
+      tickets_count = tickets_count.sum('tickets.count')
       tickets_count += params[:count].to_i
 
       if params[:type] == 'in_person' and tickets_count > @event.venue.capacity.to_i
