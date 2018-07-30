@@ -374,6 +374,7 @@ class AccountsController < ApplicationController
       response :unauthorized
     end
     def create
+      Account.transaction do
         @account = Account.new(account_params)
         @account.user = @user
 
@@ -390,6 +391,7 @@ class AccountsController < ApplicationController
         else
             render json: @account.errors, status: :unprocessable_entity
         end
+      end
     end
 
     # PUT /accounts/<account_id>
@@ -496,6 +498,7 @@ class AccountsController < ApplicationController
       response :unauthorized
     end
     def update
+      Account.transaction do
         set_image
         set_base64_image
 
@@ -507,6 +510,7 @@ class AccountsController < ApplicationController
         else
             render json: @account.errors, status: :unprocessable_entity
         end
+      end
     end
 
     # POST account/1/preferences
